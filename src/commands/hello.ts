@@ -17,7 +17,7 @@ hello world from ./src/hello.ts!
     force: flags.boolean({char: 'f'}),
   }
 
-  static args = [{name: 'file'}]
+  static args = [{name: 'file'}];
 
   async run() {
     const {args, flags} = this.parse(Hello)
