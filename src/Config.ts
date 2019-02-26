@@ -13,6 +13,7 @@ class _Config {
       const storeContent = fs.readFileSync(fd);
       this.configuration = JSON.parse(storeContent.toString());
       fs.closeSync(fd);
+      console.log("Loaded config : ", this.configuration);
       return this.configuration
     } else {
       this.createInitFile();
@@ -31,7 +32,7 @@ class _Config {
 
   // Deletes a key and its values from the store
   public deleteKey(k: string) {
-    if (Object.keys(this.configuration).indexOf(k) === -1) {
+    if (!this.has(k)) {
       console.error("There is no key " + k);
       return ;
     }
@@ -39,6 +40,18 @@ class _Config {
     delete this.configuration[k];
     this.persistConf();
     console.log("Successfully deleted key : " + k);
+  }
+
+  public has(k: string) {
+    return Object.keys(this.configuration).indexOf(k) !== -1
+  }
+
+  public getApiKey(k: string) {
+    if (!this.has(k)) {
+      console.error("There is no key " + k);
+      return ;
+    }
+    return this.configuration[k];
   }
 
   // This function persists the current state of the configuration into the configuration file
