@@ -33,6 +33,6 @@ export default class Ls extends Command {
   }
 
   private listPullZones() {
-    Client.listPullZones("default");
+    Client.listPullZones();
   }
 }
