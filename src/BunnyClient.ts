@@ -7,6 +7,7 @@ class _Client {
     timeout: 20000,
     headers: {
       'Content-Type': 'application/json',
+      'Accept': 'application/json',
       'AccessKey': Config.getApiKey(k)
     }
   })  ;
@@ -15,6 +16,7 @@ class _Client {
     try {
       const response = await _Client.HTTPClient(k).get("pullzone");
       console.log("ID    |Hit(%)|    Name     |   HostNames");
+      console.log(response.data);
       response.data.forEach((x: any) => {
         let hostNamesString = "";
 
