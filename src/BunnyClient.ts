@@ -11,7 +11,7 @@ class _Client {
     }
   })  ;
 
-  public async listPullZones(k: string) {
+  public async listPullZones(k: string = "default") {
     try {
       const response = await _Client.HTTPClient(k).get("pullzone");
       console.log("ID    |Hit(%)|    Name     |   HostNames");
