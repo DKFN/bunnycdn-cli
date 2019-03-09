@@ -59,14 +59,14 @@ class _Config {
   }
 
   public get(k: string, type: string): IStoredKey | undefined {
-    return _.find(this.configuration[type], {name: k})
+    return _.find(this.configuration[type], {'name': k})
   }
 
   public getApiKey(k: string, type: string = "pullzones") {
     const maybeKey = this.get(k, type);
     if (!!maybeKey)
       console.error("There is no key " + k);
-    return maybeKey;
+    return maybeKey && maybeKey.value;
   }
 
   // This function persists the current state of the configuration into the configuration file

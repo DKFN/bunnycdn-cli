@@ -29,31 +29,32 @@ USAGE
 <!-- usagestop -->
 # Commands
 <!-- commands -->
-* [`bnycdn hello [FILE]`](#bnycdn-hello-file)
+* [`bnycdn cp [CP COMMAND FOR STORAGES]`](#bnycdn-cp-cp-command-for-storages)
 * [`bnycdn help [COMMAND]`](#bnycdn-help-command)
 * [`bnycdn key [NAME]`](#bnycdn-key-name)
 * [`bnycdn ls [LS COMMAND FOR STORAGES]`](#bnycdn-ls-ls-command-for-storages)
 * [`bnycdn pz [PULLZONES]`](#bnycdn-pz-pullzones)
 
-## `bnycdn hello [FILE]`
+## `bnycdn cp [CP COMMAND FOR STORAGES]`
 
-describe the command here
+This is the cp-like command for BunnyCDN storages
 
 ```
 USAGE
-  $ bnycdn hello [FILE]
+  $ bnycdn cp [CP COMMAND FOR STORAGES]
 
 OPTIONS
-  -f, --force
-  -h, --help       show CLI help
-  -n, --name=name  name to print
+  -f, --from=from
+  -h, --help             show CLI help
+  -s, --storage=storage
+  -t, --to=to
 
 EXAMPLE
-  $ bnycdn hello
-  hello world from ./src/hello.ts!
+  $ bnycdn pz -l
+       Lists all the pul zone
 ```
 
-_See code: [src/commands/hello.ts](https://github.com/DKFN/bnycdn/blob/v0.0.1/src/commands/hello.ts)_
+_See code: [src/commands/cp.ts](https://github.com/DKFN/bnycdn/blob/v0.0.1/src/commands/cp.ts)_
 
 ## `bnycdn help [COMMAND]`
 
@@ -74,7 +75,7 @@ _See code: [@oclif/plugin-help](https://github.com/oclif/plugin-help/blob/v2.1.6
 
 ## `bnycdn key [NAME]`
 
-describe the command here
+To add / delete / set a key for a pullzon or a storage
 
 ```
 USAGE
@@ -84,8 +85,8 @@ OPTIONS
   -d, --del=del      Deletes a key with given name
   -h, --help         show CLI help
   -l, --list         lists all keys stored and their names
-  -n, --name=name    name to print
   -s, --set=set      Sets a key with given name
+  -t, --type=type    Type of the key
   -v, --value=value  Gives a value for add and set operations
 
 EXAMPLE
