@@ -1,5 +1,5 @@
 import {Command, flags} from '@oclif/command'
-import {Config} from "../Config";
+import {Config, IStoredKey} from "../Config";
 
 export default class Key extends Command {
 
@@ -22,7 +22,7 @@ export default class Key extends Command {
     list: flags.boolean({char: 'l', description: 'lists all keys stored and their names'}),
   };
 
-  static args = [{add: "name", set: "name", value: "value"}];
+  static args = [{name: "name", add: "name", set: "name", value: "value"}];
 
   async run() {
     Config.loadConfig();
@@ -46,17 +46,22 @@ export default class Key extends Command {
   }
 
   private listKeys() {
-    const storeObj = Config.getConf();
+    const conf = Config.getConf();
     this.log("This is the content of the store apiKeys files : ");
     this.log("Key Name : Key Value");
-
-    Object.keys(storeObj).forEach((k: string) => {
-      this.log(k + " : " + storeObj[k]);
+    this.log("PullZone Keys : ");
+    conf["pullzones"].forEach((pzKs: IStoredKey) => {
+      this.log(pzKs.name + " | " + pzKs.value);
     });
+
+    conf["storages"].forEach((stKz: IStoredKey) => {
+      this.log(stKz.name + " | " + stKz.value);
+    });
+
   }
 
-  private addKey(k: string, v: string) {
-    Config.mergeToConf({[k]: v});
+  private addKey(k: string, v?: string) {
+    Config.mergeToConf(v ? {[k]: v} : {});
     Config.persistConf();
     this.log("Key successfully set: " + k);
   }

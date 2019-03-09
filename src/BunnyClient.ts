@@ -15,10 +15,10 @@ class _Client {
     try {
       const response = await _Client.HTTPClient(k).get("pullzone");
       console.log("ID    |Hit(%)|    Name     |   HostNames");
-      response.data.forEach((x) => {
+      response.data.forEach((x: any) => {
         let hostNamesString = "";
 
-        x.Hostnames.forEach((hst) => {
+        x.Hostnames.forEach((hst: any) => {
           hostNamesString += "[" + hst.Id + "] " + hst.Value + " ; "
         });
 

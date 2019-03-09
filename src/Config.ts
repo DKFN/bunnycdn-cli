@@ -1,10 +1,25 @@
 import * as fs from "fs"
 import * as os from "os"
+import * as _ from "lodash";
+
+export interface IStoredKey {
+  name: string;
+  value: string;
+}
+
+export interface IConfig {
+  pullzones: IStoredKey[];
+  storages: IStoredKey[];
+  [key: string]: IStoredKey[];
+}
 
 class _Config {
   static storePath = os.homedir() + "/.bunnycdn";
 
-  private configuration: Object = {};
+  private configuration: IConfig = {
+    pullzones: [],
+    storages: []
+  };
 
   // Typically loading configuration from the storage files
   public loadConfig() {
@@ -16,7 +31,7 @@ class _Config {
       console.log("Loaded config : ", this.configuration);
       return this.configuration
     } else {
-      this.createInitFile();
+      this.persistConf();
     }
   }
 
@@ -31,27 +46,27 @@ class _Config {
   }
 
   // Deletes a key and its values from the store
-  public deleteKey(k: string) {
-    if (!this.has(k)) {
+  public deleteKey(k: string, type: string = "pullzones") {
+    const maybeValue = this.get(k, type);
+    if (!!maybeValue) {
       console.error("There is no key " + k);
       return ;
     }
 
-    delete this.configuration[k];
+    this.configuration[type] = _.filter(this.configuration[type], {name: k});
     this.persistConf();
     console.log("Successfully deleted key : " + k);
   }
 
-  public has(k: string) {
-    return Object.keys(this.configuration).indexOf(k) !== -1
+  public get(k: string, type: string): IStoredKey | undefined {
+    return _.find(this.configuration[type], {name: k})
   }
 
-  public getApiKey(k: string) {
-    if (!this.has(k)) {
+  public getApiKey(k: string, type: string = "pullzones") {
+    const maybeKey = this.get(k, type);
+    if (!!maybeKey)
       console.error("There is no key " + k);
-      return ;
-    }
-    return this.configuration[k];
+    return maybeKey;
   }
 
   // This function persists the current state of the configuration into the configuration file
@@ -59,14 +74,6 @@ class _Config {
     const fd = fs.openSync(_Config.storePath, 'a+');
     fs.ftruncateSync(fd);
     fs.writeFileSync(fd, JSON.stringify(this.configuration));
-    fs.closeSync(fd);
-  }
-
-  // This creates the configuration file with the base state
-  private createInitFile() {
-    const fd = fs.openSync(_Config.storePath, 'a+');
-    fs.ftruncateSync(fd);
-    fs.writeFileSync(fd, JSON.stringify({}));
     fs.closeSync(fd);
   }
 }

@@ -17,7 +17,7 @@ export default class Pz extends Command {
     list: flags.boolean({char: 'l', description: 'lists all keys stored and their names'}),
   };
 
-  static args = [{}];
+  static args = [{name: "PullZones", help: "help", list: "list"}];
 
   async run() {
     Config.loadConfig();
