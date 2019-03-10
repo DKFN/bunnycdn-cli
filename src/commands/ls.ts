@@ -17,7 +17,7 @@ export default class Ls extends Command {
     storage: flags.string({char: 's'}),
   };
 
-  static args = [{name: "Ls command for storages", storage: "storage"}];
+  static args = [{name: "", storage: "storage"}];
 
   async run() {
     Config.loadConfig();

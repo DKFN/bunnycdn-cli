@@ -21,7 +21,7 @@ export default class Key extends Command {
     list: flags.boolean({char: 'l', description: 'lists all keys stored and their names'}),
   };
 
-  static args = [{name: "name", add: "name", set: "name", value: "value"}];
+  static args = [{name: "", add: "name", set: "name", value: "value"}];
 
   async run() {
     Config.loadConfig();
@@ -74,7 +74,7 @@ export default class Key extends Command {
     console.log({k, v, t});
     Config.mergeToConf( {name: k, value: v}, t);
     Config.persistConf();
-    this.log("Key successfully set: " + k);
+    this.log("ⓘKey successfully set: " + k);
   }
 
   private checkType(type?: string) {
