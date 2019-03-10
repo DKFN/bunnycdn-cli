@@ -7,7 +7,7 @@ export default class Key extends Command {
 
   static examples = [
     `
-    ➜  bunnycdn-cli git:(master) ✗ ./bin/run key -l  
+    ➜  bunnycdn-cli git:(master) ✗ bnycdn key -l  
 ==== PullZones : 
 Key Name        : Key Value
 default   | .....
@@ -16,11 +16,11 @@ Key Name        : Key Value
 default | .....
 name | .....
 
-➜  bunnycdn-cli git:(master) ✗ ./bin/run key -s myneykey -t storages -v my_api_key_from_panel
+➜  bunnycdn-cli git:(master) ✗ bnycdn key -s myneykey -t storages -v my_api_key_from_panel
 { k: 'myneykey', v: 'my_api_key_from_panel', t: 'storages' }
 ⓘKey successfully set: myneykey
 
-➜  bunnycdn-cli git:(master) ✗ ./bin/run key -d myneykey -t storages                         
+➜  bunnycdn-cli git:(master) ✗ bnycdn key -d myneykey -t storages                         
 ⓘSuccessfully deleted key : myneykey
     `,
   ];

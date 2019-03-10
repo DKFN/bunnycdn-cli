@@ -20,11 +20,32 @@ As the CLI is still very limited in functionnalities and some part of it is quit
 
 So, only a nightly build is available at the moment if you want to check early functionalities.
 ```sh-session
-wget http://cdn.infra.tetel.in/bunnycdnapi/nightly/bnycdn_0.0.2-1_amd64.deb;
+wget http://cdn.infra.tetel.in/bunnycdncli/nightly/bnycdn_0.0.2-1_amd64.deb;
 sudo dpkg -i bnycdn_0.0.2-1_amd64.deb
 ```
 
+You should be able to call bnycdn after installation:
+```shell
+➜  bunnycdn-cli git:(master) ✗bnycdn                                                                          
+Simple cli for BunnyCDN service. This app is not an official one.
+
+VERSION
+  bnycdn/0.0.2 linux-x64 node-v8.10.0
+
+USAGE
+  $ bnycdn [COMMAND]
+
+COMMANDS
+  cp    This is the cp-like command for BunnyCDN storages. Cp has only upload implemented for now
+  help  display help for bnycdn
+  key   To add / delete / set a key for a pullzon or a storage
+  ls    describe the command here
+  pz    Only allows you to list pull zones so far
+```
+
 PR and forks are very welcomed :)
+
+For developpement, just fork and clone your repo, instead of running `bnycdn` you must launch `./bin/run` from project root
 
 ( The package is not yet available via NPM)
 ```sh-session

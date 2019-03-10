@@ -14,14 +14,14 @@ export default class Cp extends Command {
     `
     ### One file upload
     
-    ➜  bunnycdn-cli git:(master) ✗ ./bin/run cp -s tetelincdn --from ./dist/deb/bnycdn_0.0.2-1_amd64.deb --to /tetelincdn/nightly/deb/test.deb
+    ➜  bunnycdn-cli git:(master) ✗ bnycdn cp -s tetelincdn --from ./dist/deb/bnycdn_0.0.2-1_amd64.deb --to /tetelincdn/nightly/deb/test.deb
     ⌛[UP]                 /tetelincdn/nightly/deb/test.deb => 8.78 MB
     ✔[OK]                 /tetelincdn/nightly/deb/test.deb => 8.78 MB
 
     
     ### Recursive file upload
     
-    ➜  bunnycdn-cli git:(master) ✗ ./bin/run cp -s dkfn -R --from ./dist --to /dkfn/nightly                
+    ➜  bunnycdn-cli git:(master) ✗ bnycdn -s dkfn -R --from ./dist --to /dkfn/nightly                
      ⌛[UP] [ ∞ 0| ⇈ 1]    /dkfn/nightly/deb/Packages => 1.04 KB
      ⌛[UP] [ ∞ 0| ⇈ 2]    /dkfn/nightly/deb/Packages.bz2 => 656 B
      ⌛[UP] [ ∞ 0| ⇈ 3]    /dkfn/nightly/deb/Packages.gz => 597 B
