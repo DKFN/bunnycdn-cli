@@ -55,7 +55,7 @@ class _Config {
 
     this.configuration[type] = _.filter(this.configuration[type], {name: k});
     this.persistConf();
-    console.log("Successfully deleted key : " + k);
+    console.log("ⓘSuccessfully deleted key : " + k);
   }
 
   public get(k: string, type: string): IStoredKey | undefined {

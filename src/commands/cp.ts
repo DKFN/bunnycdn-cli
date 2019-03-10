@@ -8,11 +8,14 @@ import {IStatusStruct, scanDir} from "../utils/fsutils";
 
 export default class Cp extends Command {
 
-  static description = 'This is the cp-like command for BunnyCDN storages';
+  static description = 'This is the cp-like command for BunnyCDN storages. Cp has only upload implemented for now';
 
   static examples = [
-    `$ bnycdn pz -l
-    Lists all the pul zone
+    `
+    ### One file upload
+    $ bnycdn pz -l
+    
+    ### Recursive file upload
     `,
   ];
 

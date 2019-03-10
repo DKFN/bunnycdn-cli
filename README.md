@@ -20,7 +20,7 @@ $ npm install -g bnycdn
 $ bnycdn COMMAND
 running command...
 $ bnycdn (-v|--version|version)
-bnycdn/0.0.1 linux-x64 node-v8.10.0
+bnycdn/0.0.2 linux-x64 node-v8.10.0
 $ bnycdn --help [COMMAND]
 USAGE
   $ bnycdn COMMAND
@@ -29,21 +29,22 @@ USAGE
 <!-- usagestop -->
 # Commands
 <!-- commands -->
-* [`bnycdn cp [CP COMMAND FOR STORAGES]`](#bnycdn-cp-cp-command-for-storages)
+* [`bnycdn cp []`](#bnycdn-cp)
 * [`bnycdn help [COMMAND]`](#bnycdn-help-command)
-* [`bnycdn key [NAME]`](#bnycdn-key-name)
-* [`bnycdn ls [LS COMMAND FOR STORAGES]`](#bnycdn-ls-ls-command-for-storages)
+* [`bnycdn key []`](#bnycdn-key)
+* [`bnycdn ls []`](#bnycdn-ls)
 * [`bnycdn pz [PULLZONES]`](#bnycdn-pz-pullzones)
 
-## `bnycdn cp [CP COMMAND FOR STORAGES]`
+## `bnycdn cp []`
 
 This is the cp-like command for BunnyCDN storages
 
 ```
 USAGE
-  $ bnycdn cp [CP COMMAND FOR STORAGES]
+  $ bnycdn cp []
 
 OPTIONS
+  -R, --R
   -f, --from=from
   -h, --help             show CLI help
   -s, --storage=storage
@@ -54,7 +55,7 @@ EXAMPLE
        Lists all the pul zone
 ```
 
-_See code: [src/commands/cp.ts](https://github.com/DKFN/bnycdn/blob/v0.0.1/src/commands/cp.ts)_
+_See code: [src/commands/cp.ts](https://github.com/DKFN/bnycdn/blob/v0.0.2/src/commands/cp.ts)_
 
 ## `bnycdn help [COMMAND]`
 
@@ -73,13 +74,13 @@ OPTIONS
 
 _See code: [@oclif/plugin-help](https://github.com/oclif/plugin-help/blob/v2.1.6/src/commands/help.ts)_
 
-## `bnycdn key [NAME]`
+## `bnycdn key []`
 
 To add / delete / set a key for a pullzon or a storage
 
 ```
 USAGE
-  $ bnycdn key [NAME]
+  $ bnycdn key []
 
 OPTIONS
   -d, --del=del      Deletes a key with given name
@@ -94,15 +95,15 @@ EXAMPLE
        hello world from ./src/hello.ts!
 ```
 
-_See code: [src/commands/key.ts](https://github.com/DKFN/bnycdn/blob/v0.0.1/src/commands/key.ts)_
+_See code: [src/commands/key.ts](https://github.com/DKFN/bnycdn/blob/v0.0.2/src/commands/key.ts)_
 
-## `bnycdn ls [LS COMMAND FOR STORAGES]`
+## `bnycdn ls []`
 
 describe the command here
 
 ```
 USAGE
-  $ bnycdn ls [LS COMMAND FOR STORAGES]
+  $ bnycdn ls []
 
 OPTIONS
   -h, --help             show CLI help
@@ -113,7 +114,7 @@ EXAMPLE
        Lists all the pul zone
 ```
 
-_See code: [src/commands/ls.ts](https://github.com/DKFN/bnycdn/blob/v0.0.1/src/commands/ls.ts)_
+_See code: [src/commands/ls.ts](https://github.com/DKFN/bnycdn/blob/v0.0.2/src/commands/ls.ts)_
 
 ## `bnycdn pz [PULLZONES]`
 
@@ -132,5 +133,5 @@ EXAMPLE
        Lists all the pul zone
 ```
 
-_See code: [src/commands/pz.ts](https://github.com/DKFN/bnycdn/blob/v0.0.1/src/commands/pz.ts)_
+_See code: [src/commands/pz.ts](https://github.com/DKFN/bnycdn/blob/v0.0.2/src/commands/pz.ts)_
 <!-- commandsstop -->

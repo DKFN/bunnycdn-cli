@@ -28,8 +28,6 @@ export default class Ls extends Command {
       this.exit(127);
     }
 
-    const storageZone = flags.storage;
-    console.log(storageZone);
   }
 
   private listPullZones() {

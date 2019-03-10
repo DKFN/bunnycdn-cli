@@ -4,17 +4,22 @@ import {Client} from "../BunnyClient";
 
 export default class Pz extends Command {
 
-  static description = 'describe the command here';
+  static description = 'Only allows you to list pull zones so far';
 
   static examples = [
-    `$ bnycdn pz -l
-    Lists all the pul zone
+     `
+    ➜  bunnycdn-cli git:(master) ✗ ./bin/run pz -l
+    ID    |Hit(%)|    Name     |   HostNames
+    0 |  75  | pzb | [2] pzb.b-cdn.net ; 
+    1 |  75  | pza | [3] pza.b-cdn.net ; [4] custom.example.com ; 
+    
+    Lists all the pull zones
     `,
   ];
 
   static flags = {
     help: flags.help({char: 'h'}),
-    list: flags.boolean({char: 'l', description: 'lists all keys stored and their names'}),
+    list: flags.boolean({char: 'l', description: 'lists all pull zones'}),
   };
 
   static args = [{name: "PullZones", help: "help", list: "list"}];
@@ -24,8 +29,7 @@ export default class Pz extends Command {
     const {args, flags} = this.parse(Pz);
 
     if (flags.list) {
-      const response = this.listPullZones();
-      console.log(response);
+      this.listPullZones();
     }
   }
 

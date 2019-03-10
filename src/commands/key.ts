@@ -6,8 +6,22 @@ export default class Key extends Command {
   static description = 'To add / delete / set a key for a pullzon or a storage';
 
   static examples = [
-    `$ bnycdn key -l
-    hello world from ./src/hello.ts!
+    `
+    ➜  bunnycdn-cli git:(master) ✗ ./bin/run key -l  
+==== PullZones : 
+Key Name        : Key Value
+default   | .....
+==== Storages: 
+Key Name        : Key Value
+default | .....
+name | .....
+
+➜  bunnycdn-cli git:(master) ✗ ./bin/run key -s myneykey -t storages -v my_api_key_from_panel
+{ k: 'myneykey', v: 'my_api_key_from_panel', t: 'storages' }
+ⓘKey successfully set: myneykey
+
+➜  bunnycdn-cli git:(master) ✗ ./bin/run key -d myneykey -t storages                         
+ⓘSuccessfully deleted key : myneykey
     `,
   ];
 
@@ -21,35 +35,39 @@ export default class Key extends Command {
     list: flags.boolean({char: 'l', description: 'lists all keys stored and their names'}),
   };
 
-  static args = [{name: "", add: "name", set: "name", value: "value"}];
+  static args = [{name: "", add: "name", set: "string", value: "value"}];
 
   async run() {
     Config.loadConfig();
     const {args, flags} = this.parse(Key);
+
+
+    if (flags.list) {
+      this.listKeys();
+      return;
+    }
 
     if (flags.set) {
       if (flags.value && flags.type && this.checkType(flags.type)) {
         this.addKey(flags.set, flags.value, flags.type);
         this.exit(0);
       } else {
-        this.error("You must specify a value and a type for the set operation and must be correctly set",
+        this.error(" 1 You must specify a value and a type for the set operation and must be correctly set",
           {code: "NOVALUE", exit: 1}
         );
       }
       // TODO : Check fd ret codes
     }
 
-    if (flags.del && flags.type && this.checkType(flags.type)) {
-      Config.deleteKey(flags.del, flags.type)
-      this.exit(0);
-    } else {
-      this.error("You must specify a value and a type for the set operation and must be correctly set",
+    if (flags.del) {
+      if (flags.type && this.checkType(flags.type)) {
+        Config.deleteKey(flags.del, flags.type);
+        this.exit(0);
+      } else {
+        this.error("2 You must specify a value and a type for the set operation and must be correctly set",
           {code: "NOVALUE", exit: 1}
-      );
-    }
-
-    if (flags.list) {
-      this.listKeys();
+        );
+      }
     }
   }
 
