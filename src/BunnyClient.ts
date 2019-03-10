@@ -1,10 +1,9 @@
 import axios from "axios"
 import {Config} from "./Config";
-import * as FormData from "form-data";
 import * as filesize from "filesize";
+import * as fs from "fs";
 
 class _Client {
-  // FIXME : Type is useless
   // FIXME : Rename to json client
   static HTTPClient = (k: string, type: string) => axios.create({
     baseURL: "https://bunnycdn.com/api/",
@@ -13,19 +12,20 @@ class _Client {
       'Content-Type': 'application/json',
       'Accept': 'application/json',
       'AccessKey': Config.getApiKey(k, type),
-      'XX-CLIENT': "DKFN/bunnycdn-cli 0.0.1"
+      'XX-CLIENT': "DKFN/bunnycdn-cli 0.0.2"
     }
   });
 
-  static FileUpload = (k: string ,fileStream: FormData, url: string) => {
+  static FileUpload = (k: string ,fileStream: Buffer, url: string) => {
+    if (fileStream.length < 1024) {
+    }
     return axios.put(url, fileStream, {
       timeout: 2000000000,
       data: fileStream.toString(),
       maxContentLength: Number.POSITIVE_INFINITY,
-      onDownloadProgress: function(progressEvent) { var percentCompleted = Math.round( (progressEvent.loaded * 100) / progressEvent.total ); console.log('%',percentCompleted); },
       headers: {
         'AccessKey': Config.getApiKey(k, "storages"),
-        'XX-CLIENT': "DKFN/bunnycdn-cli 0.0.1"
+        'XX-CLIENT': "DKFN/bunnycdn-cli 0.0.2"
       },
     });
   };
@@ -34,7 +34,6 @@ class _Client {
     try {
       const response = await _Client.HTTPClient(k, "pullzones").get("pullzone");
       console.log("ID    |Hit(%)|    Name     |   HostNames");
-      // console.log(response.data);
 
       if (!Array.isArray(response.data)) {
         console.error("We didnt get a correct response from BunnyCDN. Please check if you have errors upper.");
@@ -57,24 +56,37 @@ class _Client {
     }
   }
 
-  public async uploadFile(k: string = "default", fileData: any, pathToUpload: string) {
+  public async uploadFile(k: string = "default",
+                          from: string,
+                          pathToUpload: string,
+                          counterRef?: {pending: number, working: number, errors: number}) {
     try {
-      console.log(" ⌛[" + filesize(fileData.length) + "] " + pathToUpload + " -> UP");
-      const response = await _Client.FileUpload(k, fileData, "https://storage.bunnycdn.com/" + pathToUpload);
-      //console.debug(response.status);
-      //console.debug(fileData);
-      const data = response.data;
+      const fd = fs.openSync(from, 'r');
+      if (fd === -1) {
+        console.error(" ❌[ERR] Uncaught errno. Error opening file");
+      }
+      const fileData = fs.readFileSync(fd);
+      const qString = () => counterRef
+        && counterRef.pending + counterRef.working !== 0
+        && `[ ∞ ${counterRef.pending}| ⇈ ${counterRef.working}]` || "            ";
 
+      console.log(" ⌛[UP] " + qString() + "    "  + pathToUpload + " => " + filesize(fileData.length));
+      const response = await _Client.FileUpload(k, fileData, "https://storage.bunnycdn.com/" + pathToUpload);
+      if (counterRef) {
+        counterRef.working = counterRef.working - 1;
+      }
+
+      const data = response.data;
       if (response.status > 300) {
-        console.error("> ERROR HTTP : " + data.HttpCode);
-        console.error("> Message : " + data.Message);
+        counterRef && counterRef.errors++;
+        console.error(" ❌[ERR] ERROR HTTP : " + data.HttpCode + " : " + data.message);
       }
 
       if (response.status === 201) {
-        console.log(" ✔[OK] " + pathToUpload + " -> UP");
+        console.log( " ✔[OK] " + qString() + "    " + pathToUpload + " => " + filesize(fileData.length));
       }
     } catch (e) {
-      console.error("> There was an error durring upload");
+      console.error(" ❌[UP] Error " + pathToUpload + " " + e.message);
       console.debug(e.statusCode);
       console.debug(e);
     }
