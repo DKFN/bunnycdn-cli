@@ -20,7 +20,7 @@ As the CLI is still very limited in functionnalities and some part of it is quit
 
 So, only a nightly build is available at the moment if you want to check early functionalities.
 ```sh-session
-wget http://cdn.infra.tetel.in/bunnycdncli/nightly/bnycdn_0.0.2-1_amd64.deb;
+wget http://cdn.infra.tetel.in/bunnycdncli/nightly/bnycdn_0.0.2-1_amd64.deb
 sudo dpkg -i bnycdn_0.0.2-1_amd64.deb
 ```
 
