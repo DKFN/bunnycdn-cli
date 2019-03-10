@@ -2,6 +2,9 @@ import {Command, flags} from '@oclif/command'
 import {Config} from "../Config";
 import {Client} from "../BunnyClient";
 import * as fs from "fs";
+import {setInterval} from "timers";
+import {IStatusStruct, scanDir} from "../utils/fsutils";
+
 
 export default class Cp extends Command {
 
@@ -18,8 +21,12 @@ export default class Cp extends Command {
     storage: flags.string({char: 's'}),
     from: flags.string({char: 'f'}),
     to: flags.string({char: 't'}),
-    R: flags.string({char: 'R'}),
+    R: flags.boolean({char: 'R'}),
   };
+
+  static filesPooled = 0;
+
+  static status: IStatusStruct = {pending: 0, working: 0, errors: 0};
 
   static args = [{name: "", storage: "storage"}];
 
@@ -35,24 +42,20 @@ export default class Cp extends Command {
     if (flags.to && flags.from) {
       if (fs.existsSync(flags.from)) {
           if (flags.R) {
-            console.log("Not implemented");
+            scanDir(
+              flags.from.endsWith("/") ? flags.from : flags.from + "/",
+              flags.to.endsWith("/") ? flags.to : flags.to + "/",
+              flags.storage,
+              Cp.status,
+              Client.uploadFile
+            );
           } else {
-            const fd = fs.openSync(flags.from, 'r');
-            const content = fs.readFileSync(fd);
-              /*if (err) {
-                console.error(`[${err.errno}] Unable to open host file : ${err.message} ( ${err.syscall} ${err.path}`);
-                this.exit(127);
-              }*/
-              Client.uploadFile(flags.storage, content, flags.to!);
+              Client.uploadFile(flags.storage, flags.from, flags.to!);
             }
       } else {
+        console.error("Download is not implemented yet");
           // TODO : Then it might be a download
       }
     }
-
-    const storageZone = flags.storage;
-    console.log(storageZone);
-
-    // TODO : Try to resolve path from filesystem, if unable assume its a download and storage path is first
   }
 }
