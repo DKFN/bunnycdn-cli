@@ -45,9 +45,7 @@ COMMANDS
 
 PR and forks are very welcomed :)
 
-For developpement, just fork and clone your repo, instead of running `bnycdn` you must launch `./bin/run` from project root
 
-( The package is not yet available via NPM)
 ```sh-session
 $ npm install -g bnycdn
 $ bnycdn COMMAND
@@ -87,7 +85,7 @@ EXAMPLE
 
        ### One file upload
     
-       ➜  bunnycdn-cli git:(master) ✗ ./bin/run cp -s tetelincdn --from ./dist/deb/bnycdn_0.0.2-1_amd64.deb --to 
+       ➜  bunnycdn-cli git:(master) ✗ bnycdn cp -s tetelincdn --from ./dist/deb/bnycdn_0.0.2-1_amd64.deb --to 
   /tetelincdn/nightly/deb/test.deb
        ⌛[UP]                 /tetelincdn/nightly/deb/test.deb => 8.78 MB
        ✔[OK]                 /tetelincdn/nightly/deb/test.deb => 8.78 MB
@@ -95,7 +93,7 @@ EXAMPLE
     
        ### Recursive file upload
     
-       ➜  bunnycdn-cli git:(master) ✗ ./bin/run cp -s dkfn -R --from ./dist --to /dkfn/nightly                
+       ➜  bunnycdn-cli git:(master) ✗ bnycdn -s dkfn -R --from ./dist --to /dkfn/nightly                
         ⌛[UP] [ ∞ 0| ⇈ 1]    /dkfn/nightly/deb/Packages => 1.04 KB
         ⌛[UP] [ ∞ 0| ⇈ 2]    /dkfn/nightly/deb/Packages.bz2 => 656 B
         ⌛[UP] [ ∞ 0| ⇈ 3]    /dkfn/nightly/deb/Packages.gz => 597 B
@@ -151,7 +149,7 @@ OPTIONS
 
 EXAMPLE
 
-       ➜  bunnycdn-cli git:(master) ✗ ./bin/run key -l  
+       ➜  bunnycdn-cli git:(master) ✗ bnycdn key -l  
   ==== PullZones : 
   Key Name        : Key Value
   default   | .....
@@ -160,11 +158,11 @@ EXAMPLE
   default | .....
   name | .....
 
-  ➜  bunnycdn-cli git:(master) ✗ ./bin/run key -s myneykey -t storages -v my_api_key_from_panel
+  ➜  bunnycdn-cli git:(master) ✗ bnycdn key -s myneykey -t storages -v my_api_key_from_panel
   { k: 'myneykey', v: 'my_api_key_from_panel', t: 'storages' }
   ⓘKey successfully set: myneykey
 
-  ➜  bunnycdn-cli git:(master) ✗ ./bin/run key -d myneykey -t storages                         
+  ➜  bunnycdn-cli git:(master) ✗ bnycdn key -d myneykey -t storages                         
   ⓘSuccessfully deleted key : myneykey
 ```
 
