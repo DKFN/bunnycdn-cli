@@ -20,6 +20,8 @@ export default class Pz extends Command {
   static flags = {
     help: flags.help({char: 'h'}),
     list: flags.boolean({char: 'l', description: 'lists all pull zones'}),
+    // TODO : If no pullzone specified, then clear cache for all pullzones
+    purge: flags.string({char: 'p', description: 'purge cache for pullzone in id'}),
   };
 
   static args = [{name: "PullZones", help: "help", list: "list"}];
@@ -29,11 +31,11 @@ export default class Pz extends Command {
     const {args, flags} = this.parse(Pz);
 
     if (flags.list) {
-      this.listPullZones();
+      Client.listPullZones("default");
     }
-  }
 
-  private listPullZones() {
-    Client.listPullZones("default");
+    if (flags.purge) {
+      Client.purgeCache(flags.purge);
+    }
   }
 }

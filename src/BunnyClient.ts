@@ -2,6 +2,7 @@ import axios from "axios"
 import {Config} from "./Config";
 import * as filesize from "filesize";
 import * as fs from "fs";
+import * as _ from "lodash";
 
 class _Client {
   // FIXME : Rename to json client
@@ -45,7 +46,7 @@ class _Client {
 
         x.Hostnames.forEach((hst: any) => {
           hostNamesString += "[" + hst.Id + "] " + hst.Value + " ; "
-        });
+      });
 
         console.log("" + x.Id + " |  " + x.CacheQuality + "  | " + x.Name + " | " + hostNamesString);
       })
@@ -54,6 +55,25 @@ class _Client {
       console.error("> Dump", e);
       return [];
     }
+  }
+
+  public async purgeCache(k: string = "default") {
+    const finalpz = await this.findPullzoneByName(k);
+
+    if (!finalpz) {
+      console.error("I do not see pullzone : " + k);
+      console.error(" Here is the list of pullzones : ");
+      this.listPullZones();
+      return;
+    }
+
+
+    const purge = await _Client.HTTPClient("default", "pullzones").post("pullzone/" + finalpz.id + "/purgeCache");
+
+    if (purge.status === 200)
+      console.log("Cleared cache for " + k + " successfully");
+    else
+      console.error("Error clearing cache for " + k + " ( " + purge.status + ") " + purge.statusText);
   }
 
   public async uploadFile(k: string = "default",
@@ -90,6 +110,21 @@ class _Client {
       console.debug(e.statusCode);
       console.debug(e);
     }
+  }
+
+  private async findPullzoneByName(k: string = "default") {
+    const response = await _Client.HTTPClient("default", "pullzones").get("pullzone");
+
+    if (!Array.isArray(response.data)) {
+      console.error("We didnt get a correct response from BunnyCDN. Please check if you have errors upper.");
+      return;
+    }
+
+    const gottenPzs = response.data.map((pz: any) => {
+      return {id: pz.Id, name: pz.Name};
+    });
+
+     return _.find(gottenPzs, {name: k});
   }
 }
 
