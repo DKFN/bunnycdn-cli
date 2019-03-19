@@ -32,6 +32,7 @@ class _Client {
     });
   };
 
+  // GET   /api/pullzone
   public async listPullZones(k: string = "default") {
     try {
       const response = await _Client.HTTPClient(k, "pullzones").get("pullzone");
@@ -40,7 +41,6 @@ class _Client {
         console.error("We didnt get a correct response from BunnyCDN. Please check if you have errors upper.");
         return;
       }
-
 
       console.log("ID    |Hit(%)|    Name     |   HostNames");
       response.data.forEach((x: any) => {
@@ -58,6 +58,8 @@ class _Client {
     }
   }
 
+
+  // POST  /api/pullzone/id
   public async purgeCache(k: string = "default") {
     const finalpz = await this.findPullzoneByName(k);
 
@@ -110,6 +112,7 @@ class _Client {
     }
   }
 
+  // POST   /api/pullzone/addHostname
   public async addHost(k: string = "default", hostname: string) {
     try {
       const finalpz = await this.findPullzoneByName(k);
@@ -135,6 +138,7 @@ class _Client {
     }
   }
 
+  // DELETE /api/pullzone/deleteHostname
   public async deleteHost(k: string, hostname: string) {
     try {
       const finalpz = await this.findPullzoneByName(k);
@@ -144,7 +148,8 @@ class _Client {
         return ;
       }
 
-      const response = await _Client.HTTPClient("default", "pullzones").delete("pullzone/deleteHostname?id="+ finalpz.id + "&hostname=" + hostname);
+      const response = await _Client.HTTPClient("default", "pullzones")
+        .delete("pullzone/deleteHostname?id="+ finalpz.id + "&hostname=" + hostname);
 
       if (response.status === 200) {
         cli.url(" ✔ Successfully deleted hostname ","http://" + hostname + "/" )
@@ -158,7 +163,9 @@ class _Client {
   }
 
   private static throwHttpError(e) {
-    console.error("> [ " + ( e.response && e.response.status || "NO STATUS" ) + " ] There was an error during HTTP Request ( " + e.message + " )");
+    console.error("> [ " + ( e.response && e.response.status || "NO STATUS" ) +
+      " ] There was an error during HTTP Request ( " + e.message + " )");
+
     if (e.response && e.response.data && e.response.data.Message) {
       console.error("> BunnyCDN error : " + e.response.data.Message);
     }
