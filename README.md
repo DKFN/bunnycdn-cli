@@ -16,42 +16,12 @@ Simple cli for BunnyCDN service. This app is not an official one.
 <!-- tocstop -->
 # Usage
 <!-- usage -->
-As the CLI is still very limited in functionnalities and some part of it is quite confusing and is not tested.
-
-So, only a nightly build is available at the moment if you want to check early functionalities.
-```sh-session
-wget http://cdn.infra.tetel.in/bunnycdncli/nightly/bnycdn_0.0.2-1_amd64.deb
-sudo dpkg -i bnycdn_0.0.2-1_amd64.deb
-```
-
-You should be able to call bnycdn after installation:
-```shell
-➜  bunnycdn-cli git:(master) ✗bnycdn                                                                          
-Simple cli for BunnyCDN service. This app is not an official one.
-
-VERSION
-  bnycdn/0.0.2 linux-x64 node-v8.10.0
-
-USAGE
-  $ bnycdn [COMMAND]
-
-COMMANDS
-  cp    This is the cp-like command for BunnyCDN storages. Cp has only upload implemented for now
-  help  display help for bnycdn
-  key   To add / delete / set a key for a pullzon or a storage
-  ls    describe the command here
-  pz    Only allows you to list pull zones so far
-```
-
-PR and forks are very welcomed :)
-
-
 ```sh-session
 $ npm install -g bnycdn
 $ bnycdn COMMAND
 running command...
 $ bnycdn (-v|--version|version)
-bnycdn/0.0.2 linux-x64 node-v8.10.0
+bnycdn/0.0.3 linux-x64 node-v8.10.0
 $ bnycdn --help [COMMAND]
 USAGE
   $ bnycdn COMMAND
@@ -112,7 +82,7 @@ EXAMPLE
         Maximum parrallel file uploads is 4
 ```
 
-_See code: [src/commands/cp.ts](https://github.com/DKFN/bnycdn/blob/v0.0.2/src/commands/cp.ts)_
+_See code: [src/commands/cp.ts](https://github.com/DKFN/bnycdn/blob/v0.0.3/src/commands/cp.ts)_
 
 ## `bnycdn help [COMMAND]`
 
@@ -166,7 +136,7 @@ EXAMPLE
   ⓘSuccessfully deleted key : myneykey
 ```
 
-_See code: [src/commands/key.ts](https://github.com/DKFN/bnycdn/blob/v0.0.2/src/commands/key.ts)_
+_See code: [src/commands/key.ts](https://github.com/DKFN/bnycdn/blob/v0.0.3/src/commands/key.ts)_
 
 ## `bnycdn ls []`
 
@@ -185,7 +155,7 @@ EXAMPLE
        Lists all the pul zone
 ```
 
-_See code: [src/commands/ls.ts](https://github.com/DKFN/bnycdn/blob/v0.0.2/src/commands/ls.ts)_
+_See code: [src/commands/ls.ts](https://github.com/DKFN/bnycdn/blob/v0.0.3/src/commands/ls.ts)_
 
 ## `bnycdn pz [PULLZONES]`
 
@@ -196,8 +166,9 @@ USAGE
   $ bnycdn pz [PULLZONES]
 
 OPTIONS
-  -h, --help  show CLI help
-  -l, --list  lists all pull zones
+  -h, --help         show CLI help
+  -l, --list         lists all pull zones
+  -p, --purge=purge  purge cache for pullzone in id
 
 EXAMPLE
 
@@ -209,5 +180,5 @@ EXAMPLE
        Lists all the pull zones
 ```
 
-_See code: [src/commands/pz.ts](https://github.com/DKFN/bnycdn/blob/v0.0.2/src/commands/pz.ts)_
+_See code: [src/commands/pz.ts](https://github.com/DKFN/bnycdn/blob/v0.0.3/src/commands/pz.ts)_
 <!-- commandsstop -->

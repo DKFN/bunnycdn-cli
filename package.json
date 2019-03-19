@@ -1,7 +1,7 @@
 {
   "name": "bnycdn",
   "description": "Simple cli for BunnyCDN service. This app is not an official one.",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "author": "DKFN",
   "bin": {
     "bnycdn": "./bin/run"
@@ -12,6 +12,7 @@
     "@oclif/config": "^1.12.6",
     "@oclif/plugin-help": "^2.1.6",
     "axios": "^0.18.0",
+    "cli-ux": "^5.2.1",
     "filesize": "^4.1.2",
     "lodash": "^4.17.11",
     "tslib": "^1.9.3"

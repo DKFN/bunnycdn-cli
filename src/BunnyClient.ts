@@ -3,6 +3,7 @@ import {Config} from "./Config";
 import * as filesize from "filesize";
 import * as fs from "fs";
 import * as _ from "lodash";
+import {cli} from "cli-ux";
 
 class _Client {
   // FIXME : Rename to json client
@@ -34,13 +35,14 @@ class _Client {
   public async listPullZones(k: string = "default") {
     try {
       const response = await _Client.HTTPClient(k, "pullzones").get("pullzone");
-      console.log("ID    |Hit(%)|    Name     |   HostNames");
 
       if (!Array.isArray(response.data)) {
         console.error("We didnt get a correct response from BunnyCDN. Please check if you have errors upper.");
         return;
       }
 
+
+      console.log("ID    |Hit(%)|    Name     |   HostNames");
       response.data.forEach((x: any) => {
         let hostNamesString = "";
 
@@ -51,8 +53,7 @@ class _Client {
         console.log("" + x.Id + " |  " + x.CacheQuality + "  | " + x.Name + " | " + hostNamesString);
       })
     } catch (e) {
-      console.error("> There was an error during HTTP Request");
-      console.error("> Dump", e);
+      _Client.throwHttpError(e);
       return [];
     }
   }
@@ -61,12 +62,9 @@ class _Client {
     const finalpz = await this.findPullzoneByName(k);
 
     if (!finalpz) {
-      console.error("I do not see pullzone : " + k);
-      console.error(" Here is the list of pullzones : ");
-      this.listPullZones();
+      this.throwNoPullZoneWithId(k);
       return;
     }
-
 
     const purge = await _Client.HTTPClient("default", "pullzones").post("pullzone/" + finalpz.id + "/purgeCache");
 
@@ -112,7 +110,67 @@ class _Client {
     }
   }
 
-  private async findPullzoneByName(k: string = "default") {
+  public async addHost(k: string = "default", hostname: string) {
+    try {
+      const finalpz = await this.findPullzoneByName(k);
+
+      if (!finalpz) {
+        this.throwNoPullZoneWithId(k);
+        return ;
+      }
+
+      const response = await _Client.HTTPClient("default", "pullzones").post("pullzone/addHostname", {
+        "PullZoneId": finalpz.id,
+        "Hostname": hostname
+      });
+
+      if (response.status === 200) {
+        cli.url(" ✔ Successfully added hostname ","http://" + hostname + "/" )
+      } else {
+        console.error(" ❌ Sorry, an error was met adding " + hostname + " hostname to pullzone " + k);
+      }
+
+    } catch (e) {
+      _Client.throwHttpError(e);
+    }
+  }
+
+  public async deleteHost(k: string, hostname: string) {
+    try {
+      const finalpz = await this.findPullzoneByName(k);
+
+      if (!finalpz) {
+        this.throwNoPullZoneWithId(k);
+        return ;
+      }
+
+      const response = await _Client.HTTPClient("default", "pullzones").delete("pullzone/deleteHostname?id="+ finalpz.id + "&hostname=" + hostname);
+
+      if (response.status === 200) {
+        cli.url(" ✔ Successfully deleted hostname ","http://" + hostname + "/" )
+      } else {
+        console.error(" ❌ Sorry, an error was met deleting " + hostname + " hostname to pullzone " + k);
+      }
+
+    } catch (e) {
+      _Client.throwHttpError(e);
+    }
+  }
+
+  private static throwHttpError(e) {
+    console.error("> [ " + ( e.response && e.response.status || "NO STATUS" ) + " ] There was an error during HTTP Request ( " + e.message + " )");
+    if (e.response && e.response.data && e.response.data.Message) {
+      console.error("> BunnyCDN error : " + e.response.data.Message);
+    }
+  }
+
+  private throwNoPullZoneWithId(k) {
+    console.error("I do not see pullzone : " + k);
+    console.error(" Here is the list of pullzones : ");
+    this.listPullZones();
+  }
+
+  private async findPullzoneByName(k: string = "default"): Promise<any> {
     const response = await _Client.HTTPClient("default", "pullzones").get("pullzone");
 
     if (!Array.isArray(response.data)) {
