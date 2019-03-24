@@ -136,15 +136,19 @@ class _Client {
   // POST   /api/pullzone/addHostname
   public async addHost(k: string = "default", hostname: string) {
     this.pullzoneActionByName(k, async (pullZone: any) => {
-      const response = await _Client.RESTClient("default", "pullzones").post("pullzone/addHostname", {
-        "PullZoneId": pullZone.id,
-        "Hostname": hostname
-      });
+      try {
+        const response = await _Client.RESTClient("default", "pullzones").post("pullzone/addHostname", {
+          "PullZoneId": pullZone.id,
+          "Hostname": hostname
+        });
 
-      if (response.status === 200) {
-        cli.url(" ✔ Successfully added hostname ","http://" + hostname + "/" )
-      } else {
-        console.error(" ❌ Sorry, an error was met adding " + hostname + " hostname to pullzone " + k);
+        if (response.status === 200) {
+          cli.url(" ✔ Successfully added hostname ", "http://" + hostname + "/")
+        } else {
+          console.error(" ❌ Sorry, an error was met adding " + hostname + " hostname to pullzone " + k);
+        }
+      } catch (e) {
+        _Client.throwHttpError(e);
       }
     });
   }
@@ -152,15 +156,19 @@ class _Client {
   // POST   /api/pullzone/removeBlockedIp
   public async removeBlockedIp(k: string = "default", ipToBlock: string) {
     this.pullzoneActionByName(k, async (pullZone: any) => {
-      const response = await _Client.RESTClient("default", "pullzones").post("pullzone/removeBlockedIp", {
-        "PullZoneId": pullZone.id,
-        "BlockedIp": ipToBlock
-      });
+      try {
+        const response = await _Client.RESTClient("default", "pullzones").post("pullzone/removeBlockedIp", {
+          "PullZoneId": pullZone.id,
+          "BlockedIp": ipToBlock
+        });
 
-      if (response.status === 200) {
-        console.info(" ✔ Successfully removed blocked ip : " + ipToBlock);
-      } else {
-        console.error(" ❌ Sorry, an error was met removing " + ipToBlock);
+        if (response.status === 200) {
+          console.info(" ✔ Successfully removed blocked ip : " + ipToBlock);
+        } else {
+          console.error(" ❌ Sorry, an error was met removing " + ipToBlock);
+        }
+      } catch (e) {
+        _Client.throwHttpError(e);
       }
     });
   }
@@ -168,15 +176,20 @@ class _Client {
   // POST   /api/pullzone/addBlockedIp
   public async addBlockedIp(k: string = "default", ipToBlock: string) {
     this.pullzoneActionByName(k, async (pullZone: any) => {
-      const response = await _Client.RESTClient("default", "pullzones").post("pullzone/addBlockedIp", {
-        "PullZoneId": pullZone.id,
-        "BlockedIp": ipToBlock
-      });
+      try {
+        const response = await _Client.RESTClient("default", "pullzones").post("pullzone/addBlockedIp", {
+          "PullZoneId": pullZone.id,
+          "BlockedIp": ipToBlock
+        });
 
-      if (response.status === 200) {
-        console.info(" ✔ Successfully added blockedIp " + ipToBlock)
-      } else {
-        console.error(" ❌ Sorry, an error was met adding " + ipToBlock + " hostname to pullzone " + k);
+        if (response.status === 200) {
+          console.info(" ✔ Successfully added blockedIp " + ipToBlock)
+        } else {
+          console.error(" ❌ Sorry, an error was met adding " + ipToBlock + " hostname to pullzone " + k);
+        }
+      }
+      catch (e) {
+        _Client.throwHttpError(e);
       }
     });
   }
@@ -184,13 +197,17 @@ class _Client {
   // DELETE /api/pullzone/deleteHostname
   public async deleteHost(k: string, hostname: string) {
     this.pullzoneActionByName(k, async (pullZone: any) => {
-      const response = await _Client.RESTClient("default", "pullzones")
-        .delete("pullzone/deleteHostname?id=" + pullZone.id + "&hostname=" + hostname);
+      try {
+        const response = await _Client.RESTClient("default", "pullzones")
+          .delete("pullzone/deleteHostname?id=" + pullZone.id + "&hostname=" + hostname);
 
-      if (response.status === 200) {
-        cli.url(" ✔ Successfully deleted hostname ","http://" + hostname + "/" )
-      } else {
-        console.error(" ❌ Sorry, an error was met deleting " + hostname + " hostname to pullzone " + k);
+        if (response.status === 200) {
+          cli.url(" ✔ Successfully deleted hostname ", "http://" + hostname + "/")
+        } else {
+          console.error(" ❌ Sorry, an error was met deleting " + hostname + " hostname to pullzone " + k);
+        }
+      } catch (e) {
+        _Client.throwHttpError(e);
       }
     });
   }

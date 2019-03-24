@@ -62,7 +62,6 @@ export default class Pz extends Command {
       Client.addBlockedIp(flags.ban, flags.value!);
     }
 
-
     if (flags.grace && checkHasValue(flags.value)) {
       Client.removeBlockedIp(flags.grace, flags.value!);
     }

@@ -77,28 +77,22 @@ name | .....
     this.log("==== PullZones : ");
 
     const pullzoneKeys = conf["pullzones"].map((pzKs: IStoredKey) => {
-      // this.log("Key Name        : Key Value");
-      // this.log(pzKs.name + "   | " + pzKs.value);
       return {name: pzKs.name, value: pzKs.value};
     });
     console.table(pullzoneKeys);
 
     this.log("==== Storages: ");
     const storageKeys = conf["storages"].map((stKz: IStoredKey) => {
-      // this.log("Key Name        : Key Value");
-      // this.log(stKz.name + " | " + stKz.value);
       return {name: stKz.name, value: stKz.value};
     });
     console.table(storageKeys);
-
   }
 
   // TODO : Add prompt version  if parameters are unspecified
   private addKey(k: string, v: string, t: string = "pullzones") {
-    console.log({k, v, t});
     Config.mergeToConf( {name: k, value: v}, t);
     Config.persistConf();
-    this.log("ⓘKey successfully set: " + k);
+    this.log(" ⓘ Key successfully set: " + k);
   }
 
   private checkType(type?: string) {
