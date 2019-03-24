@@ -17,11 +17,11 @@ export interface IStatusStruct {
  * than 4 upload calls working
  * @returns {number}
  */
-export const scanDir = (dirPath: string,
-                 targetPath: string,
-                 storageKey: string,
-                 status: IStatusStruct,
-                 handler: (k: string, f: string, t: string, ststrct: IStatusStruct) => void) => {
+export const uploadScanDir = (dirPath: string,
+                              targetPath: string,
+                              storageKey: string,
+                              status: IStatusStruct,
+                              handler: (k: string, f: string, t: string, ststrct: IStatusStruct) => void) => {
 
   const filesGot = fs.readdirSync(dirPath);
   filesGot.map((file) => {
@@ -52,7 +52,7 @@ export const scanDir = (dirPath: string,
       }
     }
     else {
-      scanDir(dirPath + file + "/", targetPath + file + "/", storageKey, status, handler);
+      uploadScanDir(dirPath + file + "/", targetPath + file + "/", storageKey, status, handler);
     }
   });
 };

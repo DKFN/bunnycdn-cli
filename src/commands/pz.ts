@@ -26,6 +26,7 @@ export default class Pz extends Command {
     delHost: flags.string({char: 'd', description: 'Deletes an hostname from a pull zone'}),
     ban: flags.string({char: 'b', description: 'Bans an IP from a pullzone'}),
     grace: flags.string({char: 'g', description: 'Unbans an IP from a pullzone'}),
+    create: flags.string({char: 'c', description: 'Creates a new pullzone'}),
     value: flags.string({char: 'v', description: 'Value for add hostname / purge pullzone '})
   };
 
