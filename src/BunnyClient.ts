@@ -6,7 +6,6 @@ import * as _ from "lodash";
 import {cli} from "cli-ux";
 
 class _Client {
-  // FIXME : Rename to json client
   static RESTClient = (k: string, type: string) => axios.create({
     baseURL: "https://bunnycdn.com/api/",
     timeout: 20000,
@@ -147,7 +146,7 @@ class _Client {
       });
 
       if (response.status === 200) {
-        cli.url(" ✔ Successfully added hostname ","http://" + ipToBlock + "/" )
+        console.info(" ✔ Successfully added blockedIp " + ipToBlock)
       } else {
         console.error(" ❌ Sorry, an error was met adding " + ipToBlock + " hostname to pullzone " + k);
       }

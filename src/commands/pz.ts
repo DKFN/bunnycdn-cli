@@ -24,6 +24,8 @@ export default class Pz extends Command {
     purge: flags.string({char: 'p', description: 'purge cache for pullzone in id'}),
     addHost: flags.string({char: 'a', description: 'Adds an hostname to a pull zone'}),
     delHost: flags.string({char: 'd', description: 'Deletes an hostname from a pull zone'}),
+    ban: flags.string({char: 'b', description: 'Bans an IP from a pullzone'}),
+    grace: flags.string({char: 'g', description: 'Unbans an IP from a pullzone'}),
     value: flags.string({char: 'v', description: 'Value for add hostname / purge pullzone '})
   };
 
@@ -33,20 +35,37 @@ export default class Pz extends Command {
     Config.loadConfig();
     const {args, flags} = this.parse(Pz);
 
+    const checkHasValue = (maybeValue?: string) => {
+      if (!maybeValue)
+        console.error(" This call needs a value (-v <value>) flag");
+      return !!maybeValue;
+    };
+
     if (flags.list) {
       Client.listPullZones("default");
     }
 
-    if (flags.addHost) {
+    if (flags.addHost && checkHasValue(flags.value)) {
       Client.addHost(flags.addHost, flags.value!);
     }
 
-    if (flags.delHost) {
+    if (flags.delHost && checkHasValue(flags.value)) {
       Client.deleteHost(flags.delHost, flags.value!);
     }
 
     if (flags.purge) {
       Client.purgeCache(flags.purge);
     }
+
+    if (flags.ban && checkHasValue(flags.value)) {
+      Client.addBlockedIp(flags.ban, flags.value!);
+    }
+
+
+    if (flags.grace && checkHasValue(flags.value)) {
+      Client.removeBlockedIp(flags.grace, flags.value!);
+    }
+
+
   }
 }
