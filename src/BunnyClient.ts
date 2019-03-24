@@ -7,7 +7,7 @@ import {cli} from "cli-ux";
 
 class _Client {
   // FIXME : Rename to json client
-  static HTTPClient = (k: string, type: string) => axios.create({
+  static RESTClient = (k: string, type: string) => axios.create({
     baseURL: "https://bunnycdn.com/api/",
     timeout: 20000,
     headers: {
@@ -35,7 +35,7 @@ class _Client {
   // GET   /api/pullzone
   public async listPullZones(k: string = "default") {
     try {
-      const response = await _Client.HTTPClient(k, "pullzones").get("pullzone");
+      const response = await _Client.RESTClient(k, "pullzones").get("pullzone");
 
       if (!Array.isArray(response.data)) {
         console.error("We didnt get a correct response from BunnyCDN. Please check if you have errors upper.");
@@ -59,10 +59,9 @@ class _Client {
   }
 
   // POST  /api/pullzone/id
-  // TODO : This kind of call is ez factorisable
   public async purgeCache(k: string = "default") {
     this.pullzoneActionByName(k, async (pullZone: any) => {
-      const purge = await _Client.HTTPClient("default", "pullzones").post("pullzone/" + pullZone.id + "/purgeCache");
+      const purge = await _Client.RESTClient("default", "pullzones").post("pullzone/" + pullZone.id + "/purgeCache");
       if (purge.status === 200)
         console.log(" ✔ Cleared cache for " + k + " successfully");
       else
@@ -108,10 +107,9 @@ class _Client {
   }
 
   // POST   /api/pullzone/addHostname
-  // TODO : This kind of call is ez factorisable
   public async addHost(k: string = "default", hostname: string) {
     this.pullzoneActionByName(k, async (pullZone: any) => {
-      const response = await _Client.HTTPClient("default", "pullzones").post("pullzone/addHostname", {
+      const response = await _Client.RESTClient("default", "pullzones").post("pullzone/addHostname", {
         "PullZoneId": pullZone.id,
         "Hostname": hostname
       });
@@ -124,37 +122,27 @@ class _Client {
     });
   }
 
-
-
-  // TODO : This kind of code is ez factorisable
+  // POST   /api/pullzone/removeBlockedIp
   public async removeBlockedIp(k: string = "default", ipToBlock: string) {
     this.pullzoneActionByName(k, async (pullZone: any) => {
-      const response = await _Client.HTTPClient("default", "pullzones").post("pullzone/removeBlockedIp", {
+      const response = await _Client.RESTClient("default", "pullzones").post("pullzone/removeBlockedIp", {
         "PullZoneId": pullZone.id,
         "BlockedIp": ipToBlock
       });
 
       if (response.status === 200) {
-        console.info(" ✔ Successfully added blocked ip : " + ipToBlock);
+        console.info(" ✔ Successfully removed blocked ip : " + ipToBlock);
       } else {
-        console.error(" ❌ Sorry, an error was met adding " + ipToBlock + " to iplists " + k);
+        console.error(" ❌ Sorry, an error was met removing " + ipToBlock);
       }
     });
   }
 
-
-  // TODO : This kind of code is ez factorisable
+  // POST   /api/pullzone/addBlockedIp
   public async addBlockedIp(k: string = "default", ipToBlock: string) {
-    try {
-      const finalpz = await this.findPullzoneByName(k);
-
-      if (!finalpz) {
-        this.throwNoPullZoneWithId(k);
-        return ;
-      }
-
-      const response = await _Client.HTTPClient("default", "pullzones").post("pullzone/addBlockedIp", {
-        "PullZoneId": finalpz.id,
+    this.pullzoneActionByName(k, async (pullZone: any) => {
+      const response = await _Client.RESTClient("default", "pullzones").post("pullzone/addBlockedIp", {
+        "PullZoneId": pullZone.id,
         "BlockedIp": ipToBlock
       });
 
@@ -163,17 +151,13 @@ class _Client {
       } else {
         console.error(" ❌ Sorry, an error was met adding " + ipToBlock + " hostname to pullzone " + k);
       }
-
-    } catch (e) {
-      _Client.throwHttpError(e);
-    }
+    });
   }
 
   // DELETE /api/pullzone/deleteHostname
-  // TODO : This kind of call is ez factorisable
   public async deleteHost(k: string, hostname: string) {
     this.pullzoneActionByName(k, async (pullZone: any) => {
-      const response = await _Client.HTTPClient("default", "pullzones")
+      const response = await _Client.RESTClient("default", "pullzones")
         .delete("pullzone/deleteHostname?id=" + pullZone.id + "&hostname=" + hostname);
 
       if (response.status === 200) {
@@ -182,36 +166,6 @@ class _Client {
         console.error(" ❌ Sorry, an error was met deleting " + hostname + " hostname to pullzone " + k);
       }
     });
-  }
-
-  private static throwHttpError(e) {
-    console.error("> [ " + ( e.response && e.response.status || "NO STATUS" ) +
-      " ] There was an error during HTTP Request ( " + e.message + " )");
-
-    if (e.response && e.response.data && e.response.data.Message) {
-      console.error("> BunnyCDN error : " + e.response.data.Message);
-    }
-  }
-
-  private throwNoPullZoneWithId(k) {
-    console.error("I do not see pullzone : " + k);
-    console.error(" Here is the list of pullzones : ");
-    this.listPullZones();
-  }
-
-  private async findPullzoneByName(k: string = "default"): Promise<any> {
-    const response = await _Client.HTTPClient("default", "pullzones").get("pullzone");
-
-    if (!Array.isArray(response.data)) {
-      console.error("We didnt get a correct response from BunnyCDN. Please check if you have errors upper.");
-      return;
-    }
-
-    const gottenPzs = response.data.map((pz: any) => {
-      return {id: pz.Id, name: pz.Name};
-    });
-
-     return _.find(gottenPzs, {name: k});
   }
 
   private async pullzoneActionByName(k: string = "default", actionHandler: (pz: any) => any) {
@@ -228,6 +182,36 @@ class _Client {
     } catch (e) {
       _Client.throwHttpError(e);
     }
+  }
+
+  private async findPullzoneByName(k: string = "default"): Promise<any> {
+    const response = await _Client.RESTClient("default", "pullzones").get("pullzone");
+
+    if (!Array.isArray(response.data)) {
+      console.error("We didnt get a correct response from BunnyCDN. Please check if you have errors upper.");
+      return;
+    }
+
+    const gottenPzs = response.data.map((pz: any) => {
+      return {id: pz.Id, name: pz.Name};
+    });
+
+     return _.find(gottenPzs, {name: k});
+  }
+
+  private static throwHttpError(e) {
+    console.error("> [ " + ( e.response && e.response.status || "NO STATUS" ) +
+      " ] There was an error during HTTP Request ( " + e.message + " )");
+
+    if (e.response && e.response.data && e.response.data.Message) {
+      console.error("> BunnyCDN error : " + e.response.data.Message);
+    }
+  }
+
+  private throwNoPullZoneWithId(k) {
+    console.error("I do not see pullzone : " + k);
+    console.error(" Here is the list of pullzones : ");
+    this.listPullZones();
   }
 }
 
