@@ -1,3 +1,6 @@
 theme: jekyll-theme-midnight
 title: BunnyCDN CLI
 description: CLI for the BunnyCDN provider (v0.0.3)
+docs_url: https://dkfn.github.io/bunnycdn-cli/docs/
+install_url: https://dkfn.github.io/bunnycdn-cli/docs/install
+

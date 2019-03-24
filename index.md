@@ -10,7 +10,7 @@ I strongly suggest that you wait v0.5 before using this CLI in automated process
 ### Installation
 Follow [installation procedures](https://dkfn.github.io/bunnycdn-cli/docs/install) dependings on your installation desires.
 
-### Register and API Key
+### Register an API Key
 
 ### List your pullzones
 
