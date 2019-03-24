@@ -4,6 +4,7 @@ import * as filesize from "filesize";
 import * as fs from "fs";
 import * as _ from "lodash";
 import {cli} from "cli-ux";
+import {IStatusStruct} from "./utils/fsutils";
 const cTable = require('console.table');
 
 class _Client {
@@ -14,7 +15,7 @@ class _Client {
       'Content-Type': 'application/json',
       'Accept': 'application/json',
       'AccessKey': Config.getApiKey(k, type),
-      'XX-CLIENT': "DKFN/bunnycdn-cli 0.0.3"
+      'XX-CLIENT': "DKFN/bunnycdn-cli 0.1.0"
     }
   });
 
@@ -25,7 +26,7 @@ class _Client {
     maxContentLength: Number.POSITIVE_INFINITY,
     headers: {
       'AccessKey': Config.getApiKey(k, "storages"),
-      'XX-CLIENT': "DKFN/bunnycdn-cli 0.0.3"
+      'XX-CLIENT': "DKFN/bunnycdn-cli 0.1.0"
     },
   });
 
@@ -34,8 +35,8 @@ class _Client {
     timeout: 2000000000,
     maxContentLength: Number.POSITIVE_INFINITY,
     headers: {
-       'AccessKey': Config.getApiKey(k, "storages"),
-      'XX-CLIENT': "DKFN/bunnycdn-cli 0.0.3"
+      'AccessKey': Config.getApiKey(k, "storages"),
+      'XX-CLIENT': "DKFN/bunnycdn-cli 0.1.0"
     },
   });
 
@@ -81,8 +82,9 @@ class _Client {
   public async downloadFile(k: string = "default",
                             from: string,
                             pathToDownload: string,
-                            counterRef?: {pending: number, working: number, errors: number}) {
+                            counterRef?: IStatusStruct) {
     try {
+      // TODO : In case of recursive download it is possible to know before hand the size maybe
       console.log(" ⌛[DWN] " + "    "  + pathToDownload + " => ? ");
       const response = await _Client.FileDownload(k, from);
       console.info(" ✔ Downloaded from : " + from + " with key : " + k + " successfully");

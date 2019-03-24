@@ -1,6 +1,8 @@
 import Cp from "../commands/cp";
 import {setInterval} from "timers";
 import * as fs from "fs";
+import {Client} from "../BunnyClient";
+import {__await} from "tslib";
 
 export interface IStatusStruct {
   pending: number;
@@ -25,10 +27,28 @@ export const uploadScanDir = (dirPath: string,
 
   const filesGot = fs.readdirSync(dirPath);
   filesGot.map((file) => {
-
     const fstat = fs.statSync(dirPath + file);
     if (fstat.isFile()) {
-      ++status.pending;
+      const schedulerRunner = () => handler(storageKey, dirPath + file, targetPath + file, status);
+      internalScheduler(status, schedulerRunner);
+    } else {
+      uploadScanDir(dirPath + file + "/", targetPath + file + "/", storageKey, status, handler);
+    }
+  });
+};
+
+export const downloadScanDir = async (k: string, path: string, status: IStatusStruct) => {
+  const gottenDirectory = await Client.listDirectory(k, path);
+  gottenDirectory && gottenDirectory.forEach((e) => {
+    if (e.isDir) {
+      const t = downloadScanDir(k, e.FullPath + "/", status);
+    }
+  });
+  console.log(gottenDirectory);
+};
+
+const internalScheduler = (status: IStatusStruct , handler: () => any) => {
+  ++status.pending;
       if (status.working >= 4) {
         // Delay the upload of the file when a client slot will be available
         const retryFuncId = setInterval(() => {
@@ -38,21 +58,16 @@ export const uploadScanDir = (dirPath: string,
               // Take client slot, upload file and clear interval
               --status.pending;
               ++status.working;
-              handler(storageKey, dirPath + file, targetPath + file, status);
               // When upload is done, uploadFile itselfs clears client slot
               clearInterval(retryFuncId);
-            }}
-          , 50 * (Cp.status.pending % 4)
-        );
+              handler();
+            }
+          }
+          , 50 * (Cp.status.pending % 4));
       } else {
         // Reserve client slot and then proceed to upload, no delay
         --status.pending;
         ++status.working;
-        handler(storageKey, dirPath + file, targetPath + file, status);
+        handler();
       }
-    }
-    else {
-      uploadScanDir(dirPath + file + "/", targetPath + file + "/", storageKey, status, handler);
-    }
-  });
 };
