@@ -76,16 +76,20 @@ name | .....
     const conf = Config.getConf();
     this.log("==== PullZones : ");
 
-    conf["pullzones"].forEach((pzKs: IStoredKey) => {
-      this.log("Key Name        : Key Value");
-      this.log(pzKs.name + "   | " + pzKs.value);
+    const pullzoneKeys = conf["pullzones"].map((pzKs: IStoredKey) => {
+      // this.log("Key Name        : Key Value");
+      // this.log(pzKs.name + "   | " + pzKs.value);
+      return {name: pzKs.name, value: pzKs.value};
     });
+    console.table(pullzoneKeys);
 
     this.log("==== Storages: ");
-    conf["storages"].forEach((stKz: IStoredKey) => {
-      this.log("Key Name        : Key Value");
-      this.log(stKz.name + " | " + stKz.value);
+    const storageKeys = conf["storages"].map((stKz: IStoredKey) => {
+      // this.log("Key Name        : Key Value");
+      // this.log(stKz.name + " | " + stKz.value);
+      return {name: stKz.name, value: stKz.value};
     });
+    console.table(storageKeys);
 
   }
 

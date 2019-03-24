@@ -49,16 +49,17 @@ class _Client {
         return;
       }
 
-      console.log("ID    |Hit(%)|    Name     |   HostNames");
-      response.data.forEach((x: any) => {
+      // console.log("ID    |Hit(%)|    Name     |   HostNames");
+      const finalData = response.data.map((x: any) => {
         let hostNamesString = "";
 
         x.Hostnames.forEach((hst: any) => {
           hostNamesString += "[" + hst.Id + "] " + hst.Value + " ; "
-      });
+        });
 
-        console.log("" + x.Id + " |  " + x.CacheQuality + "  | " + x.Name + " | " + hostNamesString);
-      })
+        return  {id: x.Id, cacheQuality: x.CacheQuality, name: x.Name, hostnames: hostNamesString};
+      });
+      console.table(finalData);
     } catch (e) {
       _Client.throwHttpError(e);
       return [];
