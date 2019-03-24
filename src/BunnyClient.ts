@@ -4,10 +4,11 @@ import * as filesize from "filesize";
 import * as fs from "fs";
 import * as _ from "lodash";
 import {cli} from "cli-ux";
+const cTable = require('console.table');
 
 class _Client {
   static RESTClient = (k: string, type: string) => axios.create({
-    baseURL: "https://bunnycdn.com/api/",
+    baseURL: type === "pullzones" ? "https://bunnycdn.com/api/" : "https://storage.bunnycdn.com/",
     timeout: 20000,
     headers: {
       'Content-Type': 'application/json',
@@ -17,19 +18,26 @@ class _Client {
     }
   });
 
-  static FileUpload = (k: string ,fileStream: Buffer, url: string) => {
-    if (fileStream.length < 1024) {
-    }
-    return axios.put(url, fileStream, {
-      timeout: 2000000000,
-      data: fileStream.toString(),
-      maxContentLength: Number.POSITIVE_INFINITY,
-      headers: {
-        'AccessKey': Config.getApiKey(k, "storages"),
-        'XX-CLIENT': "DKFN/bunnycdn-cli 0.0.3"
-      },
-    });
-  };
+  static FileUpload = (k: string ,fileStream: Buffer, url: string) => axios.put(url, fileStream, {
+    baseURL: "https://storage.bunnycdn.com/",
+    timeout: 2000000000,
+    data: fileStream.toString(),
+    maxContentLength: Number.POSITIVE_INFINITY,
+    headers: {
+      'AccessKey': Config.getApiKey(k, "storages"),
+      'XX-CLIENT': "DKFN/bunnycdn-cli 0.0.3"
+    },
+  });
+
+  static FileDownload = (k: string, url: string) => axios.get(url, {
+    baseURL: "https://storage.bunnycdn.com/",
+    timeout: 2000000000,
+    maxContentLength: Number.POSITIVE_INFINITY,
+    headers: {
+       'AccessKey': Config.getApiKey(k, "storages"),
+      'XX-CLIENT': "DKFN/bunnycdn-cli 0.0.3"
+    },
+  });
 
   // GET   /api/pullzone
   public async listPullZones(k: string = "default") {
@@ -62,12 +70,31 @@ class _Client {
     this.pullzoneActionByName(k, async (pullZone: any) => {
       const purge = await _Client.RESTClient("default", "pullzones").post("pullzone/" + pullZone.id + "/purgeCache");
       if (purge.status === 200)
-        console.log(" ✔ Cleared cache for " + k + " successfully");
+        console.info(" ✔ Cleared cache for " + k + " successfully");
       else
         console.error("Error clearing cache for " + k + " ( " + purge.status + ") " + purge.statusText);
     });
 
   }
+
+  public async downloadFile(k: string = "default",
+                            from: string,
+                            pathToDownload: string,
+                            counterRef?: {pending: number, working: number, errors: number}) {
+    try {
+      console.log(" ⌛[DWN] " + "    "  + pathToDownload + " => ? ");
+      const response = await _Client.FileDownload(k, from);
+      console.info(" ✔ Downloaded from : " + from + " with key : " + k + " successfully");
+      const fd = fs.openSync(pathToDownload, "w");
+      const writeStatus = fs.writeFileSync(fd, response.data);
+      console.log( " ✔[OK] " + "    " + pathToDownload + " => " + filesize(response.headers["content-length"]));
+    } catch (e) {
+      console.log(e);
+      _Client.throwHttpError(e);
+    }
+
+  }
+
 
   public async uploadFile(k: string = "default",
                           from: string,
@@ -84,7 +111,7 @@ class _Client {
         && `[ ∞ ${counterRef.pending}| ⇈ ${counterRef.working}]` || "            ";
 
       console.log(" ⌛[UP] " + qString() + "    "  + pathToUpload + " => " + filesize(fileData.length));
-      const response = await _Client.FileUpload(k, fileData, "https://storage.bunnycdn.com/" + pathToUpload);
+      const response = await _Client.FileUpload(k, fileData,  pathToUpload);
       if (counterRef) {
         counterRef.working = counterRef.working - 1;
       }
@@ -165,6 +192,47 @@ class _Client {
         console.error(" ❌ Sorry, an error was met deleting " + hostname + " hostname to pullzone " + k);
       }
     });
+  }
+
+  // POST  /api/pullzone
+  public async createPullzone(n: string, origin: string) {
+    try {
+      const response = await _Client.RESTClient("default", "pullzones").post("pullzone", {
+        "Name": n,
+        "OriginUrl": origin,
+      });
+
+      if (response.status === 200) {
+        console.info(" ✔ Successfully created pullZone " + n);
+      } else {
+        console.error(" ❌ Sorry, an error was met creating " + n + " pullzone");
+      }
+    } catch (e) {
+      _Client.throwHttpError(e);
+    }
+  }
+
+  public async listDirectory(k: string, targetPath: string) {
+    try {
+      const response = await _Client.RESTClient(k, "storages").get(targetPath);
+
+      if (!Array.isArray(response.data)) {
+        console.error("We didnt get a correct response from BunnyCDN. Please check if you have errors upper.");
+        return;
+      }
+
+      return response.data.map((object) => {
+        return {
+          isDir: object.IsDirectory,
+          FullPath: object.Path + object.ObjectName,
+          lastChanged: object.DateCreated,
+          Lenght: object.Length,
+          humanLenght: filesize(object.Length)
+        };
+      })
+    } catch (e) {
+      _Client.throwHttpError(e);
+    }
   }
 
   private async pullzoneActionByName(k: string = "default", actionHandler: (pz: any) => any) {
