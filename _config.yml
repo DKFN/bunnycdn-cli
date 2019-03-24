@@ -1,1 +1,3 @@
 theme: jekyll-theme-midnight
+title: BunnyCDN CLI
+description: CLI for the BunnyCDN provider (v0.0.3)
