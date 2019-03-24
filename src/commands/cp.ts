@@ -3,7 +3,7 @@ import {Config} from "../Config";
 import {Client} from "../BunnyClient";
 import * as fs from "fs";
 import {setInterval} from "timers";
-import {IStatusStruct, scanDir} from "../utils/fsutils";
+import {IStatusStruct, uploadScanDir} from "../utils/fsutils";
 
 
 export default class Cp extends Command {
@@ -67,7 +67,7 @@ export default class Cp extends Command {
     if (flags.to && flags.from) {
       if (fs.existsSync(flags.from)) {
           if (flags.R) {
-            scanDir(
+            uploadScanDir(
               flags.from.endsWith("/") ? flags.from : flags.from + "/",
               flags.to.endsWith("/") ? flags.to : flags.to + "/",
               flags.storage!,
@@ -78,8 +78,12 @@ export default class Cp extends Command {
               Client.uploadFile(flags.storage, flags.from, flags.to!);
             }
       } else {
-        console.error("Download is not implemented yet");
-          // TODO : Then it might be a download
+          if (flags.R) {
+            console.error("Recursive download is not implemented yet");
+          } else {
+            // TODO : Check if filename is written, if not, append to path inside function
+              Client.downloadFile(flags.storage, flags.from, flags.to);
+          }
       }
     }
   }
