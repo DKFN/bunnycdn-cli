@@ -14,7 +14,7 @@ class _Client {
       'Content-Type': 'application/json',
       'Accept': 'application/json',
       'AccessKey': Config.getApiKey(k, type),
-      'XX-CLIENT': "DKFN/bunnycdn-cli 0.0.2"
+      'XX-CLIENT': "DKFN/bunnycdn-cli 0.0.3"
     }
   });
 
@@ -27,7 +27,7 @@ class _Client {
       maxContentLength: Number.POSITIVE_INFINITY,
       headers: {
         'AccessKey': Config.getApiKey(k, "storages"),
-        'XX-CLIENT': "DKFN/bunnycdn-cli 0.0.2"
+        'XX-CLIENT': "DKFN/bunnycdn-cli 0.0.3"
       },
     });
   };
@@ -58,22 +58,17 @@ class _Client {
     }
   }
 
-
   // POST  /api/pullzone/id
+  // TODO : This kind of call is ez factorisable
   public async purgeCache(k: string = "default") {
-    const finalpz = await this.findPullzoneByName(k);
+    this.pullzoneActionByName(k, async (pullZone: any) => {
+      const purge = await _Client.HTTPClient("default", "pullzones").post("pullzone/" + pullZone.id + "/purgeCache");
+      if (purge.status === 200)
+        console.log(" ✔ Cleared cache for " + k + " successfully");
+      else
+        console.error("Error clearing cache for " + k + " ( " + purge.status + ") " + purge.statusText);
+    });
 
-    if (!finalpz) {
-      this.throwNoPullZoneWithId(k);
-      return;
-    }
-
-    const purge = await _Client.HTTPClient("default", "pullzones").post("pullzone/" + finalpz.id + "/purgeCache");
-
-    if (purge.status === 200)
-      console.log("Cleared cache for " + k + " successfully");
-    else
-      console.error("Error clearing cache for " + k + " ( " + purge.status + ") " + purge.statusText);
   }
 
   public async uploadFile(k: string = "default",
@@ -83,7 +78,7 @@ class _Client {
     try {
       const fd = fs.openSync(from, 'r');
       if (fd === -1) {
-        console.error(" ❌[ERR] Uncaught errno. Error opening file");
+        console.error(" ❌[ERR] Uncaught sys errno. Error opening file");
       }
       const fileData = fs.readFileSync(fd);
       const qString = () => counterRef
@@ -113,17 +108,11 @@ class _Client {
   }
 
   // POST   /api/pullzone/addHostname
+  // TODO : This kind of call is ez factorisable
   public async addHost(k: string = "default", hostname: string) {
-    try {
-      const finalpz = await this.findPullzoneByName(k);
-
-      if (!finalpz) {
-        this.throwNoPullZoneWithId(k);
-        return ;
-      }
-
+    this.pullzoneActionByName(k, async (pullZone: any) => {
       const response = await _Client.HTTPClient("default", "pullzones").post("pullzone/addHostname", {
-        "PullZoneId": finalpz.id,
+        "PullZoneId": pullZone.id,
         "Hostname": hostname
       });
 
@@ -132,14 +121,30 @@ class _Client {
       } else {
         console.error(" ❌ Sorry, an error was met adding " + hostname + " hostname to pullzone " + k);
       }
-
-    } catch (e) {
-      _Client.throwHttpError(e);
-    }
+    });
   }
 
-  // DELETE /api/pullzone/deleteHostname
-  public async deleteHost(k: string, hostname: string) {
+
+
+  // TODO : This kind of code is ez factorisable
+  public async removeBlockedIp(k: string = "default", ipToBlock: string) {
+    this.pullzoneActionByName(k, async (pullZone: any) => {
+      const response = await _Client.HTTPClient("default", "pullzones").post("pullzone/removeBlockedIp", {
+        "PullZoneId": pullZone.id,
+        "BlockedIp": ipToBlock
+      });
+
+      if (response.status === 200) {
+        console.info(" ✔ Successfully added blocked ip : " + ipToBlock);
+      } else {
+        console.error(" ❌ Sorry, an error was met adding " + ipToBlock + " to iplists " + k);
+      }
+    });
+  }
+
+
+  // TODO : This kind of code is ez factorisable
+  public async addBlockedIp(k: string = "default", ipToBlock: string) {
     try {
       const finalpz = await this.findPullzoneByName(k);
 
@@ -148,18 +153,35 @@ class _Client {
         return ;
       }
 
+      const response = await _Client.HTTPClient("default", "pullzones").post("pullzone/addBlockedIp", {
+        "PullZoneId": finalpz.id,
+        "BlockedIp": ipToBlock
+      });
+
+      if (response.status === 200) {
+        cli.url(" ✔ Successfully added hostname ","http://" + ipToBlock + "/" )
+      } else {
+        console.error(" ❌ Sorry, an error was met adding " + ipToBlock + " hostname to pullzone " + k);
+      }
+
+    } catch (e) {
+      _Client.throwHttpError(e);
+    }
+  }
+
+  // DELETE /api/pullzone/deleteHostname
+  // TODO : This kind of call is ez factorisable
+  public async deleteHost(k: string, hostname: string) {
+    this.pullzoneActionByName(k, async (pullZone: any) => {
       const response = await _Client.HTTPClient("default", "pullzones")
-        .delete("pullzone/deleteHostname?id="+ finalpz.id + "&hostname=" + hostname);
+        .delete("pullzone/deleteHostname?id=" + pullZone.id + "&hostname=" + hostname);
 
       if (response.status === 200) {
         cli.url(" ✔ Successfully deleted hostname ","http://" + hostname + "/" )
       } else {
         console.error(" ❌ Sorry, an error was met deleting " + hostname + " hostname to pullzone " + k);
       }
-
-    } catch (e) {
-      _Client.throwHttpError(e);
-    }
+    });
   }
 
   private static throwHttpError(e) {
@@ -190,6 +212,22 @@ class _Client {
     });
 
      return _.find(gottenPzs, {name: k});
+  }
+
+  private async pullzoneActionByName(k: string = "default", actionHandler: (pz: any) => any) {
+    try {
+      const finalpz = await this.findPullzoneByName(k);
+
+      if (!finalpz) {
+        this.throwNoPullZoneWithId(k);
+        return ;
+      }
+
+      actionHandler(finalpz);
+
+    } catch (e) {
+      _Client.throwHttpError(e);
+    }
   }
 }
 

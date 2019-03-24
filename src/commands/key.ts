@@ -48,6 +48,7 @@ name | .....
     }
 
     if (flags.set) {
+      // TODO : Allow edition in prompt mode if no params is specified
       if (flags.value && flags.type && this.checkType(flags.type)) {
         this.addKey(flags.set, flags.value, flags.type);
         this.exit(0);
@@ -88,6 +89,7 @@ name | .....
 
   }
 
+  // TODO : Add prompt version  if parameters are unspecified
   private addKey(k: string, v: string, t: string = "pullzones") {
     console.log({k, v, t});
     Config.mergeToConf( {name: k, value: v}, t);
