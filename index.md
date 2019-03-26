@@ -40,6 +40,9 @@ id     cacheQuality  name             hostnames
 
 ### Browse command tutorial and/or manuals
 
+The [docs](https://dkfn.github.io/bunnycdn-cli/docs/index) contains pratical examples for what you may want to do and manual pages if you want to use more specific options.
+
+
 ## Contribute
 Contributions are very welcomed, if you are not really sure how to start it feel free to join my [Discord](https://discord.gg/m6Hewcx) and let me know what's up :)
 
