@@ -15,6 +15,7 @@
     "cli-ux": "^5.2.1",
     "console.table": "^0.10.0",
     "filesize": "^4.1.2",
+    "fs-extra": "^7.0.1",
     "lodash": "^4.17.11",
     "tslib": "^1.9.3"
   },
@@ -23,8 +24,9 @@
     "@oclif/test": "^1.2.4",
     "@oclif/tslint": "^3.1.1",
     "@types/chai": "^4.1.7",
-    "@types/form-data": "^2.2.1",
     "@types/filesize": "^4.1.0",
+    "@types/form-data": "^2.2.1",
+    "@types/fs-extra": "^5.0.5",
     "@types/lodash": "^4.14.122",
     "@types/mocha": "^5.2.6",
     "@types/node": "^10.12.26",

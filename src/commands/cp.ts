@@ -51,7 +51,7 @@ export default class Cp extends Command {
 
   static filesPooled = 0;
 
-  static status: IStatusStruct = {pending: 0, working: 0, errors: 0};
+  static status: IStatusStruct = {pending: 0, working: 0, errors: 0, ok: 0};
 
   static args = [{name: "", storage: "storage"}];
 
@@ -79,10 +79,10 @@ export default class Cp extends Command {
             }
       } else {
           if (flags.R) {
-            console.error("Recursive download is not implemented yet");
-            await downloadScanDir(flags.storage!, flags.from, Cp.status);
+            downloadScanDir(flags.storage!, flags.from, flags.to, Cp.status);
           } else {
             // TODO : Check if filename is written, if not, append to path inside function
+            Cp.status.working = Cp.status.working + 1;
               Client.downloadFile(flags.storage, flags.from, flags.to);
           }
       }

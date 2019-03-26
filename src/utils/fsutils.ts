@@ -2,12 +2,14 @@ import Cp from "../commands/cp";
 import {setInterval} from "timers";
 import * as fs from "fs";
 import {Client} from "../BunnyClient";
-import {__await} from "tslib";
+
+const SCHEDULER_PARRALLEL = 8;
 
 export interface IStatusStruct {
   pending: number;
   working: number;
   errors: number;
+  ok: number;
 }
 
 /**
@@ -37,35 +39,64 @@ export const uploadScanDir = (dirPath: string,
   });
 };
 
-export const downloadScanDir = async (k: string, path: string, status: IStatusStruct) => {
-  const gottenDirectory = await Client.listDirectory(k, path);
-  gottenDirectory && gottenDirectory.forEach((e) => {
-    if (e.isDir) {
-      const t = downloadScanDir(k, e.FullPath + "/", status);
+export const downloadScanDir = async (k: string, path: string, to: string, status: IStatusStruct) => {
+  try {
+
+    const gottenDir = await Client.listDirectory(k, path, status);
+
+    if (!gottenDir) {
+      console.error("error : We didnt had a directory as response")
+      return ;
     }
-  });
-  console.log(gottenDirectory);
+    //console.log(gottenDir);
+    gottenDir!
+      .sort((a, b) => a.isDir && !b.isDir && -1 || 1)
+      .map((e) => {
+        if (e.isDir) {
+          internalScheduler(status, () => downloadScanDir(k, e.FullPath + "/", to, status));
+          // console.log(e);
+        } else {
+          console.log(" ↻ [WT] " + qString(status) + "    " + e.FullPath + " => " + e.humanLenght);
+          internalScheduler(status, () => Client.downloadFile(k, e.FullPath, to + e.FullPath, status, e.humanLenght));
+        }
+      })
+  } catch (e) {
+    console.error("FS Got an error : ", e);
+  }
+
+  // internalScheduler(status, handler(status));
 };
 
-const internalScheduler = (status: IStatusStruct , handler: () => any) => {
+export const qString = (counterRef?: IStatusStruct) => counterRef
+        && counterRef.pending + counterRef.working !== 0
+        && `[ ∞ ${counterRef.pending}| ⇅ ${counterRef.working} | o ${counterRef.ok}]` || "            ";
+
+// TODO : The interval based scheduler gets really busy when having a lot of intervals to deal with
+// TODO : And is waisting some time
+// TODO : Maybe defer some download/uploads inside a list to avoid overloading intervals
+export const internalScheduler = (status: IStatusStruct , handler: () => any) => {
   ++status.pending;
-      if (status.working >= 4) {
+      if (status.working >= SCHEDULER_PARRALLEL) {
         // Delay the upload of the file when a client slot will be available
+        // TODO : Add a progression (time indication atleast for big files that takes workers and brandwith in backgroumd making the thing look slow)
+        // TODO : Counter error encountered
         const retryFuncId = setInterval(() => {
-            if (status.working >= 4) {
+            if (status.working >= SCHEDULER_PARRALLEL) {
               // Interval not cleared, upload not set
+              // console.log("ret");
+              return;
             } else {
               // Take client slot, upload file and clear interval
               --status.pending;
               ++status.working;
-              // When upload is done, uploadFile itselfs clears client slot
+              // When task is done, handler itselfs clears client slot
               clearInterval(retryFuncId);
               handler();
             }
           }
-          , 50 * (Cp.status.pending % 4));
+          , 1 + status.pending > 1000 ? 5 * status.working : status.working * 10);
       } else {
-        // Reserve client slot and then proceed to upload, no delay
+        // Reserve client slot and then proceed to task, no delay
         --status.pending;
         ++status.working;
         handler();

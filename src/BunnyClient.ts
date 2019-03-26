@@ -1,11 +1,12 @@
 import axios from "axios"
 import {Config} from "./Config";
 import * as filesize from "filesize";
-import * as fs from "fs";
+import * as fs from "fs-extra";
 import * as _ from "lodash";
 import {cli} from "cli-ux";
-import {IStatusStruct} from "./utils/fsutils";
+import {internalScheduler, IStatusStruct, qString} from "./utils/fsutils";
 const cTable = require('console.table');
+
 
 class _Client {
   static RESTClient = (k: string, type: string) => axios.create({
@@ -82,15 +83,29 @@ class _Client {
   public async downloadFile(k: string = "default",
                             from: string,
                             pathToDownload: string,
-                            counterRef?: IStatusStruct) {
+                            counterRef?: IStatusStruct,
+                            maybeLength?: string) {
     try {
       // TODO : In case of recursive download it is possible to know before hand the size maybe
-      console.log(" ⌛[DWN] " + "    "  + pathToDownload + " => ? ");
+      const gottenPathArray = from.split("/"); //.slice(1,);
+      const supposedTargetDirs = pathToDownload + "/" + gottenPathArray.slice(2, gottenPathArray.length - 1).join("/");
+      const supposedDownloadPath = pathToDownload + "/" + gottenPathArray.slice(2, gottenPathArray.length).join("/");
+
+      // console.log(supposedTargetDirs);
+      fs.ensureDirSync(supposedTargetDirs);
+
+      console.log(" ⌛ [DL] " + qString(counterRef) + "    "  + pathToDownload + " => " + maybeLength || " ? ");
       const response = await _Client.FileDownload(k, from);
-      console.info(" ✔ Downloaded from : " + from + " with key : " + k + " successfully");
-      const fd = fs.openSync(pathToDownload, "w");
-      const writeStatus = fs.writeFileSync(fd, response.data);
-      console.log( " ✔[OK] " + "    " + pathToDownload + " => " + filesize(response.headers["content-length"]));
+
+      const fd = fs.openSync(supposedDownloadPath, "w");
+      console.log(" ⌛ [IO] " + qString(counterRef) + "    "  + pathToDownload + " => " + maybeLength || " ? ");
+      const write = fs.writeFileSync(fd, response.data);
+      fs.closeSync(fd);
+      if (counterRef) {
+        counterRef.ok = counterRef.ok + 1;
+        console.log( " ✔ [OK] " + qString(counterRef) + "    " + pathToDownload + " => " + filesize(response.headers["content-length"]));
+        counterRef.working = counterRef.working - 1;
+      }
     } catch (e) {
       console.log(e);
       _Client.throwHttpError(e);
@@ -106,14 +121,11 @@ class _Client {
     try {
       const fd = fs.openSync(from, 'r');
       if (fd === -1) {
-        console.error(" ❌[ERR] Uncaught sys errno. Error opening file");
+        console.error(" ❌ [ERR] Uncaught sys errno. Error opening file");
       }
       const fileData = fs.readFileSync(fd);
-      const qString = () => counterRef
-        && counterRef.pending + counterRef.working !== 0
-        && `[ ∞ ${counterRef.pending}| ⇈ ${counterRef.working}]` || "            ";
 
-      console.log(" ⌛[UP] " + qString() + "    "  + pathToUpload + " => " + filesize(fileData.length));
+      console.log(" ⌛ [UP] " + qString(counterRef) + "    "  + pathToUpload + " => " + filesize(fileData.length));
       const response = await _Client.FileUpload(k, fileData,  pathToUpload);
       if (counterRef) {
         counterRef.working = counterRef.working - 1;
@@ -122,14 +134,15 @@ class _Client {
       const data = response.data;
       if (response.status > 300) {
         counterRef && counterRef.errors++;
-        console.error(" ❌[ERR] ERROR HTTP : " + data.HttpCode + " : " + data.message);
+        console.error(" ❌ [ERR] ERROR HTTP : " + data.HttpCode + " : " + data.message);
       }
 
       if (response.status === 201) {
-        console.log( " ✔[OK] " + qString() + "    " + pathToUpload + " => " + filesize(fileData.length));
+        console.log( " ✔ [OK] " + qString(counterRef) + "    " + pathToUpload + " => " + filesize(fileData.length));
       }
+      fs.closeSync(fd);
     } catch (e) {
-      console.error(" ❌[UP] Error " + pathToUpload + " " + e.message);
+      console.error(" ❌ [UP] Error " + pathToUpload + " " + e.message);
       console.debug(e.statusCode);
       console.debug(e);
     }
@@ -232,9 +245,13 @@ class _Client {
     }
   }
 
-  public async listDirectory(k: string, targetPath: string) {
+  public async listDirectory(k: string, targetPath: string, status?: IStatusStruct) {
     try {
       const response = await _Client.RESTClient(k, "storages").get(targetPath);
+
+      if (status && status.working > 0) {
+        status.working = status.working - 1;
+      }
 
       if (!Array.isArray(response.data)) {
         console.error("We didnt get a correct response from BunnyCDN. Please check if you have errors upper.");
@@ -286,7 +303,7 @@ class _Client {
      return _.find(gottenPzs, {name: k});
   }
 
-  private static throwHttpError(e) {
+  public static throwHttpError(e) {
     console.error("> [ " + ( e.response && e.response.status || "NO STATUS" ) +
       " ] There was an error during HTTP Request ( " + e.message + " )");
 
