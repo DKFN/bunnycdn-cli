@@ -31,7 +31,11 @@ There is two types of keys: Pullzones and Storages.
 Once you have set your API  key set, lets try to list all the pullzones:
 
 ```console
-bnycdn pz -l
+$ bnycdn pz -l
+id     cacheQuality  name             hostnames                                                   
+-----  ------------  ---------------  ------------------------------------------------------------
+585XX  75            A                [820XX] a.b-cdn.net ;                         
+598XX  75            B                [841XX] b.b-cdn.net ; [841XX] cdn.example.com ; 
 ```
 
 ### Browse command tutorial and/or manuals
