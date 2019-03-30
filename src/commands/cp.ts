@@ -59,8 +59,6 @@ export default class Cp extends Command {
     Config.loadConfig();
     const {args, flags} = this.parse(Cp);
 
-    stuckWatcher(Cp.status);
-
     if (!flags.storage) {
       this.error("You must specify a storage zone with -s");
       this.exit(127);
@@ -69,6 +67,7 @@ export default class Cp extends Command {
     if (flags.to && flags.from) {
       if (fs.existsSync(flags.from)) {
           if (flags.R) {
+            stuckWatcher(Cp.status);
             uploadScanDir(
               flags.from.endsWith("/") ? flags.from : flags.from + "/",
               flags.to.endsWith("/") ? flags.to : flags.to + "/",
@@ -81,6 +80,7 @@ export default class Cp extends Command {
             }
       } else {
           if (flags.R) {
+            stuckWatcher(Cp.status);
             downloadScanDir(flags.storage!, flags.from, flags.to, Cp.status, flags.from);
           } else {
             // TODO : Check if filename is written, if not, append to path inside function
