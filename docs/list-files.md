@@ -16,7 +16,7 @@ For example, my storage name is tetelincdn.
 ## Examples
 Adding a key and then listing all directories:
 ```console
-➜  bunnycdn-cli git:(master) ✗ bnycdn key -s testcdn -v XXXXXXX
+$ bnycdn key -s testcdn -v XXXXXXX
  ⓘ Key successfully set: testcdn
 ➜  bunnycdn-cli git:(master) ✗ bnycdn ls -s testcdn -d /tetelincdn/                                          
 type       lastChanged              size      path                                
@@ -29,7 +29,7 @@ type       lastChanged              size      path
 [ FILE ]   2019-03-09T23:36:43.722  10.01 MB  /tetelincdn/samplemid1.mkv          
 [ FILE ]   2019-03-09T23:24:16.448  97.11 KB  /tetelincdn/paris.jpg               
 
-➜  bunnycdn-cli git:(master) ✗ bnycdn ls -s testcdn -d /tetelincdn/nightly/
+$ bnycdn ls -s testcdn -d /tetelincdn/nightly/
 type       lastChanged              size  path                   
 ---------  -----------------------  ----  -----------------------
 [ DIR  ]   2019-03-10T21:59:01.941  0 B   /tetelincdn/nightly/deb

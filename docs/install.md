@@ -21,8 +21,8 @@ sudo dpgk -i bnycdn_0.0.3-1_amd64.deb
 
 You should be able to execute bunnycdn connands :
 ```console
-> bnycdn help
-$
+$ bnycdn help
+
 Simple cli for BunnyCDN service. This app is not an official one.
 
 VERSION

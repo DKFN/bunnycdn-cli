@@ -14,7 +14,6 @@ If you are unsure about your pullzone name, use `pz -l` to list all accessible p
 
 You can also use anorther API key than default:
 
-
 ```console
 bnycdn pz -p <name> -k <key_name>
 ```

@@ -21,7 +21,7 @@ For example, my storage name is tetelincdn.
 
 ### Download a single file
 ```console
-➜  bunnycdn-cli git:(master) ✗ bnycdn cp -s tetelincdn --from /tetelincdn/bunnycdncli/nightly/bnycdn_0.0.3-1_amd64.deb --to ./test/test.deb
+$ bnycdn cp -s tetelincdn --from /tetelincdn/bunnycdncli/nightly/bnycdn_0.0.3-1_amd64.deb --to ./test/test.deb
  ⌛ [DL]                 ./test/test.deb =>  ? 
  ⌛ [IO]                 ./test/test.deb =>  ? 
  ✔ [OK]                 ./test/test.deb => 8.92 MB
@@ -29,7 +29,7 @@ For example, my storage name is tetelincdn.
 
 ### Download directory recursivly
 ```console
-➜  bunnycdn-cli git:(master) ✗ bnycdn cp -R -s tetelincdn --from /tetelincdn/bunnycdncli/nightly/ --to ./testfiles/
+$ bnycdn cp -R -s tetelincdn --from /tetelincdn/bunnycdncli/nightly/ --to ./testfiles/
  ↻ [WT] [ ∞ 0| ⇅ 1 | o 0]    /tetelincdn/bunnycdncli/nightly/Packages => 1.04 KB
  ⌛ [DL] [ ∞ 0| ⇅ 2 | o 0]    ./testfiles/Packages => 1.04 KB
  [ truncated for readability]

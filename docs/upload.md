@@ -19,7 +19,7 @@ For example, my storage name is tetelincdn.
 
 Single file upload
 ```console
-➜  bunnycdn-cli git:(master) ✗ bnycdn cp -s tetelincdn --from ./dist/deb/bnycdn_0.0.3-1_amd64.deb --to ./tetelincdn/bunnycdncli/nightly/testup.deb 
+$ bnycdn cp -s tetelincdn --from ./dist/deb/bnycdn_0.0.3-1_amd64.deb --to ./tetelincdn/bunnycdncli/nightly/testup.deb 
  ⌛ [UP]                 ./tetelincdn/bunnycdncli/nightly/testup.deb => 8.92 MB
  ✔ [OK]                 ./tetelincdn/bunnycdncli/nightly/testup.deb => 8.92 MB
  
@@ -27,7 +27,7 @@ Single file upload
 
 Directory upload
 ```console
-➜  bunnycdn-cli git:(master) ✗ bnycdn cp -s tetelincdn -R --from ./dist/deb/ --to ./tetelincdn/bunnycdncli/nightly/           
+$ bnycdn cp -s tetelincdn -R --from ./dist/deb/ --to ./tetelincdn/bunnycdncli/nightly/           
  ⌛ [UP] [ ∞ 0| ⇅ 1 | o 0]    ./tetelincdn/bunnycdncli/nightly/Packages => 1.04 KB
  ⌛ [UP] [ ∞ 0| ⇅ 2 | o 0]    ./tetelincdn/bunnycdncli/nightly/Packages.bz2 => 661 B
  ⌛ [UP] [ ∞ 0| ⇅ 3 | o 0]    ./tetelincdn/bunnycdncli/nightly/Packages.gz => 596 B
