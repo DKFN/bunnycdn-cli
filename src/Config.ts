@@ -42,6 +42,7 @@ class _Config {
 
   // This function will auto append unexisting keys and will replace existing keys
   public mergeToConf(objectToMerge: IStoredKey, type: string ) : void {
+    this.configuration[type] = this.configuration[type].filter((e) => e.name !== objectToMerge.name);
     this.configuration[type].push(objectToMerge);
   }
 
