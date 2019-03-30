@@ -6,7 +6,7 @@ You can change the number of asynchronous operations by setting `BNYCDN_PARALLEL
 It is set to 8 by default. This is an average guess of the typical usage (mixed big and small files) and should give correct performance.
 Of course, it may not be ideal for orther cases (slow connections, big file downloads).
 
-Please note that raising this value to much may result in dropped connections or poor I/O performance.
+Please note that raising this value to much (> 20) may result in dropped connections or poor I/O performance.
 
 ## Examples
 ```console
