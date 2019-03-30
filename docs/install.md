@@ -16,10 +16,18 @@ This is the only native release method for now. More operating systems will be s
 
 *Using this method will not get you autoupdates*
 
+### AMD64
 ```console
-wget http://cdn.infra.tetel.in/bunnycdncli/nightly/bnycdn_0.0.3-1_amd64.deb;
-sudo dpgk -i bnycdn_0.0.3-1_amd64.deb 
+wget http://cdn.infra.tetel.in/bunnycdncli/nightly/bnycdn_0.1.4-1_amd64.deb
+sudo dpgk -i bnycdn_0.1.4-1_amd64.deb 
 ```
+
+### ARM
+```console
+wget http://cdn.infra.tetel.in/bunnycdncli/nightly/bnycdn_0.1.4-1_armel.deb
+sudo dpgk -i bnycdn_0.1.4-1_armel.deb 
+```
+
 
 ## NPM
 This is great if you already have NodeJS installed (>= 8.0.0) and you can update the cli with a simple command.
