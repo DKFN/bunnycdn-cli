@@ -9,7 +9,8 @@ Make sure you have a storage password stored and then use `ls` (ls implementatio
 bnycdn -s <storage_key_name> -d <path_of_storage_directory>
 ```
 
-Please note that the path *must* start with the storage name from bunnycdn api.
+Please note that the path *must* start with the storage name from bunnycdn.
+
 For example, my storage name is tetelincdn.
 
 ## Examples
