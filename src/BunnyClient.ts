@@ -69,9 +69,9 @@ class _Client {
   }
 
   // POST  /api/pullzone/id
-  public async purgeCache(k: string = "default") {
-    this.pullzoneActionByName(k, async (pullZone: any) => {
-      const purge = await _Client.RESTClient("default", "pullzones").post("pullzone/" + pullZone.id + "/purgeCache");
+  public async purgeCache(apiKey: string = "default", k: string = "default") {
+    this.pullzoneActionByName(apiKey, k, async (pullZone: any) => {
+      const purge = await _Client.RESTClient(apiKey, "pullzones").post("pullzone/" + pullZone.id + "/purgeCache");
       if (purge.status === 200)
         console.info(" ✔ Cleared cache for " + k + " successfully");
       else
@@ -149,10 +149,10 @@ class _Client {
   }
 
   // POST   /api/pullzone/addHostname
-  public async addHost(k: string = "default", hostname: string) {
-    this.pullzoneActionByName(k, async (pullZone: any) => {
+  public async addHost(apiKey: string = "default", k: string = "default", hostname: string) {
+    this.pullzoneActionByName(apiKey, k, async (pullZone: any) => {
       try {
-        const response = await _Client.RESTClient("default", "pullzones").post("pullzone/addHostname", {
+        const response = await _Client.RESTClient(apiKey, "pullzones").post("pullzone/addHostname", {
           "PullZoneId": pullZone.id,
           "Hostname": hostname
         });
@@ -169,10 +169,10 @@ class _Client {
   }
 
   // POST   /api/pullzone/removeBlockedIp
-  public async removeBlockedIp(k: string = "default", ipToBlock: string) {
-    this.pullzoneActionByName(k, async (pullZone: any) => {
+  public async removeBlockedIp(apiKey: string = "default", k: string = "default", ipToBlock: string) {
+    this.pullzoneActionByName(apiKey, k, async (pullZone: any) => {
       try {
-        const response = await _Client.RESTClient("default", "pullzones").post("pullzone/removeBlockedIp", {
+        const response = await _Client.RESTClient(apiKey, "pullzones").post("pullzone/removeBlockedIp", {
           "PullZoneId": pullZone.id,
           "BlockedIp": ipToBlock
         });
@@ -189,10 +189,10 @@ class _Client {
   }
 
   // POST   /api/pullzone/addBlockedIp
-  public async addBlockedIp(k: string = "default", ipToBlock: string) {
-    this.pullzoneActionByName(k, async (pullZone: any) => {
+  public async addBlockedIp(apiKey: string = "default", k: string = "default", ipToBlock: string) {
+    this.pullzoneActionByName(apiKey, k, async (pullZone: any) => {
       try {
-        const response = await _Client.RESTClient("default", "pullzones").post("pullzone/addBlockedIp", {
+        const response = await _Client.RESTClient(apiKey, "pullzones").post("pullzone/addBlockedIp", {
           "PullZoneId": pullZone.id,
           "BlockedIp": ipToBlock
         });
@@ -210,8 +210,8 @@ class _Client {
   }
 
   // DELETE /api/pullzone/deleteHostname
-  public async deleteHost(k: string, hostname: string) {
-    this.pullzoneActionByName(k, async (pullZone: any) => {
+  public async deleteHost(apiKey: string = "default", k: string, hostname: string) {
+    this.pullzoneActionByName(apiKey, k, async (pullZone: any) => {
       try {
         const response = await _Client.RESTClient("default", "pullzones")
           .delete("pullzone/deleteHostname?id=" + pullZone.id + "&hostname=" + hostname);
@@ -258,7 +258,7 @@ class _Client {
         return;
       }
 
-      return response.data.map((object) => {
+      return response.data.map((object: any) => {
         return {
           isDir: object.IsDirectory,
           FullPath: object.Path + object.ObjectName,
@@ -272,9 +272,9 @@ class _Client {
     }
   }
 
-  private async pullzoneActionByName(k: string = "default", actionHandler: (pz: any) => any) {
+  private async pullzoneActionByName(apiKey: string, k: string = "default", actionHandler: (pz: any) => any) {
     try {
-      const finalpz = await this.findPullzoneByName(k);
+      const finalpz = await this.findPullzoneByName(apiKey, k);
 
       if (!finalpz) {
         this.throwNoPullZoneWithId(k);
@@ -288,8 +288,8 @@ class _Client {
     }
   }
 
-  private async findPullzoneByName(k: string = "default"): Promise<any> {
-    const response = await _Client.RESTClient("default", "pullzones").get("pullzone");
+  private async findPullzoneByName(apiKey: string, k: string = "default"): Promise<any> {
+    const response = await _Client.RESTClient(apiKey, "pullzones").get("pullzone");
 
     if (!Array.isArray(response.data)) {
       console.error("We didnt get a correct response from BunnyCDN. Please check if you have errors upper.");

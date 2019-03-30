@@ -3,7 +3,7 @@
 
 - [01 - Installation](https://dkfn.github.io/bunnycdn-cli/docs/install)
 - [02 - Clear cache from a pullzone](https://dkfn.github.io/bunnycdn-cli/docs/cache-clear)
-- [03 - Add/Remove hostnames to a pullzone](https://dkfn.github.io/bunnycdn-cli/docs/cache-clear)
+- [03 - Add/Remove hostnames to a pullzone](https://dkfn.github.io/bunnycdn-cli/docs/pz-hostnames)
 - [04 - List files in a storage](https://dkfn.github.io/bunnycdn-cli/docs/upload)
 - [05 - Upload file(s) to a storage](https://dkfn.github.io/bunnycdn-cli/docs/upload)
 - [06 - Download file(s) to a storage](https://dkfn.github.io/bunnycdn-cli/docs/download)

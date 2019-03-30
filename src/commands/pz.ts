@@ -48,23 +48,23 @@ export default class Pz extends Command {
     }
 
     if (flags.addHost && checkHasValue(flags.value)) {
-      Client.addHost(flags.addHost, flags.value!);
+      Client.addHost(flags.key, flags.addHost, flags.value!);
     }
 
     if (flags.delHost && checkHasValue(flags.value)) {
-      Client.deleteHost(flags.delHost, flags.value!);
+      Client.deleteHost(flags.key, flags.delHost, flags.value!);
     }
 
     if (flags.purge) {
-      Client.purgeCache(flags.purge);
+      Client.purgeCache(flags.key, flags.purge);
     }
 
     if (flags.ban && checkHasValue(flags.value)) {
-      Client.addBlockedIp(flags.ban, flags.value!);
+      Client.addBlockedIp(flags.key, flags.ban, flags.value!);
     }
 
     if (flags.grace && checkHasValue(flags.value)) {
-      Client.removeBlockedIp(flags.grace, flags.value!);
+      Client.removeBlockedIp(flags.key, flags.grace, flags.value!);
     }
 
 
