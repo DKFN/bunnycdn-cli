@@ -16,7 +16,7 @@ In order to use most of the functionnalities of the CLI you need to register an 
 *Pullzones key type wil be renamed to client_key (v0.2)*
 
 ```console 
-$ bnycdn key -s default -v "<your_key_from_panel>" -t "pullzones"
+$ bnycdn key -s default -v "<your_key_from_panel>"
  ⓘ Key successfully set: default
 ```
 
