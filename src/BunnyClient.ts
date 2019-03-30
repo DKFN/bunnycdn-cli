@@ -117,7 +117,7 @@ class _Client {
   public async uploadFile(k: string = "default",
                           from: string,
                           pathToUpload: string,
-                          counterRef?: {pending: number, working: number, errors: number}) {
+                          counterRef?: IStatusStruct) {
     try {
       const fd = fs.openSync(from, 'r');
       if (fd === -1) {
@@ -303,7 +303,7 @@ class _Client {
      return _.find(gottenPzs, {name: k});
   }
 
-  public static throwHttpError(e) {
+  public static throwHttpError(e: any) {
     console.error("> [ " + ( e.response && e.response.status || "NO STATUS" ) +
       " ] There was an error during HTTP Request ( " + e.message + " )");
 
@@ -312,7 +312,7 @@ class _Client {
     }
   }
 
-  private throwNoPullZoneWithId(k) {
+  private throwNoPullZoneWithId(k: string) {
     console.error("I do not see pullzone : " + k);
     console.error(" Here is the list of pullzones : ");
     this.listPullZones();

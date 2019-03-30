@@ -101,7 +101,7 @@ export default class Key extends Command {
   }
 
   // TODO : Add prompt version  if parameters are unspecified
-  private addKey(v: string, k?: string = "default", t: string = "pullzones") {
+  private addKey(v: string, k: string = "default", t: string = "pullzones") {
     Config.mergeToConf( {name: k, value: v}, t);
     Config.persistConf();
     this.log(" ⓘ Key successfully set: " + k);

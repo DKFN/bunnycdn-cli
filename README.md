@@ -103,7 +103,7 @@ _See code: [@oclif/plugin-help](https://github.com/oclif/plugin-help/blob/v2.1.6
 
 ## `bnycdn key []`
 
-To add / delete / set a key for a pullzon or a storage
+To add / delete / set a key for account pullzones or a storage
 
 ```
 USAGE
@@ -114,26 +114,39 @@ OPTIONS
   -h, --help         show CLI help
   -l, --list         lists all keys stored and their names
   -s, --set=set      Sets a key with given name
-  -t, --type=type    Type of the key
+  -t, --type=type    Type of the key ( pullzones OR storages )
   -v, --value=value  Gives a value for add and set operations
 
 EXAMPLE
 
-       ➜  bunnycdn-cli git:(master) ✗ bnycdn key -l  
-  ==== PullZones : 
-  Key Name        : Key Value
-  default   | .....
-  ==== Storages: 
-  Key Name        : Key Value
-  default | .....
-  name | .....
+           ➜  bunnycdn-cli git:(master) ✗ bnycdn key -l  
+           ==== PullZones : 
+           Key Name        : Key Value
+           default   | .....
+           ==== Storages: 
+           Key Name        : Key Value
+           default | .....
+           name | .....
 
-  ➜  bunnycdn-cli git:(master) ✗ bnycdn key -s myneykey -t storages -v my_api_key_from_panel
-  { k: 'myneykey', v: 'my_api_key_from_panel', t: 'storages' }
-  ⓘKey successfully set: myneykey
+           Add default API Key:
+           ➜  bunnycdn-cli git:(master) ✗ bnycdn key -s default -v my_api_key_from_panel
+           ⓘ Successfully deleted key : default
 
-  ➜  bunnycdn-cli git:(master) ✗ bnycdn key -d myneykey -t storages                         
-  ⓘSuccessfully deleted key : myneykey
+           Add aliased API Key (If you have multiple accounts):
+           ➜  bunnycdn-cli git:(master) ✗ bnycdn key -s myKeyName -v my_api_key_from_panel
+           ⓘ Successfully deleted key : myKeyName
+
+           Add a storage Key:
+           ➜  bunnycdn-cli git:(master) ✗ bnycdn key -s mynewkey -t storages -v my_storage_ftp_password
+           ⓘ Key successfully set: mynewkey
+
+           Add a default storage Key:
+           ➜  bunnycdn-cli git:(master) ✗ bnycdn key -s default -t storages -v my_storage_ftp_password
+           ⓘ Key successfully set: mynewkey
+
+           Delete a key
+           ➜  bunnycdn-cli git:(master) ✗ bnycdn key -d mynewkey -t storages                         
+           ⓘ Successfully deleted key : mynewkey
 ```
 
 _See code: [src/commands/key.ts](https://github.com/DKFN/bnycdn/blob/v0.0.3/src/commands/key.ts)_
@@ -147,6 +160,7 @@ USAGE
   $ bnycdn ls []
 
 OPTIONS
+  -d, --dir=dir
   -h, --help             show CLI help
   -s, --storage=storage
 
@@ -166,9 +180,15 @@ USAGE
   $ bnycdn pz [PULLZONES]
 
 OPTIONS
-  -h, --help         show CLI help
-  -l, --list         lists all pull zones
-  -p, --purge=purge  purge cache for pullzone in id
+  -a, --addHost=addHost  Adds an hostname to a pull zone
+  -b, --ban=ban          Bans an IP from a pullzone
+  -c, --create=create    Creates a new pullzone
+  -d, --delHost=delHost  Deletes an hostname from a pull zone
+  -g, --grace=grace      Unbans an IP from a pullzone
+  -h, --help             show CLI help
+  -l, --list             lists all pull zones
+  -p, --purge=purge      purge cache for pullzone in id
+  -v, --value=value      Value for add hostname / purge pullzone
 
 EXAMPLE
 
