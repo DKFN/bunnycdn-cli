@@ -3,7 +3,7 @@ import {Config} from "../Config";
 import {Client} from "../BunnyClient";
 import * as fs from "fs";
 import {setInterval} from "timers";
-import {downloadScanDir, IStatusStruct, uploadScanDir} from "../utils/fsutils";
+import {downloadScanDir, IStatusStruct, stuckWatcher, uploadScanDir} from "../utils/fsutils";
 
 
 export default class Cp extends Command {
@@ -58,6 +58,8 @@ export default class Cp extends Command {
   async run() {
     Config.loadConfig();
     const {args, flags} = this.parse(Cp);
+
+    stuckWatcher(Cp.status);
 
     if (!flags.storage) {
       this.error("You must specify a storage zone with -s");

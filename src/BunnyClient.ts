@@ -88,6 +88,7 @@ class _Client {
                             maybeLength?: string,
                             ) {
     try {
+      counterRef && (counterRef.lastUpdate = Date.now());
       const pathArray = pathToDownload.split("/");
       const dir = pathArray.splice(0, pathArray.length - 1).join("/");
       fse.ensureDirSync(dir);
@@ -112,6 +113,9 @@ class _Client {
       console.log( " ✔ [OK] " + qString(counterRef) + "    " + pathToDownload + " => " + size);
     } catch (e) {
       console.log(e);
+      if (counterRef) {
+        counterRef.working = counterRef.working - 1;
+      }
       _Client.throwHttpError(e);
     }
 
@@ -123,6 +127,7 @@ class _Client {
                           pathToUpload: string,
                           counterRef?: IStatusStruct) {
     try {
+      counterRef && (counterRef.lastUpdate = Date.now());
       const fd = fs.openSync(from, 'r');
       if (fd === -1) {
         console.error(" ❌ [ERR] Uncaught sys errno. Error opening file");
@@ -143,12 +148,19 @@ class _Client {
 
       if (response.status === 201) {
         console.log( " ✔ [OK] " + qString(counterRef) + "    " + pathToUpload + " => " + filesize(fileData.length));
+        if (counterRef) {
+          counterRef.ok = counterRef.ok + 1;
+          counterRef.lastUpdate = Date.now();
+        }
       }
       fs.closeSync(fd);
     } catch (e) {
       console.error(" ❌ [UP] Error " + pathToUpload + " " + e.message);
-      console.debug(e.statusCode);
-      console.debug(e);
+      if (counterRef) {
+        counterRef.working = counterRef.working - 1;
+      }
+      // console.debug(e.statusCode);
+      // console.debug(e);
     }
   }
 

@@ -8,6 +8,7 @@
 - [06 - Upload file(s) to a storage](https://dkfn.github.io/bunnycdn-cli/docs/upload)
 - [07 - Download file(s) to a storage](https://dkfn.github.io/bunnycdn-cli/docs/download)
 - [08 - Ban/UnBan hostnames to a pullzone](https://dkfn.github.io/bunnycdn-cli/docs/bans)
+- [09 - Change the number of asynchronous operations](https://dkfn.github.io/bunnycdn-cli/docs/bans)
 
 # Manual Pages
 - [01 - key](https://dkfn.github.io/bunnycdn-cli/docs/man/key)

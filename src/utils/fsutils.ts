@@ -3,14 +3,27 @@ import {setInterval} from "timers";
 import * as fs from "fs";
 import {Client} from "../BunnyClient";
 
-const SCHEDULER_PARRALLEL = 8;
+const SCHEDULER_PARRALLEL = Number.parseInt(process.env["BNYCDN_PARALLEL"] || "8");
 
 export interface IStatusStruct {
   pending: number;
   working: number;
   errors: number;
   ok: number;
+  lastUpdate: number;
 }
+
+export const stuckWatcher = (statusStruct: IStatusStruct) => {
+  const warnerFuncId = setInterval(() => {
+      if (statusStruct.lastUpdate <= Date.now() - 5000) {
+        console.info(" ⌛ [WT] " + qString(statusStruct) + " It seems that I am still waiting for " + statusStruct.working + " files to process. Please wait ...");
+        statusStruct.lastUpdate = Date.now();
+      }
+
+      if (statusStruct.pending === 0 && statusStruct.working === 0)
+        clearInterval(warnerFuncId);
+    }, 500);
+};
 
 /**
  * -R option has quite an exotic behavior. We limit the number of simultaneous uploads to 2 to avoir overloading
