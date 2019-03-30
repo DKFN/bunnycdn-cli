@@ -21,7 +21,7 @@ $ npm install -g bnycdn
 $ bnycdn COMMAND
 running command...
 $ bnycdn (-v|--version|version)
-bnycdn/0.0.3 linux-x64 node-v8.10.0
+bnycdn/0.1.0 linux-x64 node-v8.10.0
 $ bnycdn --help [COMMAND]
 USAGE
   $ bnycdn COMMAND
@@ -82,7 +82,7 @@ EXAMPLE
         Maximum parrallel file uploads is 4
 ```
 
-_See code: [src/commands/cp.ts](https://github.com/DKFN/bnycdn/blob/v0.0.3/src/commands/cp.ts)_
+_See code: [src/commands/cp.ts](https://github.com/DKFN/bnycdn/blob/v0.1.0/src/commands/cp.ts)_
 
 ## `bnycdn help [COMMAND]`
 
@@ -149,7 +149,7 @@ EXAMPLE
            ⓘ Successfully deleted key : mynewkey
 ```
 
-_See code: [src/commands/key.ts](https://github.com/DKFN/bnycdn/blob/v0.0.3/src/commands/key.ts)_
+_See code: [src/commands/key.ts](https://github.com/DKFN/bnycdn/blob/v0.1.0/src/commands/key.ts)_
 
 ## `bnycdn ls []`
 
@@ -169,7 +169,7 @@ EXAMPLE
        Lists all the pul zone
 ```
 
-_See code: [src/commands/ls.ts](https://github.com/DKFN/bnycdn/blob/v0.0.3/src/commands/ls.ts)_
+_See code: [src/commands/ls.ts](https://github.com/DKFN/bnycdn/blob/v0.1.0/src/commands/ls.ts)_
 
 ## `bnycdn pz [PULLZONES]`
 
@@ -186,6 +186,7 @@ OPTIONS
   -d, --delHost=delHost  Deletes an hostname from a pull zone
   -g, --grace=grace      Unbans an IP from a pullzone
   -h, --help             show CLI help
+  -k, --key=key          specify a key if you use anorther one than default
   -l, --list             lists all pull zones
   -p, --purge=purge      purge cache for pullzone in id
   -v, --value=value      Value for add hostname / purge pullzone
@@ -200,5 +201,5 @@ EXAMPLE
        Lists all the pull zones
 ```
 
-_See code: [src/commands/pz.ts](https://github.com/DKFN/bnycdn/blob/v0.0.3/src/commands/pz.ts)_
+_See code: [src/commands/pz.ts](https://github.com/DKFN/bnycdn/blob/v0.1.0/src/commands/pz.ts)_
 <!-- commandsstop -->

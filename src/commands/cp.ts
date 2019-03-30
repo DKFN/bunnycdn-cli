@@ -51,7 +51,7 @@ export default class Cp extends Command {
 
   static filesPooled = 0;
 
-  static status: IStatusStruct = {pending: 0, working: 0, errors: 0, ok: 0};
+  static status: IStatusStruct = {pending: 0, working: 0, errors: 0, ok: 0, lastUpdate: Date.now()};
 
   static args = [{name: "", storage: "storage"}];
 

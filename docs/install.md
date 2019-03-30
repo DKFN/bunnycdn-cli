@@ -2,22 +2,33 @@
 
 - [Ubuntu/Debian]()
 
+- [NPM]() -pending 0.5-
+
 - [MacOS]() -pending 0.5-
 
 - [Windows]() -pending 0.5-
-
-- [NPM]() -pending 0.5-
 
 - [Docker]() -pending 0.5-
 
 
 ## Ubuntu/Debian
-This is the only release method for now. More operating systems will be 
+This is the only native release method for now. More operating systems will be supported native
+
+*Using this method will not get you autoupdates*
 
 ```console
 wget http://cdn.infra.tetel.in/bunnycdncli/nightly/bnycdn_0.0.3-1_amd64.deb;
 sudo dpgk -i bnycdn_0.0.3-1_amd64.deb 
 ```
+
+## NPM
+This is great if you already have NodeJS installed (>= 8.0.0) and you can update the cli with a simple command.
+Also, it is the only way to get it working on unsupported systems.
+
+```console
+$ npm install -g bnycdn
+```
+
 
 You should be able to execute bunnycdn connands :
 ```console
@@ -40,4 +51,3 @@ COMMANDS
 
 
 ```
-

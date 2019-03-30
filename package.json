@@ -1,7 +1,7 @@
 {
   "name": "bnycdn",
   "description": "Simple cli for BunnyCDN service. This app is not an official one.",
-  "version": "0.0.3",
+  "version": "0.1.4",
   "author": "DKFN",
   "bin": {
     "bnycdn": "./bin/run"
@@ -16,6 +16,7 @@
     "console.table": "^0.10.0",
     "filesize": "^4.1.2",
     "fs-extra": "^7.0.1",
+    "globby": "^9.1.0",
     "lodash": "^4.17.11",
     "tslib": "^1.9.3"
   },
@@ -31,7 +32,6 @@
     "@types/mocha": "^5.2.6",
     "@types/node": "^10.12.26",
     "chai": "^4.2.0",
-    "globby": "^8.0.2",
     "nyc": "^13.3.0",
     "ts-node": "^8.0.2",
     "tslint": "^5.12.1",

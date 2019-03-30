@@ -7,10 +7,10 @@
 - [05 - List files in a storage](https://dkfn.github.io/bunnycdn-cli/docs/list-files)
 - [06 - Upload file(s) to a storage](https://dkfn.github.io/bunnycdn-cli/docs/upload)
 - [07 - Download file(s) to a storage](https://dkfn.github.io/bunnycdn-cli/docs/download)
-- [08 - Ban/UnBan hostnames to a pullzone](https://dkfn.github.io/bunnycdn-cli/docs/bans)
-- [09 - Change the number of asynchronous operations](https://dkfn.github.io/bunnycdn-cli/docs/bans)
+- [08 - Ban/UnBan hostnames to a pullzone -Doc TODO-](https://dkfn.github.io/bunnycdn-cli/docs/bans)
+- [09 - Change the number of asynchronous operations](https://dkfn.github.io/bunnycdn-cli/docs/set-workers)
 
-# Manual Pages
+# Manual Pages -TODO-
 - [01 - key](https://dkfn.github.io/bunnycdn-cli/docs/man/key)
 - [02 - cp](https://dkfn.github.io/bunnycdn-cli/docs/man/cp)
 - [03 - ls](https://dkfn.github.io/bunnycdn-cli/docs/man/ls)
