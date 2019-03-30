@@ -44,7 +44,7 @@ export const downloadScanDir = async (k: string, path: string, to: string, statu
     const gottenDir = await Client.listDirectory(k, path, status);
 
     if (!gottenDir) {
-      console.error("error : We didnt had a directory as response")
+      console.error("error : We didnt had a directory as response");
       return ;
     }
     //console.log(gottenDir);

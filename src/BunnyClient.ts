@@ -95,16 +95,21 @@ class _Client {
       console.log(" ⌛ [DL] " + qString(counterRef) + "    "  + pathToDownload + " => " + ( maybeLength || " ? " ));
       const response = await _Client.FileDownload(k, from);
 
+      if (!response.headers["content-length"]) {
+        console.error("we did not get a filesize. (Did you tried to download a directory without -R option?)");
+        return;
+      }
+      const size = filesize(response.headers["content-length"]);
 
       const fd = fs.openSync(pathToDownload, "w");
-      console.log(" ⌛ [IO] " + qString(counterRef) + "    "  + pathToDownload + " => " + ( maybeLength || " ? " ));
-      const write = fs.writeFileSync(fd, response.data);
+      console.log(" ⌛ [IO] " + qString(counterRef) + "    "  + pathToDownload + " => " + ( size || " ? " ));
+      fs.writeFileSync(fd, response.data);
       fs.closeSync(fd);
       if (counterRef) {
         counterRef.ok = counterRef.ok + 1;
-        console.log( " ✔ [OK] " + qString(counterRef) + "    " + pathToDownload + " => " + filesize(response.headers["content-length"]));
         counterRef.working = counterRef.working - 1;
       }
+      console.log( " ✔ [OK] " + qString(counterRef) + "    " + pathToDownload + " => " + size);
     } catch (e) {
       console.log(e);
       _Client.throwHttpError(e);
