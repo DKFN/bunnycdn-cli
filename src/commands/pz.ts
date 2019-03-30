@@ -20,6 +20,7 @@ export default class Pz extends Command {
   static flags = {
     help: flags.help({char: 'h'}),
     list: flags.boolean({char: 'l', description: 'lists all pull zones'}),
+    key: flags.string({char: 'k', description: 'specify a key if you use anorther one than default'}),
     // TODO : If no pullzone specified, then clear cache for all pullzones
     purge: flags.string({char: 'p', description: 'purge cache for pullzone in id'}),
     addHost: flags.string({char: 'a', description: 'Adds an hostname to a pull zone'}),
@@ -43,7 +44,7 @@ export default class Pz extends Command {
     };
 
     if (flags.list) {
-      Client.listPullZones("default");
+      Client.listPullZones(flags.key || "default");
     }
 
     if (flags.addHost && checkHasValue(flags.value)) {

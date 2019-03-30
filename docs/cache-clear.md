@@ -11,6 +11,3 @@ pz -p <name>
 ```
 
 If you are unsure about your pullzone name, use `pz -l` to list all accessible pullzoneswith your current API Key and search for the name column
-
-
-## Examples
