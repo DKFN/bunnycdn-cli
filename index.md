@@ -11,9 +11,7 @@ I strongly suggest that you wait v0.5 before using this CLI in automated process
 Follow [installation procedures](https://dkfn.github.io/bunnycdn-cli/docs/install) dependings on your installation desires.
 
 ### Register API Key
-In order to use most of the functionnalities of the CLI you need to register an API key using this command:"
-
-*Pullzones key type wil be renamed to client_key (v0.2)*
+In order to use most of the functionnalities of the CLI you need to register an API key using this command:
 
 ```console 
 $ bnycdn key -s default -v "<your_key_from_panel>"
@@ -23,7 +21,7 @@ $ bnycdn key -s default -v "<your_key_from_panel>"
 All keys are stored in `~/.bnycdn` text file
 
 There is two types of keys: Pullzones and Storages.
-* The pullzone key is yout unique client key in order to do operations on pullzones (pz command)
+* The pullzone key is yout unique client key in order to do operations on pullzones (pz command). If you only have one account, you wiill not need anymore than default value
 * The storage key is the FTP Password of your storage. If you provide a read-only key you will have limitted fonctionnalities (ls, cp only for download).
 
 ### List your pullzones

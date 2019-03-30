@@ -79,7 +79,7 @@ export default class Cp extends Command {
             }
       } else {
           if (flags.R) {
-            downloadScanDir(flags.storage!, flags.from, flags.to, Cp.status);
+            downloadScanDir(flags.storage!, flags.from, flags.to, Cp.status, flags.from);
           } else {
             // TODO : Check if filename is written, if not, append to path inside function
             Cp.status.working = Cp.status.working + 1;

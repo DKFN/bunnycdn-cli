@@ -1,10 +1,11 @@
 import axios from "axios"
 import {Config} from "./Config";
 import * as filesize from "filesize";
-import * as fs from "fs-extra";
+import * as fse from "fs-extra";
 import * as _ from "lodash";
 import {cli} from "cli-ux";
 import {internalScheduler, IStatusStruct, qString} from "./utils/fsutils";
+import * as fs from "fs";
 const cTable = require('console.table');
 
 
@@ -84,21 +85,19 @@ class _Client {
                             from: string,
                             pathToDownload: string,
                             counterRef?: IStatusStruct,
-                            maybeLength?: string) {
+                            maybeLength?: string,
+                            ) {
     try {
-      // TODO : In case of recursive download it is possible to know before hand the size maybe
-      const gottenPathArray = from.split("/"); //.slice(1,);
-      const supposedTargetDirs = pathToDownload + "/" + gottenPathArray.slice(2, gottenPathArray.length - 1).join("/");
-      const supposedDownloadPath = pathToDownload + "/" + gottenPathArray.slice(2, gottenPathArray.length).join("/");
+      const pathArray = pathToDownload.split("/");
+      const dir = pathArray.splice(0, pathArray.length - 1).join("/");
+      fse.ensureDirSync(dir);
 
-      // console.log(supposedTargetDirs);
-      fs.ensureDirSync(supposedTargetDirs);
-
-      console.log(" ⌛ [DL] " + qString(counterRef) + "    "  + pathToDownload + " => " + maybeLength || " ? ");
+      console.log(" ⌛ [DL] " + qString(counterRef) + "    "  + pathToDownload + " => " + ( maybeLength || " ? " ));
       const response = await _Client.FileDownload(k, from);
 
-      const fd = fs.openSync(supposedDownloadPath, "w");
-      console.log(" ⌛ [IO] " + qString(counterRef) + "    "  + pathToDownload + " => " + maybeLength || " ? ");
+
+      const fd = fs.openSync(pathToDownload, "w");
+      console.log(" ⌛ [IO] " + qString(counterRef) + "    "  + pathToDownload + " => " + ( maybeLength || " ? " ));
       const write = fs.writeFileSync(fd, response.data);
       fs.closeSync(fd);
       if (counterRef) {
@@ -262,6 +261,7 @@ class _Client {
         return {
           isDir: object.IsDirectory,
           FullPath: object.Path + object.ObjectName,
+          name: object.ObjectName,
           lastChanged: object.DateCreated,
           Lenght: object.Length,
           humanLenght: filesize(object.Length)

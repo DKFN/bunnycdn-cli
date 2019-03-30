@@ -39,9 +39,8 @@ export const uploadScanDir = (dirPath: string,
   });
 };
 
-export const downloadScanDir = async (k: string, path: string, to: string, status: IStatusStruct) => {
+export const downloadScanDir = async (k: string, path: string, to: string, status: IStatusStruct, removePath?: string) => {
   try {
-
     const gottenDir = await Client.listDirectory(k, path, status);
 
     if (!gottenDir) {
@@ -53,11 +52,12 @@ export const downloadScanDir = async (k: string, path: string, to: string, statu
       .sort((a, b) => a.isDir && !b.isDir && -1 || 1)
       .map((e) => {
         if (e.isDir) {
-          internalScheduler(status, () => downloadScanDir(k, e.FullPath + "/", to, status));
+          internalScheduler(status, () => downloadScanDir(k,  e.FullPath + "/", to, status, removePath));
           // console.log(e);
         } else {
-          console.log(" ↻ [WT] " + qString(status) + "    " + e.FullPath + " => " + e.humanLenght);
-          internalScheduler(status, () => Client.downloadFile(k, e.FullPath, to + e.FullPath, status, e.humanLenght));
+          const pth = e.FullPath.replace(removePath, "");
+          console.log(" ↻ [WT] " + qString(status) + "    " + e.FullPath + " => "+ e.humanLenght);
+          internalScheduler(status, () => Client.downloadFile(k, e.FullPath, to + pth, status, e.humanLenght));
         }
       })
   } catch (e) {
