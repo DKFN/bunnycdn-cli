@@ -17,7 +17,7 @@ class _Client {
       'Content-Type': 'application/json',
       'Accept': 'application/json',
       'AccessKey': Config.getApiKey(k, type),
-      'XX-CLIENT': "DKFN/bunnycdn-cli 0.1.0"
+      'XX-CLIENT': "DKFN/bunnycdn-cli 0.1.5"
     }
   });
 
@@ -28,7 +28,7 @@ class _Client {
     maxContentLength: Number.POSITIVE_INFINITY,
     headers: {
       'AccessKey': Config.getApiKey(k, "storages"),
-      'XX-CLIENT': "DKFN/bunnycdn-cli 0.1.0"
+      'XX-CLIENT': "DKFN/bunnycdn-cli 0.1.5"
     },
   });
 
@@ -38,7 +38,7 @@ class _Client {
     maxContentLength: Number.POSITIVE_INFINITY,
     headers: {
       'AccessKey': Config.getApiKey(k, "storages"),
-      'XX-CLIENT': "DKFN/bunnycdn-cli 0.1.0"
+      'XX-CLIENT': "DKFN/bunnycdn-cli 0.1.5"
     },
   });
 
