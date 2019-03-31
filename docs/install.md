@@ -2,7 +2,7 @@
 
 - [Ubuntu/Debian]()
 
-- [NPM]() -pending 0.5-
+- [NPM]()
 
 - [MacOS]() -pending 0.5-
 
@@ -10,22 +10,23 @@
 
 - [Docker]() -pending 0.5-
 
+> As the project is in early developpement stages and will receive frequent updates, I strongly suggest that you use NPM to easily get updates
 
 ## Ubuntu/Debian
 This is the only native release method for now. More operating systems will be supported native
 
-*Using this method will not get you autoupdates*
+*Using this method will not get you auto-updates. This will be supported in a future release*
 
 ### AMD64
 ```console
-wget http://cdn.infra.tetel.in/bunnycdn-cli/nightly/deb/bnycdn_0.1.4-1_amd64.deb
-sudo dpkg -i bnycdn_0.1.4-1_amd64.deb 
+wget http://cdn.infra.tetel.in/bunnycdn-cli/nightly/deb/bnycdn_0.1.5-1_amd64.deb
+sudo dpkg -i bnycdn_0.1.5-1_amd64.deb 
 ```
 
 ### ARM
 ```console
-wget http://cdn.infra.tetel.in/bunnycdn-cli/nightly/deb/bnycdn_0.1.4-1_armel.deb
-sudo dpkg -i bnycdn_0.1.4-1_armel.deb 
+wget http://cdn.infra.tetel.in/bunnycdn-cli/nightly/deb/bnycdn_0.1.5-1_armel.deb
+sudo dpkg -i bnycdn_0.1.5-1_armel.deb 
 ```
 
 
@@ -45,13 +46,13 @@ $ bnycdn help
 Simple cli for BunnyCDN service. This app is not an official one.
 
 VERSION
-  bnycdn/0.0.2 linux-x64 node-v8.10.0
+  bnycdn/0.1.5 linux-x64 node-v8.10.0
 
 USAGE
   $ bnycdn [COMMAND]
 
 COMMANDS
-  cp    This is the cp-like command for BunnyCDN storages. Cp has only upload implemented for now
+  cp    This is the cp-like command for BunnyCDN storages.
   help  display help for bnycdn
   key   To add / delete / set a key for a pullzon or a storage
   ls    describe the command here
