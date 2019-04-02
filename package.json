@@ -64,7 +64,7 @@
   "scripts": {
     "postpack": "rm -f oclif.manifest.json",
     "prepack": "rm -rf lib && tsc -b && oclif-dev manifest && oclif-dev readme",
-    "test": "mocha \"test/**/*.test.ts\"",
+    "test": "(export BNYCDN_HOMEFILE='./test/.bnycdn'; rm $BNYCDN_HOMEFILE; mocha \"test/**/*.test.ts\")",
     "version": "oclif-dev readme && git add README.md"
   },
   "types": "lib/index.d.ts"

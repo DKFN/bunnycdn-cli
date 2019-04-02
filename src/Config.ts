@@ -14,7 +14,7 @@ export interface IConfig {
 }
 
 class _Config {
-  static storePath = os.homedir() + "/.bunnycdn";
+  static storePath = process.env["BNYCDN_HOMEFILE"] || (os.homedir() + "/.bunnycdn");
 
   private configuration: IConfig = {
     pullzones: [],
