@@ -1,5 +1,6 @@
 import {Command, flags} from '@oclif/command'
 import {Config, IStoredKey} from "../Config";
+import * as process from "process";
 
 export default class Key extends Command {
 
@@ -64,7 +65,7 @@ export default class Key extends Command {
       // TODO : Allow edition in prompt mode if no params is specified
       if (flags.value) {
         this.addKey(flags.value, flags.set, flags.type);
-        this.exit(0);
+        return ;
       } else {
         this.error(" 1 You must specify a value and a type for the set operation and must be correctly set",
           {code: "NOVALUE", exit: 1}
