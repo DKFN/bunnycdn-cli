@@ -54,7 +54,7 @@ class _Config {
       return ;
     }
 
-    this.configuration[type] = _.filter(this.configuration[type], {name: k});
+    this.configuration[type] = _.filter(this.configuration[type], (e) => e.name !== k);
     this.persistConf();
     console.log("ⓘSuccessfully deleted key : " + k);
   }
