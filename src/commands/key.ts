@@ -73,14 +73,7 @@ export default class Key extends Command {
     }
 
     if (flags.del) {
-      if (flags.type && this.checkType(flags.type)) {
         Config.deleteKey(flags.del, flags.type);
-        this.exit(0);
-      } else {
-        this.error("2 You must specify a value and a type for the set operation and must be correctly set",
-          {code: "NOVALUE", exit: 1}
-        );
-      }
     }
   }
 
