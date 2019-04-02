@@ -8,34 +8,35 @@
   },
   "bugs": "https://github.com/DKFN/bnycdn/issues",
   "dependencies": {
-    "@oclif/command": "^1.5.10",
-    "@oclif/config": "^1.12.6",
+    "@oclif/command": "^1.5.12",
+    "@oclif/config": "^1.12.12",
     "@oclif/plugin-help": "^2.1.6",
     "axios": "^0.18.0",
     "cli-ux": "^5.2.1",
     "console.table": "^0.10.0",
     "filesize": "^4.1.2",
     "fs-extra": "^7.0.1",
-    "globby": "^9.1.0",
+    "globby": "^9.2.0",
     "lodash": "^4.17.11",
     "tslib": "^1.9.3"
   },
   "devDependencies": {
-    "@oclif/dev-cli": "^1.21.0",
+    "@oclif/dev-cli": "^1.22.0",
     "@oclif/test": "^1.2.4",
     "@oclif/tslint": "^3.1.1",
     "@types/chai": "^4.1.7",
     "@types/filesize": "^4.1.0",
     "@types/form-data": "^2.2.1",
     "@types/fs-extra": "^5.0.5",
-    "@types/lodash": "^4.14.122",
+    "@types/lodash": "^4.14.123",
     "@types/mocha": "^5.2.6",
-    "@types/node": "^10.12.26",
+    "@types/node": "^10.14.4",
     "chai": "^4.2.0",
+    "mocha": "^6.0.2",
     "nyc": "^13.3.0",
-    "ts-node": "^8.0.2",
-    "tslint": "^5.12.1",
-    "typescript": "^3.3.3"
+    "ts-node": "^8.0.3",
+    "tslint": "^5.15.0",
+    "typescript": "^3.4.1"
   },
   "engines": {
     "node": ">=8.0.0"
@@ -62,9 +63,8 @@
   "repository": "DKFN/bnycdn",
   "scripts": {
     "postpack": "rm -f oclif.manifest.json",
-    "posttest": "tslint -p test -t stylish",
     "prepack": "rm -rf lib && tsc -b && oclif-dev manifest && oclif-dev readme",
-    "test": "nyc --extension .ts mocha --forbid-only \"test/**/*.test.ts\"",
+    "test": "mocha \"test/**/*.test.ts\"",
     "version": "oclif-dev readme && git add README.md"
   },
   "types": "lib/index.d.ts"
