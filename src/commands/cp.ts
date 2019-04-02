@@ -8,20 +8,22 @@ import {downloadScanDir, IStatusStruct, stuckWatcher, uploadScanDir} from "../ut
 
 export default class Cp extends Command {
 
-  static description = 'This is the cp-like command for BunnyCDN storages. Cp has only upload implemented for now';
+  static description = 'This is the cp-like command for BunnyCDN storages.';
 
   static examples = [
     `
-    ### One file upload
+    Maximum async file operations is 8. You can change this value: https://dkfn.github.io/bunnycdn-cli/docs/set-workers
     
-    ➜  bunnycdn-cli git:(master) ✗ bnycdn cp -s tetelincdn --from ./dist/deb/bnycdn_0.0.2-1_amd64.deb --to /tetelincdn/nightly/deb/test.deb
+    One file upload
+    
+    $ bnycdn cp -s tetelincdn --from ./dist/deb/bnycdn_0.0.2-1_amd64.deb --to /tetelincdn/nightly/deb/test.deb
     ⌛[UP]                 /tetelincdn/nightly/deb/test.deb => 8.78 MB
     ✔[OK]                 /tetelincdn/nightly/deb/test.deb => 8.78 MB
 
     
-    ### Recursive file upload
+    Recursive file upload
     
-    ➜  bunnycdn-cli git:(master) ✗ bnycdn -s dkfn -R --from ./dist --to /dkfn/nightly                
+    $ bnycdn -s dkfn -R --from ./dist --to /dkfn/nightly                
      ⌛[UP] [ ∞ 0| ⇈ 1]    /dkfn/nightly/deb/Packages => 1.04 KB
      ⌛[UP] [ ∞ 0| ⇈ 2]    /dkfn/nightly/deb/Packages.bz2 => 656 B
      ⌛[UP] [ ∞ 0| ⇈ 3]    /dkfn/nightly/deb/Packages.gz => 597 B
@@ -37,7 +39,6 @@ export default class Cp extends Command {
      ✔[OK] [ ∞ 0| ⇈ 1]    /dkfn/nightly/deb/bnycdn_0.0.2-1_armel.deb => 7.65 MB
      ✔[OK]                /dkfn/nightly/deb/bnycdn_0.0.2-1_amd64.deb => 8.78 MB
      
-     Maximum parrallel file uploads is 4
     `,
   ];
 
