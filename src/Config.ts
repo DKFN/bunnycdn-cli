@@ -66,8 +66,8 @@ class _Config {
   public getApiKey(k: string, type: string = "pullzones"): string | undefined {
     const maybeKey = this.get(k, type);
     if (!maybeKey)
-      console.error("There is no key " + k);
-    return maybeKey && maybeKey.value;
+      process.env["BNYCDN_CI"] || console.error("There is no key " + k);
+    return (maybeKey && maybeKey.value) || (process.env["BNYCDN_CI"] && "mocked");
   }
 
   // This function persists the current state of the configuration into the configuration file
