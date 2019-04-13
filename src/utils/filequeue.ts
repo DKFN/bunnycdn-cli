@@ -48,7 +48,7 @@ class Filequeue {
         clearInterval(watcherId);
       } else {
         if (Filequeue.status.working < SCHEDULER_PARRALLEL) {
-          const launched = this.queue.shift();
+          const launched = this.queue.pop();
           launched && this.working.push(launched);
           launched && launched.handler(Filequeue.status).then(() => {
             _.remove(this.working, launched);
