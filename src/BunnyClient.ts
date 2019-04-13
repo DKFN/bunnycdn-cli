@@ -4,8 +4,9 @@ import * as filesize from "filesize";
 import * as fse from "fs-extra";
 import * as _ from "lodash";
 import {cli} from "cli-ux";
-import {internalScheduler, IStatusStruct, qString} from "./utils/fsutils";
+import {IStatusStruct} from "./utils/fsutils";
 import * as fs from "fs";
+import {qString} from "./utils/filequeue";
 const cTable = require('console.table');
 
 
@@ -17,7 +18,7 @@ class _Client {
       'Content-Type': 'application/json',
       'Accept': 'application/json',
       'AccessKey': Config.getApiKey(k, type),
-      'XX-CLIENT': "DKFN/bunnycdn-cli 0.1.5"
+      'XX-CLIENT': "DKFN/bunnycdn-cli 0.2.0"
     }
   });
 
@@ -28,7 +29,7 @@ class _Client {
     maxContentLength: Number.POSITIVE_INFINITY,
     headers: {
       'AccessKey': Config.getApiKey(k, "storages"),
-      'XX-CLIENT': "DKFN/bunnycdn-cli 0.1.5"
+      'XX-CLIENT': "DKFN/bunnycdn-cli 0.2.0"
     },
   });
 
@@ -38,7 +39,7 @@ class _Client {
     maxContentLength: Number.POSITIVE_INFINITY,
     headers: {
       'AccessKey': Config.getApiKey(k, "storages"),
-      'XX-CLIENT': "DKFN/bunnycdn-cli 0.1.5"
+      'XX-CLIENT': "DKFN/bunnycdn-cli 0.2.0"
     },
   });
 
@@ -88,6 +89,8 @@ class _Client {
                             maybeLength?: string,
                             ) {
     try {
+      counterRef && counterRef.pending--;
+      counterRef && counterRef.working++;
       counterRef && (counterRef.lastUpdate = Date.now());
       const pathArray = pathToDownload.split("/");
       const dir = pathArray.splice(0, pathArray.length - 1).join("/");
@@ -109,12 +112,14 @@ class _Client {
       if (counterRef) {
         counterRef.ok = counterRef.ok + 1;
         counterRef.working = counterRef.working - 1;
+
       }
       console.log( " ✔ [OK] " + qString(counterRef) + "    " + pathToDownload + " => " + size);
     } catch (e) {
       console.log(e);
       if (counterRef) {
         counterRef.working = counterRef.working - 1;
+        // counterRef.pending = counterRef.pending - 1;
       }
       _Client.throwHttpError(e);
     }
@@ -127,6 +132,8 @@ class _Client {
                           pathToUpload: string,
                           counterRef?: IStatusStruct) {
     try {
+      counterRef && counterRef.pending--;
+      counterRef && counterRef.working++;
       counterRef && (counterRef.lastUpdate = Date.now());
       const fd = fs.openSync(from, 'r');
       if (fd === -1) {
@@ -263,12 +270,16 @@ class _Client {
 
   public async listDirectory(k: string, targetPath: string, status?: IStatusStruct) {
     try {
+      status && status.pending--;
+      status && status.working++;
+
       const response = await _Client.RESTClient(k, "storages").get(targetPath);
 
-      if (status && status.working > 0) {
-        status.working = status.working - 1;
-      }
+      // if (status && status.working > 0) {
+      //  status.working = status.working - 1;
+      //}
 
+      status && status.working--;
       if (!Array.isArray(response.data)) {
         console.error("We didnt get a correct response from BunnyCDN. Please check if you have errors upper.");
         return;

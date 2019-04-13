@@ -30,15 +30,15 @@ USAGE
 <!-- usagestop -->
 # Commands
 <!-- commands -->
-* [`bnycdn cp []`](#bnycdn-cp)
+* [`bnycdn cp []`](#bnycdn-cp-)
 * [`bnycdn help [COMMAND]`](#bnycdn-help-command)
-* [`bnycdn key []`](#bnycdn-key)
-* [`bnycdn ls []`](#bnycdn-ls)
+* [`bnycdn key []`](#bnycdn-key-)
+* [`bnycdn ls []`](#bnycdn-ls-)
 * [`bnycdn pz [PULLZONES]`](#bnycdn-pz-pullzones)
 
 ## `bnycdn cp []`
 
-This is the cp-like command for BunnyCDN storages. Cp has only upload implemented for now
+This is the cp-like command for BunnyCDN storages.
 
 ```
 USAGE
@@ -53,17 +53,19 @@ OPTIONS
 
 EXAMPLE
 
-       ### One file upload
+       Maximum async file operations is 8. You can change this value: 
+  https://dkfn.github.io/bunnycdn-cli/docs/set-workers
     
-       ➜  bunnycdn-cli git:(master) ✗ bnycdn cp -s tetelincdn --from ./dist/deb/bnycdn_0.0.2-1_amd64.deb --to 
-  /tetelincdn/nightly/deb/test.deb
+       One file upload
+    
+       $ bnycdn cp -s tetelincdn --from ./dist/deb/bnycdn_0.0.2-1_amd64.deb --to /tetelincdn/nightly/deb/test.deb
        ⌛[UP]                 /tetelincdn/nightly/deb/test.deb => 8.78 MB
        ✔[OK]                 /tetelincdn/nightly/deb/test.deb => 8.78 MB
 
     
-       ### Recursive file upload
+       Recursive file upload
     
-       ➜  bunnycdn-cli git:(master) ✗ bnycdn -s dkfn -R --from ./dist --to /dkfn/nightly                
+       $ bnycdn -s dkfn -R --from ./dist --to /dkfn/nightly                
         ⌛[UP] [ ∞ 0| ⇈ 1]    /dkfn/nightly/deb/Packages => 1.04 KB
         ⌛[UP] [ ∞ 0| ⇈ 2]    /dkfn/nightly/deb/Packages.bz2 => 656 B
         ⌛[UP] [ ∞ 0| ⇈ 3]    /dkfn/nightly/deb/Packages.gz => 597 B
@@ -78,8 +80,6 @@ EXAMPLE
         ✔[OK] [ ∞ 0| ⇈ 2]    /dkfn/nightly/deb/Release => 1.96 KB
         ✔[OK] [ ∞ 0| ⇈ 1]    /dkfn/nightly/deb/bnycdn_0.0.2-1_armel.deb => 7.65 MB
         ✔[OK]                /dkfn/nightly/deb/bnycdn_0.0.2-1_amd64.deb => 8.78 MB
-     
-        Maximum parrallel file uploads is 4
 ```
 
 _See code: [src/commands/cp.ts](https://github.com/DKFN/bnycdn/blob/v0.1.5/src/commands/cp.ts)_
