@@ -19,13 +19,13 @@ This is the only native release method for now. More operating systems will be s
 
 ### AMD64
 ```console
-wget http://cdn.infra.tetel.in/bunnycdn-cli/nightly/deb/bnycdn_0.2.0-1_amd64.deb
+wget http://cdn.infra.tetel.in/bunnycdn-cli/nightly/deb/bnycdn_0.2.1-1_amd64.deb
 sudo dpkg -i bnycdn_0.2.0-1_amd64.deb 
 ```
 
 ### ARM
 ```console
-wget http://cdn.infra.tetel.in/bunnycdn-cli/nightly/deb/bnycdn_0.2.0-1_armel.deb
+wget http://cdn.infra.tetel.in/bunnycdn-cli/nightly/deb/bnycdn_0.2.1-1_armel.deb
 sudo dpkg -i bnycdn_0.2.0-1_armel.deb 
 ```
 
@@ -46,7 +46,7 @@ $ bnycdn help
 Simple cli for BunnyCDN service. This app is not an official one.
 
 VERSION
-  bnycdn/0.1.5 linux-x64 node-v8.10.0
+  bnycdn/0.2.1 linux-x64 node-v8.10.0
 
 USAGE
   $ bnycdn [COMMAND]
