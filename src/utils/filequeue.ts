@@ -1,12 +1,10 @@
-import {qString} from "./fsutils";
-
-const SCHEDULER_PARRALLEL = Number.parseInt(process.env["BNYCDN_PARALLEL"] || "8");
-
 import * as _ from "lodash";
 
+const SCHEDULER_PARRALLEL = Number.parseInt(process.env["BNYCDN_PARALLEL"] || "4");
+
 export enum FileDirection {
-  DOWNLOAD,
-  UPLOAD
+  DOWNLOAD = "DL",
+  UPLOAD = "UP"
 }
 
 export interface IFileDefinition {
@@ -63,9 +61,10 @@ class Filequeue {
     const warnerFuncId = setInterval(() => {
       if (statusStruct.lastUpdate <= Date.now() - 5000) {
         console.info(" ⌛ [WT] " + qString(statusStruct) + "    It seems that I am still waiting for " + statusStruct.working + " files to process. Please wait ...");
-        this.working.forEach((e) => {
-          console.log(" ⌛ [DL] " + qString(statusStruct) + "    " + e.path + " => " + e.size);
+        this.working.forEach((e: IFileDefinition) => {
+          console.log(" ⌛ [" + e.direction + "] " + qString(statusStruct) + "    " + e.path + " => " + e.size);
         });
+        console.log("---------------------------------------------------");
         statusStruct.lastUpdate = Date.now();
       }
 
@@ -74,6 +73,10 @@ class Filequeue {
     }, 500);
   }
 }
+
+export const qString = (counterRef?: IQueueStatusStruct) => counterRef
+        && counterRef.pending + counterRef.working !== 0
+        && `[ ∞ ${counterRef.pending}| ⇅ ${counterRef.working} | o ${counterRef.ok}]` || "            ";
 
 const FileQueue = new Filequeue();
 

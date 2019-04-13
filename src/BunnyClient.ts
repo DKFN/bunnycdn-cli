@@ -4,8 +4,9 @@ import * as filesize from "filesize";
 import * as fse from "fs-extra";
 import * as _ from "lodash";
 import {cli} from "cli-ux";
-import {internalScheduler, IStatusStruct, qString} from "./utils/fsutils";
+import {IStatusStruct} from "./utils/fsutils";
 import * as fs from "fs";
+import {qString} from "./utils/filequeue";
 const cTable = require('console.table');
 
 
@@ -17,7 +18,7 @@ class _Client {
       'Content-Type': 'application/json',
       'Accept': 'application/json',
       'AccessKey': Config.getApiKey(k, type),
-      'XX-CLIENT': "DKFN/bunnycdn-cli 0.1.5"
+      'XX-CLIENT': "DKFN/bunnycdn-cli 0.2.0"
     }
   });
 
@@ -28,7 +29,7 @@ class _Client {
     maxContentLength: Number.POSITIVE_INFINITY,
     headers: {
       'AccessKey': Config.getApiKey(k, "storages"),
-      'XX-CLIENT': "DKFN/bunnycdn-cli 0.1.5"
+      'XX-CLIENT': "DKFN/bunnycdn-cli 0.2.0"
     },
   });
 
@@ -38,7 +39,7 @@ class _Client {
     maxContentLength: Number.POSITIVE_INFINITY,
     headers: {
       'AccessKey': Config.getApiKey(k, "storages"),
-      'XX-CLIENT': "DKFN/bunnycdn-cli 0.1.5"
+      'XX-CLIENT': "DKFN/bunnycdn-cli 0.2.0"
     },
   });
 
@@ -131,6 +132,8 @@ class _Client {
                           pathToUpload: string,
                           counterRef?: IStatusStruct) {
     try {
+      counterRef && counterRef.pending--;
+      counterRef && counterRef.working++;
       counterRef && (counterRef.lastUpdate = Date.now());
       const fd = fs.openSync(from, 'r');
       if (fd === -1) {
