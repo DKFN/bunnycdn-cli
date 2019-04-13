@@ -88,6 +88,8 @@ class _Client {
                             maybeLength?: string,
                             ) {
     try {
+      counterRef && counterRef.pending--;
+      counterRef && counterRef.working++;
       counterRef && (counterRef.lastUpdate = Date.now());
       const pathArray = pathToDownload.split("/");
       const dir = pathArray.splice(0, pathArray.length - 1).join("/");
@@ -109,12 +111,14 @@ class _Client {
       if (counterRef) {
         counterRef.ok = counterRef.ok + 1;
         counterRef.working = counterRef.working - 1;
+
       }
       console.log( " ✔ [OK] " + qString(counterRef) + "    " + pathToDownload + " => " + size);
     } catch (e) {
       console.log(e);
       if (counterRef) {
         counterRef.working = counterRef.working - 1;
+        // counterRef.pending = counterRef.pending - 1;
       }
       _Client.throwHttpError(e);
     }
@@ -263,12 +267,16 @@ class _Client {
 
   public async listDirectory(k: string, targetPath: string, status?: IStatusStruct) {
     try {
+      status && status.pending--;
+      status && status.working++;
+
       const response = await _Client.RESTClient(k, "storages").get(targetPath);
 
-      if (status && status.working > 0) {
-        status.working = status.working - 1;
-      }
+      // if (status && status.working > 0) {
+      //  status.working = status.working - 1;
+      //}
 
+      status && status.working--;
       if (!Array.isArray(response.data)) {
         console.error("We didnt get a correct response from BunnyCDN. Please check if you have errors upper.");
         return;

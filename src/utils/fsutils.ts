@@ -2,6 +2,7 @@ import Cp from "../commands/cp";
 import {setInterval} from "timers";
 import * as fs from "fs";
 import {Client} from "../BunnyClient";
+import FileQueue, {FileDirection, IQueueStatusStruct} from "./filequeue";
 
 const SCHEDULER_PARRALLEL = Number.parseInt(process.env["BNYCDN_PARALLEL"] || "8");
 
@@ -12,18 +13,6 @@ export interface IStatusStruct {
   ok: number;
   lastUpdate: number;
 }
-
-export const stuckWatcher = (statusStruct: IStatusStruct) => {
-  const warnerFuncId = setInterval(() => {
-      if (statusStruct.lastUpdate <= Date.now() - 5000) {
-        console.info(" ⌛ [WT] " + qString(statusStruct) + " It seems that I am still waiting for " + statusStruct.working + " files to process. Please wait ...");
-        statusStruct.lastUpdate = Date.now();
-      }
-
-      if (statusStruct.pending === 0 && statusStruct.working === 0)
-        clearInterval(warnerFuncId);
-    }, 500);
-};
 
 /**
  * -R option has quite an exotic behavior. We limit the number of simultaneous uploads to 2 to avoir overloading
@@ -65,12 +54,16 @@ export const downloadScanDir = async (k: string, path: string, to: string, statu
       .sort((a, b) => a.isDir && !b.isDir && -1 || 1)
       .map((e) => {
         if (e.isDir) {
-          internalScheduler(status, () => downloadScanDir(k,  e.FullPath + "/", to, status, removePath));
+          const handler = (status: IQueueStatusStruct) => downloadScanDir(k,  e.FullPath + "/", to, status, removePath);
+          FileQueue.register({size: "0", handler, direction: FileDirection.DOWNLOAD, path: e.FullPath + "/"});
+          // internalScheduler(status, handler);
           // console.log(e);
         } else {
           const pth = e.FullPath.replace(removePath, "");
-          console.log(" ↻ [WT] " + qString(status) + "    " + e.FullPath + " => "+ e.humanLenght);
-          internalScheduler(status, () => Client.downloadFile(k, e.FullPath, to + pth, status, e.humanLenght));
+          const handler = (status: IQueueStatusStruct) => Client.downloadFile(k, e.FullPath, to + pth, status, e.humanLenght);
+          // console.log(" ↻ [WT] " + qString(status) + "    " + e.FullPath + " => "+ e.humanLenght);
+          FileQueue.register({size: e.humanLenght, handler, direction: FileDirection.DOWNLOAD, path: e.FullPath});
+          // internalScheduler(status, handler);
         }
       })
   } catch (e) {

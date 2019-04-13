@@ -3,7 +3,7 @@ import {Config} from "../Config";
 import {Client} from "../BunnyClient";
 import * as fs from "fs";
 import {setInterval} from "timers";
-import {downloadScanDir, IStatusStruct, stuckWatcher, uploadScanDir} from "../utils/fsutils";
+import {downloadScanDir, IStatusStruct, uploadScanDir} from "../utils/fsutils";
 
 
 export default class Cp extends Command {
@@ -68,7 +68,6 @@ export default class Cp extends Command {
     if (flags.to && flags.from) {
       if (fs.existsSync(flags.from)) {
           if (flags.R) {
-            stuckWatcher(Cp.status);
             uploadScanDir(
               flags.from.endsWith("/") ? flags.from : flags.from + "/",
               flags.to.endsWith("/") ? flags.to : flags.to + "/",
@@ -81,7 +80,6 @@ export default class Cp extends Command {
             }
       } else {
           if (flags.R) {
-            stuckWatcher(Cp.status);
             downloadScanDir(flags.storage!, flags.from, flags.to, Cp.status, flags.from);
           } else {
             // TODO : Check if filename is written, if not, append to path inside function
