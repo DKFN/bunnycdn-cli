@@ -32,6 +32,7 @@ class Filequeue {
 
   public register(f: IFileDefinition) {
     this.queue.push(f);
+    console.log(" ↻ [WT] " + qString(Filequeue.status) + "    " + f.path + " => "+ f.size);
     Filequeue.status.pending++;
     if (!this.launched) {
       this.launched = true;
@@ -49,15 +50,10 @@ class Filequeue {
         if (Filequeue.status.working < SCHEDULER_PARRALLEL) {
           const launched = this.queue.shift();
           launched && this.working.push(launched);
-
-          // Filequeue.status.pending = Filequeue.status.pending - 1;
           launched && launched.handler(Filequeue.status).then(() => {
-            // Filequeue.status.working = Filequeue.status.working - 1;
             _.remove(this.working, launched);
-            // console.log(this.working);
           });
         }
-        // TODO : Check number of actual workers and if under then launch
       }
 
     }, 1);

@@ -61,7 +61,6 @@ export const downloadScanDir = async (k: string, path: string, to: string, statu
         } else {
           const pth = e.FullPath.replace(removePath, "");
           const handler = (status: IQueueStatusStruct) => Client.downloadFile(k, e.FullPath, to + pth, status, e.humanLenght);
-          // console.log(" ↻ [WT] " + qString(status) + "    " + e.FullPath + " => "+ e.humanLenght);
           FileQueue.register({size: e.humanLenght, handler, direction: FileDirection.DOWNLOAD, path: e.FullPath});
           // internalScheduler(status, handler);
         }
