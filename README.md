@@ -1,6 +1,5 @@
-bnycdn
+# bnycdn
 
-// https://sonarcloud.io/api/project_badges/quality_gate?project=DKFN_bunnycdn-cli
 ![SonarQuality](https://sonarcloud.io/api/project_badges/quality_gate?project=DKFN_bunnycdn-cli)
 ======
 
