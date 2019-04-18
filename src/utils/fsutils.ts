@@ -24,7 +24,7 @@ export const uploadScanDir = (dirPath: string,
                               targetPath: string,
                               storageKey: string,
                               status: IStatusStruct,
-                              handler: (k: string, f: string, t: string, ststrct: IStatusStruct) => void) => {
+                              handler: (k: string, f: string, t: string, ststrct: IStatusStruct) => Promise<void>) => {
 
   const filesGot = fs.readdirSync(dirPath);
   filesGot.map((file) => {
