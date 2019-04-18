@@ -1,5 +1,7 @@
 bnycdn
 
+// https://sonarcloud.io/api/project_badges/quality_gate?project=DKFN_bunnycdn-cli
+![SonarQuality](https://sonarcloud.io/api/project_badges/quality_gate?project=DKFN_bunnycdn-cli)
 ======
 
 Simple cli for BunnyCDN service. This app is not an official one.
