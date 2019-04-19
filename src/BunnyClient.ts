@@ -191,6 +191,20 @@ class _Client {
     });
   }
 
+  public async removeFile(apiKey: string = "default", pathToDelete: string) {
+    try {
+      const response = await _Client.RESTClient(apiKey, "pullzones").delete(pathToDelete);
+      if (response.status === 200) {
+        console.info(` ✔ [OK] File deleted at : ${pathToDelete}`);
+      } else {
+
+        console.error(" ❌ Sorry, there was an error trying to delete the file at the path : " + pathToDelete);
+      }
+    } catch (e) {
+      _Client.throwHttpError(e);
+    }
+  }
+
   // POST   /api/pullzone/removeBlockedIp
   public async removeBlockedIp(apiKey: string = "default", k: string = "default", ipToBlock: string) {
     this.pullzoneActionByName(apiKey, k, async (pullZone: any) => {

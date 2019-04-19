@@ -18,9 +18,9 @@ export default class Rm extends Command {
 
   static flags = {
     help: flags.help({char: 'h'}),
-    storage: flags.string({char: 's'}),
-    from: flags.string({char: 'f'}),
-    R: flags.boolean({char: 'R'}),
+    storage: flags.string({char: 's', description: "Name of the target storage"}),
+    from: flags.string({char: 'f', description: "Path to remove (from)"}),
+    R: flags.boolean({char: 'R', description: "Recursive flag"}),
   };
 
   static filesPooled = 0;
@@ -32,5 +32,12 @@ export default class Rm extends Command {
   async run() {
     Config.loadConfig();
     const {args, flags} = this.parse(Rm);
+
+    if (flags.R) {
+
+    } else {
+      Client.removeFile(flags.storage, flags.from!);
+      return 0;
+    }
   }
 }
