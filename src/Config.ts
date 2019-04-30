@@ -47,7 +47,7 @@ class _Config {
   }
 
   // Deletes a key and its values from the store
-  public deleteKey(k: string, type: string = "pullzones") : void {
+  public deleteKey(k: string, type: string = "apikey") : void {
     const maybeValue = this.get(k, type);
     if (!maybeValue) {
       console.error("There is no key " + k);
@@ -63,7 +63,7 @@ class _Config {
     return _.find(this.configuration[type], {'name': k})
   }
 
-  public getApiKey(k: string, type: string = "pullzones"): string | undefined {
+  public getApiKey(k: string, type: string = "apikey"): string | undefined {
     const maybeKey = this.get(k, type);
     if (!maybeKey)
       process.env["BNYCDN_CI"] || console.error("There is no key " + k);

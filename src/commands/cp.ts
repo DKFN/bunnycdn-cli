@@ -63,7 +63,7 @@ export default class Cp extends Command {
 
     console.log(argv);
     const from = argv[0] || flags.from;
-    const to = argv[1] || flags.from;
+    const to = argv[1] || flags.to;
 
     if (!flags.storage) {
       this.error("You must specify a storage zone with -s");

@@ -12,7 +12,7 @@ const cTable = require('console.table');
 
 class _Client {
   static RESTClient = (k: string, type: string) => axios.create({
-    baseURL: type === "pullzones" ? "https://bunnycdn.com/api/" : "https://storage.bunnycdn.com/",
+    baseURL: type === "apikey" ? "https://bunnycdn.com/api/" : "https://storage.bunnycdn.com/",
     timeout: 20000,
     headers: {
       'Content-Type': 'application/json',
@@ -46,7 +46,7 @@ class _Client {
   // GET   /api/pullzone
   public async listPullZones(k: string = "default") {
     try {
-      const response = await _Client.RESTClient(k, "pullzones").get("pullzone");
+      const response = await _Client.RESTClient(k, "apikey").get("pullzone");
 
       if (!Array.isArray(response.data)) {
         console.error("We didnt get a correct response from BunnyCDN. Please check if you have errors upper.");
@@ -73,7 +73,7 @@ class _Client {
   // GET   /api/statistics
   public async getStatistics(k: string = "default") {
     try {
-      const response = await _Client.RESTClient(k, "pullzones").get("statistics");
+      const response = await _Client.RESTClient(k, "apikey").get("statistics");
       return {
         total: filesize(response.data.TotalBandwidthUsed),
         requests: response.data.TotalRequestsServed,
@@ -88,7 +88,7 @@ class _Client {
   // GET   /api/billing
   public async getBilling(k: string = "default") {
     try {
-      const response = await _Client.RESTClient(k, "pullzones").get("billing")
+      const response = await _Client.RESTClient(k, "apikey").get("billing")
       console.log("This month: " + response.data.ThisMonthCharges.toFixed(2) + " Balance: " + response.data.Balance.toFixed(2) + "\n");
       return {
         storageTotal: response.data.MonthlyChargesStorage.toFixed(4),
@@ -106,7 +106,7 @@ class _Client {
   // POST  /api/pullzone/id
   public async purgeCache(apiKey: string = "default", k: string = "default") {
     this.pullzoneActionByName(apiKey, k, async (pullZone: any) => {
-      const purge = await _Client.RESTClient(apiKey, "pullzones").post("pullzone/" + pullZone.id + "/purgeCache");
+      const purge = await _Client.RESTClient(apiKey, "apikey").post("pullzone/" + pullZone.id + "/purgeCache");
       if (purge.status === 200)
         console.info(" ✔ Cleared cache for " + k + " successfully");
       else
@@ -131,6 +131,7 @@ class _Client {
 
       console.log(" ⌛ [DL] " + qString(counterRef) + "    "  + pathToDownload + " => " + ( maybeLength || " ? " ));
       const response = await _Client.FileDownload(k, from);
+      cli.action.
 
       if (!response.headers["content-length"]) {
         console.error("we did not get a filesize. (Did you tried to download a directory without -R option?)");
@@ -208,7 +209,7 @@ class _Client {
   public async addHost(apiKey: string = "default", k: string = "default", hostname: string) {
     this.pullzoneActionByName(apiKey, k, async (pullZone: any) => {
       try {
-        const response = await _Client.RESTClient(apiKey, "pullzones").post("pullzone/addHostname", {
+        const response = await _Client.RESTClient(apiKey, "apikey").post("pullzone/addHostname", {
           "PullZoneId": pullZone.id,
           "Hostname": hostname
         });
@@ -241,7 +242,7 @@ class _Client {
   public async removeBlockedIp(apiKey: string = "default", k: string = "default", ipToBlock: string) {
     this.pullzoneActionByName(apiKey, k, async (pullZone: any) => {
       try {
-        const response = await _Client.RESTClient(apiKey, "pullzones").post("pullzone/removeBlockedIp", {
+        const response = await _Client.RESTClient(apiKey, "apikey").post("pullzone/removeBlockedIp", {
           "PullZoneId": pullZone.id,
           "BlockedIp": ipToBlock
         });
@@ -261,7 +262,7 @@ class _Client {
   public async addBlockedIp(apiKey: string = "default", k: string = "default", ipToBlock: string) {
     this.pullzoneActionByName(apiKey, k, async (pullZone: any) => {
       try {
-        const response = await _Client.RESTClient(apiKey, "pullzones").post("pullzone/addBlockedIp", {
+        const response = await _Client.RESTClient(apiKey, "apikey").post("pullzone/addBlockedIp", {
           "PullZoneId": pullZone.id,
           "BlockedIp": ipToBlock
         });
@@ -282,7 +283,7 @@ class _Client {
   public async deleteHost(apiKey: string = "default", k: string, hostname: string) {
     this.pullzoneActionByName(apiKey, k, async (pullZone: any) => {
       try {
-        const response = await _Client.RESTClient("default", "pullzones")
+        const response = await _Client.RESTClient("default", "apikey")
           .delete("pullzone/deleteHostname?id=" + pullZone.id + "&hostname=" + hostname);
 
         if (response.status === 200) {
@@ -299,7 +300,7 @@ class _Client {
   // POST  /api/pullzone
   public async createPullzone(n: string, origin: string) {
     try {
-      const response = await _Client.RESTClient("default", "pullzones").post("pullzone", {
+      const response = await _Client.RESTClient("default", "apikey").post("pullzone", {
         "Name": n,
         "OriginUrl": origin,
       });
@@ -363,7 +364,7 @@ class _Client {
   }
 
   private async findPullzoneByName(apiKey: string, k: string = "default"): Promise<any> {
-    const response = await _Client.RESTClient(apiKey, "pullzones").get("pullzone");
+    const response = await _Client.RESTClient(apiKey, "apikey").get("pullzone");
 
     if (!Array.isArray(response.data)) {
       console.error("We didnt get a correct response from BunnyCDN. Please check if you have errors upper.");

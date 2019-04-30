@@ -83,7 +83,7 @@ export default class Key extends Command {
     const conf = Config.getConf();
     this.log("==== PullZones : ");
 
-    const pullzoneKeys = conf["pullzones"].map((pzKs: IStoredKey) => {
+    const pullzoneKeys = conf["apikey"].map((pzKs: IStoredKey) => {
       return {name: pzKs.name, value: pzKs.value};
     });
     console.table(pullzoneKeys);
@@ -96,13 +96,13 @@ export default class Key extends Command {
   }
 
   // TODO : Add prompt version  if parameters are unspecified
-  private addKey(v: string, k: string = "default", t: string = "pullzones") {
+  private addKey(v: string, k: string = "default", t: string = "apikey") {
     Config.mergeToConf( {name: k, value: v}, t);
     Config.persistConf();
     this.log(" ⓘ Key successfully set: " + k);
   }
 
   private checkType(type?: string) {
-    return (type === "pullzones" || type === "storages" || !type)
+    return (type === "apikey" || type === "storages" || !type)
   }
 }
