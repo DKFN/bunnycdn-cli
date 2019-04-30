@@ -64,7 +64,7 @@ class _Client {
         return  {id: x.Id, cacheQuality: x.CacheQuality, name: x.Name, hostnames: hostNamesString};
       });
       console.table(finalData);
-    } catch (e) {
+    } catch(e) {
       _Client.throwHttpError(e);
       return [];
     }
@@ -79,7 +79,25 @@ class _Client {
         requests: response.data.TotalRequestsServed,
         hitrate: response.data.CacheHitRate.toFixed(2) + "%"
       }
-    } catch (e) {
+    } catch(e) {
+      _Client.throwHttpError(e);
+      return;
+    }
+  }
+
+  // GET   /api/billing
+  public async getBilling(k: string = "default") {
+    try {
+      const response = await _Client.RESTClient(k, "pullzones").get("billing")
+      console.log("This month: " + response.data.ThisMonthCharges.toFixed(2) + " Balance: " + response.data.Balance.toFixed(2) + "\n");
+      return {
+        storageTotal: response.data.MonthlyChargesStorage.toFixed(4),
+        euTraffic: response.data.MonthlyChargesEUTraffic.toFixed(4),
+        usTraffic: response.data.MonthlyChargesUSTraffic.toFixed(4),
+        asiaTraffic: response.data.MonthlyChargesASIATraffic.toFixed(4),
+        saTraffic: response.data.MonthlyChargesSATraffic.toFixed(4)
+      };
+    } catch(e) {
       _Client.throwHttpError(e);
       return;
     }

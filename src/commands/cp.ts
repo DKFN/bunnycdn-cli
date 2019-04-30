@@ -54,11 +54,15 @@ export default class Cp extends Command {
 
   static status: IStatusStruct = {pending: 0, working: 0, errors: 0, ok: 0, lastUpdate: Date.now()};
 
-  static args = [{name: "", storage: "storage"}];
+  static args = [{name: "from", storage: "storage"}];
 
   async run() {
     Config.loadConfig();
-    const {args, flags} = this.parse(Cp);
+
+    // TODO : Use argv instead of flags for from/to
+    const {args, flags, argv} = this.parse(Cp);
+
+    console.log(argv);
 
     if (!flags.storage) {
       this.error("You must specify a storage zone with -s");
