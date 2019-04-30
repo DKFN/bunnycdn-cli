@@ -2,7 +2,6 @@ import {Command, flags} from '@oclif/command'
 import {Config} from "../Config";
 import {Client} from "../BunnyClient";
 import * as fs from "fs";
-import {setInterval} from "timers";
 import {downloadScanDir, IStatusStruct, uploadScanDir} from "../utils/fsutils";
 
 

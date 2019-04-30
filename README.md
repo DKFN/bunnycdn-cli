@@ -12,6 +12,7 @@ Simple cli for BunnyCDN service. This app is not an official one.
 !-->
 
 <!-- toc -->
+* [bnycdn](#bnycdn)
 * [Usage](#usage)
 * [Commands](#commands)
 <!-- tocstop -->
@@ -22,7 +23,7 @@ $ npm install -g bnycdn
 $ bnycdn COMMAND
 running command...
 $ bnycdn (-v|--version|version)
-bnycdn/0.2.1 linux-x64 node-v8.10.0
+bnycdn/0.2.3 linux-x64 node-v8.10.0
 $ bnycdn --help [COMMAND]
 USAGE
   $ bnycdn COMMAND
@@ -31,19 +32,39 @@ USAGE
 <!-- usagestop -->
 # Commands
 <!-- commands -->
-* [`bnycdn cp []`](#bnycdn-cp-)
+* [`bnycdn billing []`](#bnycdn-billing-)
+* [`bnycdn cp [FROM]`](#bnycdn-cp-from)
 * [`bnycdn help [COMMAND]`](#bnycdn-help-command)
 * [`bnycdn key []`](#bnycdn-key-)
 * [`bnycdn ls []`](#bnycdn-ls-)
 * [`bnycdn pz [PULLZONES]`](#bnycdn-pz-pullzones)
+* [`bnycdn rm []`](#bnycdn-rm-)
+* [`bnycdn stats []`](#bnycdn-stats-)
 
-## `bnycdn cp []`
+## `bnycdn billing []`
+
+This command is to get statics for your account
+
+```
+USAGE
+  $ bnycdn billing []
+
+OPTIONS
+  -h, --help     show CLI help
+  -k, --key=key  Key to use to get the statistics
+
+EXAMPLE
+```
+
+_See code: [src/commands/billing.ts](https://github.com/DKFN/bnycdn/blob/v0.2.3/src/commands/billing.ts)_
+
+## `bnycdn cp [FROM]`
 
 This is the cp-like command for BunnyCDN storages.
 
 ```
 USAGE
-  $ bnycdn cp []
+  $ bnycdn cp [FROM]
 
 OPTIONS
   -R, --R
@@ -83,7 +104,7 @@ EXAMPLE
         ✔[OK]                /dkfn/nightly/deb/bnycdn_0.0.2-1_amd64.deb => 8.78 MB
 ```
 
-_See code: [src/commands/cp.ts](https://github.com/DKFN/bnycdn/blob/v0.2.1/src/commands/cp.ts)_
+_See code: [src/commands/cp.ts](https://github.com/DKFN/bnycdn/blob/v0.2.3/src/commands/cp.ts)_
 
 ## `bnycdn help [COMMAND]`
 
@@ -150,7 +171,7 @@ EXAMPLE
            ⓘ Successfully deleted key : mynewkey
 ```
 
-_See code: [src/commands/key.ts](https://github.com/DKFN/bnycdn/blob/v0.2.1/src/commands/key.ts)_
+_See code: [src/commands/key.ts](https://github.com/DKFN/bnycdn/blob/v0.2.3/src/commands/key.ts)_
 
 ## `bnycdn ls []`
 
@@ -170,7 +191,7 @@ EXAMPLE
        Lists all the pul zone
 ```
 
-_See code: [src/commands/ls.ts](https://github.com/DKFN/bnycdn/blob/v0.2.1/src/commands/ls.ts)_
+_See code: [src/commands/ls.ts](https://github.com/DKFN/bnycdn/blob/v0.2.3/src/commands/ls.ts)_
 
 ## `bnycdn pz [PULLZONES]`
 
@@ -202,5 +223,43 @@ EXAMPLE
        Lists all the pull zones
 ```
 
-_See code: [src/commands/pz.ts](https://github.com/DKFN/bnycdn/blob/v0.2.1/src/commands/pz.ts)_
+_See code: [src/commands/pz.ts](https://github.com/DKFN/bnycdn/blob/v0.2.3/src/commands/pz.ts)_
+
+## `bnycdn rm []`
+
+This is the rm-like command for BunnyCDN storages.
+
+```
+USAGE
+  $ bnycdn rm []
+
+OPTIONS
+  -R, --R                Recursive flag
+  -f, --from=from        Path to remove (from)
+  -h, --help             show CLI help
+  -s, --storage=storage  Name of the target storage
+
+EXAMPLE
+
+       This command is used to remove file and directory recursivly on the given storage
+```
+
+_See code: [src/commands/rm.ts](https://github.com/DKFN/bnycdn/blob/v0.2.3/src/commands/rm.ts)_
+
+## `bnycdn stats []`
+
+This command is to get statics for your account
+
+```
+USAGE
+  $ bnycdn stats []
+
+OPTIONS
+  -h, --help     show CLI help
+  -k, --key=key  Key to use to get the statistics
+
+EXAMPLE
+```
+
+_See code: [src/commands/stats.ts](https://github.com/DKFN/bnycdn/blob/v0.2.3/src/commands/stats.ts)_
 <!-- commandsstop -->

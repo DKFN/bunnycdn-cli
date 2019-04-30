@@ -79,4 +79,5 @@ class _Config {
   }
 }
 
-export const Config = new _Config();
+const i = new _Config();
+export const Config = i;
