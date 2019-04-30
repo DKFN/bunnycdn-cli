@@ -28,14 +28,17 @@ export default class Pz extends Command {
     ban: flags.string({char: 'b', description: 'Bans an IP from a pullzone'}),
     grace: flags.string({char: 'g', description: 'Unbans an IP from a pullzone'}),
     create: flags.string({char: 'c', description: 'Creates a new pullzone'}),
-    value: flags.string({char: 'v', description: 'Value for add hostname / purge pullzone '})
+    value: flags.string({char: 'v', description: 'Value for add hostname / purge pullzone '}),
+    target: flags.string({char: 't', description: 'Target for the given operation'})
   };
 
-  static args = [{name: "PullZones", help: "help", list: "list"}];
+  static args = [{name: "command", help: "help", list: "list"}];
 
   async run() {
     Config.loadConfig();
-    const {flags} = this.parse(Pz);
+    const {flags, argv} = this.parse(Pz);
+
+    const command = argv[0];
 
     const checkHasValue = (maybeValue?: string) => {
       if (!maybeValue)
@@ -43,30 +46,28 @@ export default class Pz extends Command {
       return !!maybeValue;
     };
 
-    if (flags.list) {
+    if (flags.list || command === "list") {
       Client.listPullZones(flags.key || "default");
     }
 
-    if (flags.addHost && checkHasValue(flags.value)) {
-      Client.addHost(flags.key, flags.addHost, flags.value!);
+    if ((flags.addHost || command === "add") && checkHasValue(flags.value)) {
+      Client.addHost(flags.key, flags.addHost || flags.target, flags.value!);
     }
 
-    if (flags.delHost && checkHasValue(flags.value)) {
-      Client.deleteHost(flags.key, flags.delHost, flags.value!);
+    if ((flags.delHost || command === "del") && checkHasValue(flags.value)) {
+      Client.deleteHost(flags.key, flags.delHost || flags.target, flags.value!);
     }
 
-    if (flags.purge) {
-      Client.purgeCache(flags.key, flags.purge);
+    if (flags.purge || command === "purge") {
+      Client.purgeCache(flags.key, flags.purge || flags.target);
     }
 
-    if (flags.ban && checkHasValue(flags.value)) {
-      Client.addBlockedIp(flags.key, flags.ban, flags.value!);
+    if ((flags.ban || command === "ban") && checkHasValue(flags.value)) {
+      Client.addBlockedIp(flags.key, flags.ban || flags.target, flags.value!);
     }
 
-    if (flags.grace && checkHasValue(flags.value)) {
-      Client.removeBlockedIp(flags.key, flags.grace, flags.value!);
+    if ((flags.grace  || command === "grace") && checkHasValue(flags.value)) {
+      Client.removeBlockedIp(flags.key, flags.grace || flags.target, flags.value!);
     }
-
-
   }
 }

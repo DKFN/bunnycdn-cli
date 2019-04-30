@@ -53,7 +53,7 @@ export default class Cp extends Command {
 
   static status: IStatusStruct = {pending: 0, working: 0, errors: 0, ok: 0, lastUpdate: Date.now()};
 
-  static args = [{name: "from", storage: "storage"}];
+  static args = [{name: "from"}, {name: "to"}];
 
   async run() {
     Config.loadConfig();
@@ -62,32 +62,34 @@ export default class Cp extends Command {
     const {flags, argv} = this.parse(Cp);
 
     console.log(argv);
+    const from = argv[0] || flags.from;
+    const to = argv[1] || flags.from;
 
     if (!flags.storage) {
       this.error("You must specify a storage zone with -s");
       this.exit(127);
     }
 
-    if (flags.to && flags.from) {
-      if (fs.existsSync(flags.from)) {
+    if (to && from) {
+      if (fs.existsSync(from)) {
           if (flags.R) {
             uploadScanDir(
-              flags.from.endsWith("/") ? flags.from : flags.from + "/",
-              flags.to.endsWith("/") ? flags.to : flags.to + "/",
+              from.endsWith("/") ? from : from + "/",
+              to.endsWith("/") ? to : to + "/",
               flags.storage!,
               Cp.status,
               Client.uploadFile
             );
           } else {
-              Client.uploadFile(flags.storage, flags.from, flags.to!);
+              Client.uploadFile(flags.storage, from, to);
             }
       } else {
           if (flags.R) {
-            downloadScanDir(flags.storage!, flags.from, flags.to, Cp.status, flags.from);
+            downloadScanDir(flags.storage!, from, to, Cp.status, from);
           } else {
             // TODO : Check if filename is written, if not, append to path inside function
             Cp.status.working = Cp.status.working + 1;
-              Client.downloadFile(flags.storage, flags.from, flags.to);
+            Client.downloadFile(flags.storage, from, to);
           }
       }
     }

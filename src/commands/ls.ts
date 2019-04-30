@@ -19,17 +19,19 @@ export default class Ls extends Command {
     dir: flags.string({char: 'd'}),
   };
 
-  static args = [{name: "", storage: "storage"}];
+  static args = [{name: "Path", storage: "storage"}];
 
   async run() {
     Config.loadConfig();
-    const {flags} = this.parse(Ls);
+    const {flags, argv} = this.parse(Ls);
+    const maybeDir = argv[0] || flags.dir;
+    console.log(maybeDir);
 
-    if (!flags.storage || !flags.dir) {
+    if (!flags.storage || !maybeDir) {
       this.error("You must specify a storage zone with -s and a flag directory with -d");
       this.exit(127);
     } else {
-      const dirContent = await Client.listDirectory(flags.storage!, flags.dir!);
+      const dirContent = await Client.listDirectory(flags.storage!, maybeDir);
 
       const finalData = dirContent && dirContent
         .sort((a, b) => a.isDir && !b.isDir && -1 || 1)

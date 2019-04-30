@@ -53,15 +53,16 @@ export default class Key extends Command {
 
   async run() {
     Config.loadConfig();
-    const {flags} = this.parse(Key);
+    const {flags, argv} = this.parse(Key);
 
+    const command = argv[0];
 
     if (flags.list) {
       this.listKeys();
       return;
     }
 
-    if (flags.set) {
+    if (flags.set || command === "set") {
       // TODO : Allow edition in prompt mode if no params is specified
       if (flags.value) {
         this.addKey(flags.value, flags.set, flags.type);
