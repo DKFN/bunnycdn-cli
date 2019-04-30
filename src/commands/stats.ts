@@ -10,7 +10,7 @@ export default class Stats extends Command {
 
   async run() {
     Config.loadConfig();
-    const {args, flags} = this.parse(Stats);
+    const {flags} = this.parse(Stats);
     const res = await Client.getStatistics(flags.key);
     res && console.table([res]);
   }

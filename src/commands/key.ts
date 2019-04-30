@@ -53,7 +53,7 @@ export default class Key extends Command {
 
   async run() {
     Config.loadConfig();
-    const {args, flags} = this.parse(Key);
+    const {flags} = this.parse(Key);
 
 
     if (flags.list) {

@@ -35,7 +35,7 @@ export default class Pz extends Command {
 
   async run() {
     Config.loadConfig();
-    const {args, flags} = this.parse(Pz);
+    const {flags} = this.parse(Pz);
 
     const checkHasValue = (maybeValue?: string) => {
       if (!maybeValue)

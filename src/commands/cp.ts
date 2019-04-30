@@ -59,7 +59,7 @@ export default class Cp extends Command {
     Config.loadConfig();
 
     // TODO : Use argv instead of flags for from/to
-    const {args, flags, argv} = this.parse(Cp);
+    const {flags, argv} = this.parse(Cp);
 
     console.log(argv);
 

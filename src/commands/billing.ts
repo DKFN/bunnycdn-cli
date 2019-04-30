@@ -13,7 +13,7 @@ export default class Billing extends Command {
 
   async run() {
     Config.loadConfig();
-    const {args, flags} = this.parse(Billing);
+    const {flags} = this.parse(Billing);
     const res = await Client.getBilling(flags.key);
     res && console.table([res]);
   }

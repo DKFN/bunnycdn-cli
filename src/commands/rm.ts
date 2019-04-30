@@ -31,7 +31,7 @@ export default class Rm extends Command {
 
   async run() {
     Config.loadConfig();
-    const {args, flags} = this.parse(Rm);
+    const {flags} = this.parse(Rm);
 
     if (flags.R) {
 

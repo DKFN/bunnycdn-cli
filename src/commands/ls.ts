@@ -23,7 +23,7 @@ export default class Ls extends Command {
 
   async run() {
     Config.loadConfig();
-    const {args, flags} = this.parse(Ls);
+    const {flags} = this.parse(Ls);
 
     if (!flags.storage || !flags.dir) {
       this.error("You must specify a storage zone with -s and a flag directory with -d");
