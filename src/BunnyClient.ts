@@ -70,6 +70,21 @@ class _Client {
     }
   }
 
+  // GET   /api/statistics
+  public async getStatistics(k: string = "default") {
+    try {
+      const response = await _Client.RESTClient(k, "pullzones").get("statistics");
+      return {
+        total: filesize(response.data.TotalBandwidthUsed),
+        requests: response.data.TotalRequestsServed,
+        hitrate: response.data.CacheHitRate.toFixed(2) + "%"
+      }
+    } catch (e) {
+      _Client.throwHttpError(e);
+      return;
+    }
+  }
+
   // POST  /api/pullzone/id
   public async purgeCache(apiKey: string = "default", k: string = "default") {
     this.pullzoneActionByName(apiKey, k, async (pullZone: any) => {
@@ -193,11 +208,10 @@ class _Client {
 
   public async removeFile(apiKey: string = "default", pathToDelete: string) {
     try {
-      const response = await _Client.RESTClient(apiKey, "pullzones").delete(pathToDelete);
+      const response = await _Client.RESTClient(apiKey, "storages").delete(pathToDelete);
       if (response.status === 200) {
         console.info(` ✔ [OK] File deleted at : ${pathToDelete}`);
       } else {
-
         console.error(" ❌ Sorry, there was an error trying to delete the file at the path : " + pathToDelete);
       }
     } catch (e) {
