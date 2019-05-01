@@ -3,43 +3,14 @@ import {Config} from "../Config";
 import {Client} from "../BunnyClient";
 import * as fs from "fs";
 import {downloadScanDir, IStatusStruct, uploadScanDir} from "../utils/fsutils";
+import {CP_COMMAND_EXAMPLE} from "../examples";
 
 
 export default class Cp extends Command {
 
   static description = 'This is the cp-like command for BunnyCDN storages.';
 
-  static examples = [
-    `
-    Maximum async file operations is 8. You can change this value: https://dkfn.github.io/bunnycdn-cli/docs/set-workers
-    
-    One file upload
-    
-    $ bnycdn cp -s tetelincdn --from ./dist/deb/bnycdn_0.0.2-1_amd64.deb --to /tetelincdn/nightly/deb/test.deb
-    ⌛[UP]                 /tetelincdn/nightly/deb/test.deb => 8.78 MB
-    ✔[OK]                 /tetelincdn/nightly/deb/test.deb => 8.78 MB
-
-    
-    Recursive file upload
-    
-    $ bnycdn -s dkfn -R --from ./dist --to /dkfn/nightly                
-     ⌛[UP] [ ∞ 0| ⇈ 1]    /dkfn/nightly/deb/Packages => 1.04 KB
-     ⌛[UP] [ ∞ 0| ⇈ 2]    /dkfn/nightly/deb/Packages.bz2 => 656 B
-     ⌛[UP] [ ∞ 0| ⇈ 3]    /dkfn/nightly/deb/Packages.gz => 597 B
-     ⌛[UP] [ ∞ 0| ⇈ 4]    /dkfn/nightly/deb/Packages.xz => 656 B
-     ✔[OK] [ ∞ 3| ⇈ 3]    /dkfn/nightly/deb/Packages.xz => 656 B
-     ✔[OK] [ ∞ 3| ⇈ 2]    /dkfn/nightly/deb/Packages.gz => 597 B
-     ⌛[UP] [ ∞ 2| ⇈ 3]    /dkfn/nightly/deb/bnycdn_0.0.2-1_amd64.deb => 8.78 MB
-     ⌛[UP] [ ∞ 1| ⇈ 4]    /dkfn/nightly/deb/bnycdn_0.0.2-1_armel.deb => 7.65 MB
-     ✔[OK] [ ∞ 1| ⇈ 3]    /dkfn/nightly/deb/Packages => 1.04 KB
-     ✔[OK] [ ∞ 1| ⇈ 2]    /dkfn/nightly/deb/Packages.bz2 => 656 B
-     ⌛[UP] [ ∞ 0| ⇈ 3]    /dkfn/nightly/deb/Release => 1.96 KB
-     ✔[OK] [ ∞ 0| ⇈ 2]    /dkfn/nightly/deb/Release => 1.96 KB
-     ✔[OK] [ ∞ 0| ⇈ 1]    /dkfn/nightly/deb/bnycdn_0.0.2-1_armel.deb => 7.65 MB
-     ✔[OK]                /dkfn/nightly/deb/bnycdn_0.0.2-1_amd64.deb => 8.78 MB
-     
-    `,
-  ];
+  static examples = [ CP_COMMAND_EXAMPLE ];
 
   static flags = {
     help: flags.help({char: 'h'}),
@@ -58,10 +29,7 @@ export default class Cp extends Command {
   async run() {
     Config.loadConfig();
 
-    // TODO : Use argv instead of flags for from/to
     const {flags, argv} = this.parse(Cp);
-
-    console.log(argv);
     const from = argv[0] || flags.from;
     const to = argv[1] || flags.to;
 
@@ -70,12 +38,14 @@ export default class Cp extends Command {
       this.exit(127);
     }
 
+    const makePath = (userPath: string) => userPath.endsWith("/") ? userPath : userPath + "/";
+
     if (to && from) {
       if (fs.existsSync(from)) {
           if (flags.R) {
             uploadScanDir(
-              from.endsWith("/") ? from : from + "/",
-              to.endsWith("/") ? to : to + "/",
+              makePath(from),
+              makePath(to),
               flags.storage!,
               Cp.status,
               Client.uploadFile
@@ -85,7 +55,13 @@ export default class Cp extends Command {
             }
       } else {
           if (flags.R) {
-            downloadScanDir(flags.storage!, from, to, Cp.status, from);
+            downloadScanDir(
+              flags.storage!,
+              makePath(from),
+              makePath(to),
+              Cp.status,
+              from
+            );
           } else {
             // TODO : Check if filename is written, if not, append to path inside function
             Cp.status.working = Cp.status.working + 1;
