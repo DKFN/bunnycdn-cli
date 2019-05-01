@@ -6,7 +6,7 @@
   "bin": {
     "bnycdn": "./bin/run"
   },
-  "bugs": "https://github.com/DKFN/bnycdn/issues",
+  "bugs": "https://github.com/DKFN/bunnycdn-cli/issues",
   "dependencies": {
     "@oclif/command": "^1.5.12",
     "@oclif/config": "^1.12.12",
@@ -49,7 +49,7 @@
     "/npm-shrinkwrap.json",
     "/oclif.manifest.json"
   ],
-  "homepage": "https://github.com/DKFN/bnycdn",
+  "homepage": "https://github.com/DKFN/bunnycdn-cli",
   "keywords": [
     "oclif"
   ],
