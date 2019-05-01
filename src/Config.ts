@@ -19,7 +19,7 @@ class _Config {
   private configuration: IConfig = {
     pullzones: [], // FIXME : Deprecated field since 0.3.0
     storages: [],
-    apiKey: []
+    apikey: []
   };
 
   // Typically loading configuration from the storage files
