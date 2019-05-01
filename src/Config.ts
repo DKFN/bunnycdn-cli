@@ -17,8 +17,9 @@ class _Config {
   static storePath = process.env["BNYCDN_HOMEFILE"] || (os.homedir() + "/.bunnycdn");
 
   private configuration: IConfig = {
-    pullzones: [],
-    storages: []
+    pullzones: [], // FIXME : Deprecated field since 0.3.0
+    storages: [],
+    apiKey: []
   };
 
   // Typically loading configuration from the storage files
@@ -37,6 +38,12 @@ class _Config {
 
   // Gets the local configuration loaded
   public getConf() : IConfig {
+    // This is compatibility layer for < 0.3.0 when using config for first time in >= 0.3.0 versions
+    if (!this.configuration["apikey"]) {
+      this.configuration["apikey"] = this.configuration["pullzones"];
+      this.persistConf();
+    }
+
     return this.configuration
   }
 
