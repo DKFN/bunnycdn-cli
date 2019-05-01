@@ -1,5 +1,6 @@
 import {Command, flags} from '@oclif/command'
 import {Config, IStoredKey} from "../Config";
+const ctable = require("console.table");
 import * as process from "process";
 
 export default class Key extends Command {
@@ -81,8 +82,8 @@ export default class Key extends Command {
 
   private listKeys() {
     const conf = Config.getConf();
-    this.log("==== PullZones : ");
 
+    this.log("==== API Keys: ");
     const pullzoneKeys = conf["apikey"].map((pzKs: IStoredKey) => {
       return {name: pzKs.name, value: pzKs.value};
     });
