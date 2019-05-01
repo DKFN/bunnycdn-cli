@@ -55,7 +55,7 @@ export default class Pz extends Command {
     }
 
     if ((flags.delHost || command === "del") && checkHasValue(flags.value)) {
-      Client.deleteHost(flags.key, flags.delHost || flags.target, flags.value!);
+      Client.deleteHost(flags.key, flags.delHost || flags.target!, flags.value!);
     }
 
     if (flags.purge || command === "purge") {

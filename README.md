@@ -23,7 +23,7 @@ $ npm install -g bnycdn
 $ bnycdn COMMAND
 running command...
 $ bnycdn (-v|--version|version)
-bnycdn/0.2.3 linux-x64 node-v8.10.0
+bnycdn/0.3.0 linux-x64 node-v8.10.0
 $ bnycdn --help [COMMAND]
 USAGE
   $ bnycdn COMMAND
@@ -32,39 +32,37 @@ USAGE
 <!-- usagestop -->
 # Commands
 <!-- commands -->
-* [`bnycdn billing []`](#bnycdn-billing-)
-* [`bnycdn cp [FROM]`](#bnycdn-cp-from)
+* [`bnycdn billing`](#bnycdn-billing)
+* [`bnycdn cp [FROM] [TO]`](#bnycdn-cp-from-to)
 * [`bnycdn help [COMMAND]`](#bnycdn-help-command)
 * [`bnycdn key []`](#bnycdn-key-)
-* [`bnycdn ls []`](#bnycdn-ls-)
-* [`bnycdn pz [PULLZONES]`](#bnycdn-pz-pullzones)
+* [`bnycdn ls [PATH]`](#bnycdn-ls-path)
+* [`bnycdn pz [COMMAND]`](#bnycdn-pz-command)
 * [`bnycdn rm []`](#bnycdn-rm-)
 * [`bnycdn stats []`](#bnycdn-stats-)
 
-## `bnycdn billing []`
+## `bnycdn billing`
 
 This command is to get statics for your account
 
 ```
 USAGE
-  $ bnycdn billing []
+  $ bnycdn billing
 
 OPTIONS
   -h, --help     show CLI help
   -k, --key=key  Key to use to get the statistics
-
-EXAMPLE
 ```
 
-_See code: [src/commands/billing.ts](https://github.com/DKFN/bnycdn/blob/v0.2.3/src/commands/billing.ts)_
+_See code: [src/commands/billing.ts](https://github.com/DKFN/bnycdn/blob/v0.3.0/src/commands/billing.ts)_
 
-## `bnycdn cp [FROM]`
+## `bnycdn cp [FROM] [TO]`
 
 This is the cp-like command for BunnyCDN storages.
 
 ```
 USAGE
-  $ bnycdn cp [FROM]
+  $ bnycdn cp [FROM] [TO]
 
 OPTIONS
   -R, --R
@@ -104,7 +102,7 @@ EXAMPLE
         ✔[OK]                /dkfn/nightly/deb/bnycdn_0.0.2-1_amd64.deb => 8.78 MB
 ```
 
-_See code: [src/commands/cp.ts](https://github.com/DKFN/bnycdn/blob/v0.2.3/src/commands/cp.ts)_
+_See code: [src/commands/cp.ts](https://github.com/DKFN/bnycdn/blob/v0.3.0/src/commands/cp.ts)_
 
 ## `bnycdn help [COMMAND]`
 
@@ -171,15 +169,15 @@ EXAMPLE
            ⓘ Successfully deleted key : mynewkey
 ```
 
-_See code: [src/commands/key.ts](https://github.com/DKFN/bnycdn/blob/v0.2.3/src/commands/key.ts)_
+_See code: [src/commands/key.ts](https://github.com/DKFN/bnycdn/blob/v0.3.0/src/commands/key.ts)_
 
-## `bnycdn ls []`
+## `bnycdn ls [PATH]`
 
 describe the command here
 
 ```
 USAGE
-  $ bnycdn ls []
+  $ bnycdn ls [PATH]
 
 OPTIONS
   -d, --dir=dir
@@ -191,15 +189,15 @@ EXAMPLE
        Lists all the pul zone
 ```
 
-_See code: [src/commands/ls.ts](https://github.com/DKFN/bnycdn/blob/v0.2.3/src/commands/ls.ts)_
+_See code: [src/commands/ls.ts](https://github.com/DKFN/bnycdn/blob/v0.3.0/src/commands/ls.ts)_
 
-## `bnycdn pz [PULLZONES]`
+## `bnycdn pz [COMMAND]`
 
 Only allows you to list pull zones so far
 
 ```
 USAGE
-  $ bnycdn pz [PULLZONES]
+  $ bnycdn pz [COMMAND]
 
 OPTIONS
   -a, --addHost=addHost  Adds an hostname to a pull zone
@@ -211,6 +209,7 @@ OPTIONS
   -k, --key=key          specify a key if you use anorther one than default
   -l, --list             lists all pull zones
   -p, --purge=purge      purge cache for pullzone in id
+  -t, --target=target    Target for the given operation
   -v, --value=value      Value for add hostname / purge pullzone
 
 EXAMPLE
@@ -223,7 +222,7 @@ EXAMPLE
        Lists all the pull zones
 ```
 
-_See code: [src/commands/pz.ts](https://github.com/DKFN/bnycdn/blob/v0.2.3/src/commands/pz.ts)_
+_See code: [src/commands/pz.ts](https://github.com/DKFN/bnycdn/blob/v0.3.0/src/commands/pz.ts)_
 
 ## `bnycdn rm []`
 
@@ -244,7 +243,7 @@ EXAMPLE
        This command is used to remove file and directory recursivly on the given storage
 ```
 
-_See code: [src/commands/rm.ts](https://github.com/DKFN/bnycdn/blob/v0.2.3/src/commands/rm.ts)_
+_See code: [src/commands/rm.ts](https://github.com/DKFN/bnycdn/blob/v0.3.0/src/commands/rm.ts)_
 
 ## `bnycdn stats []`
 
@@ -253,13 +252,7 @@ This command is to get statics for your account
 ```
 USAGE
   $ bnycdn stats []
-
-OPTIONS
-  -h, --help     show CLI help
-  -k, --key=key  Key to use to get the statistics
-
-EXAMPLE
 ```
 
-_See code: [src/commands/stats.ts](https://github.com/DKFN/bnycdn/blob/v0.2.3/src/commands/stats.ts)_
+_See code: [src/commands/stats.ts](https://github.com/DKFN/bnycdn/blob/v0.3.0/src/commands/stats.ts)_
 <!-- commandsstop -->

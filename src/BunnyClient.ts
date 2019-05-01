@@ -131,7 +131,6 @@ class _Client {
 
       console.log(" ⌛ [DL] " + qString(counterRef) + "    "  + pathToDownload + " => " + ( maybeLength || " ? " ));
       const response = await _Client.FileDownload(k, from);
-      cli.action.
 
       if (!response.headers["content-length"]) {
         console.error("we did not get a filesize. (Did you tried to download a directory without -R option?)");
