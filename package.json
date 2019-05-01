@@ -41,7 +41,7 @@
     "typescript": "^3.4.5"
   },
   "engines": {
-    "node": ">=8.0.0"
+    "node": ">=11.0.0"
   },
   "files": [
     "/bin",
