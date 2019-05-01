@@ -4,10 +4,19 @@ import {Client} from "../BunnyClient";
 
 export default class Pz extends Command {
 
-  static description = 'Only allows you to list pull zones so far';
+  static description = 'This is the subcommand for pullzone operations';
 
   static examples = [
      `
+     
+     COMMANDS
+     list
+     purge
+     add
+     del
+     ban
+     grace
+     
     ➜  bunnycdn-cli git:(master) ✗ ./bin/run pz -l
     ID    |Hit(%)|    Name     |   HostNames
     0 |  75  | pzb | [2] pzb.b-cdn.net ; 
@@ -32,17 +41,18 @@ export default class Pz extends Command {
     target: flags.string({char: 't', description: 'Target for the given operation'})
   };
 
-  static args = [{name: "command", help: "help", list: "list"}];
+  static args = [{name: "command"}, {name: "value"}];
 
   async run() {
     Config.loadConfig();
     const {flags, argv} = this.parse(Pz);
 
     const command = argv[0];
+    const maybeValue = argv[1] || flags.value;
 
     const checkHasValue = (maybeValue?: string) => {
       if (!maybeValue)
-        console.error(" This call needs a value (-v <value>) flag");
+        console.error(" This call needs a value (-v <value>) flag or second argument");
       return !!maybeValue;
     };
 
@@ -50,24 +60,24 @@ export default class Pz extends Command {
       Client.listPullZones(flags.key || "default");
     }
 
-    if ((flags.addHost || command === "add") && checkHasValue(flags.value)) {
-      Client.addHost(flags.key, flags.addHost || flags.target, flags.value!);
+    if ((flags.addHost || command === "add") && checkHasValue(maybeValue)) {
+      Client.addHost(flags.key, flags.addHost || flags.target, maybeValue!);
     }
 
-    if ((flags.delHost || command === "del") && checkHasValue(flags.value)) {
-      Client.deleteHost(flags.key, flags.delHost || flags.target!, flags.value!);
+    if ((flags.delHost || command === "del") && checkHasValue(maybeValue)) {
+      Client.deleteHost(flags.key, flags.delHost || flags.target!, maybeValue!);
     }
 
     if (flags.purge || command === "purge") {
       Client.purgeCache(flags.key, flags.purge || flags.target);
     }
 
-    if ((flags.ban || command === "ban") && checkHasValue(flags.value)) {
-      Client.addBlockedIp(flags.key, flags.ban || flags.target, flags.value!);
+    if ((flags.ban || command === "ban") && checkHasValue(maybeValue)) {
+      Client.addBlockedIp(flags.key, flags.ban || flags.target, maybeValue!);
     }
 
-    if ((flags.grace  || command === "grace") && checkHasValue(flags.value)) {
-      Client.removeBlockedIp(flags.key, flags.grace || flags.target, flags.value!);
+    if ((flags.grace  || command === "grace") && checkHasValue(maybeValue)) {
+      Client.removeBlockedIp(flags.key, flags.grace || flags.target, maybeValue!);
     }
   }
 }
