@@ -1,30 +1,14 @@
 import {Command, flags} from '@oclif/command'
 import {Config} from "../Config";
 import {Client} from "../BunnyClient";
+import {PZ_COMMAND_EXAMPLE} from "../examples";
+const cTable = require("console.table");
 
 export default class Pz extends Command {
 
   static description = 'This is the subcommand for pullzone operations';
 
-  static examples = [
-     `
-     
-     COMMANDS
-     list
-     purge
-     add
-     del
-     ban
-     grace
-     
-    ➜  bunnycdn-cli git:(master) ✗ ./bin/run pz -l
-    ID    |Hit(%)|    Name     |   HostNames
-    0 |  75  | pzb | [2] pzb.b-cdn.net ; 
-    1 |  75  | pza | [3] pza.b-cdn.net ; [4] custom.example.com ; 
-    
-    Lists all the pull zones
-    `,
-  ];
+  static examples = [ PZ_COMMAND_EXAMPLE ];
 
   static flags = {
     help: flags.help({char: 'h'}),

@@ -1,6 +1,7 @@
 import {Command, flags} from '@oclif/command'
 import {Config} from "../Config";
 import {Client} from "../BunnyClient";
+const cTable = require("console.table");
 
 export default class Billing extends Command {
 

@@ -78,9 +78,9 @@ EXAMPLE
     
        One file upload
     
-       $ bnycdn cp -s tetelincdn --from ./dist/deb/bnycdn_0.0.2-1_amd64.deb --to /tetelincdn/nightly/deb/test.deb
-       ⌛[UP]                 /tetelincdn/nightly/deb/test.deb => 8.78 MB
-       ✔[OK]                 /tetelincdn/nightly/deb/test.deb => 8.78 MB
+       $ bnycdn cp -s testcdn --from ./dist/deb/bnycdn_0.0.2-1_amd64.deb --to /testcdn/nightly/deb/test.deb
+       ⌛[UP]                 /testcdn/nightly/deb/test.deb => 8.78 MB
+       ✔[OK]                 /testcdn/nightly/deb/test.deb => 8.78 MB
 
     
        Recursive file upload

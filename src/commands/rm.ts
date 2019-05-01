@@ -27,11 +27,13 @@ export default class Rm extends Command {
 
   static status: IStatusStruct = {pending: 0, working: 0, errors: 0, ok: 0, lastUpdate: Date.now()};
 
-  static args = [{name: "", storage: "storage"}];
+  static args = [];
 
   async run() {
     Config.loadConfig();
     const {flags} = this.parse(Rm);
+
+    console.error("This functionality is not yet implemented");
 
     if (flags.R) {
 

@@ -29,7 +29,7 @@ describe('Pullzone command test', () => {
         Id: "111",
         Value: "testcdn",
         CacheQuality: "85",
-        Name: "tetelincdn",
+        Name: "testcdn",
         Hostnames: [{
           Id: "02",
           Value: "b.a.c"

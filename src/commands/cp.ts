@@ -4,6 +4,7 @@ import {Client} from "../BunnyClient";
 import * as fs from "fs";
 import {downloadScanDir, IStatusStruct, uploadScanDir} from "../utils/fsutils";
 import {CP_COMMAND_EXAMPLE} from "../examples";
+const cTable = require("console.table");
 
 
 export default class Cp extends Command {

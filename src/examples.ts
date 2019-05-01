@@ -1,6 +1,60 @@
-
 export const KEY_COMMAND_EXAMPLE =
   `
+        $ bnycdn key list
+        ==== API Keys: 
+        name     value                                                                   
+        -------  ------------------------------------------------------------------------
+        default  XXXX-XXXX_XXXX_XXXX
+
+        ==== Storages: 
+        name     value                                    
+        -------  -----------------------------------------
+        testcdn  XXXX-XXXX_XXXX_XXXX
+
+       
+        Version >= 0.3.0 style
+        
+        Add a default API Key
+        $ bnycdn key set default XXXX-XXXX-XXXX-XXXX
+         ⓘ Key successfully set: default
+        
+        Add a storage key
+        $ bnycdn key set testcdn XXXX-XXXX-XXXX-XXXX -t storages
+         ⓘ Key successfully set: testcdn
+         
+        Add a default storage key
+        $ bnycdn key set default XXXX-XXXX-XXXX-XXXX -t storages
+         ⓘ Key successfully set: testcdn
+         
+        Deletes a key
+        $ bnycdn key del default
+         ⓘ Successfully deleted key : default
+         
+         Deletes a storage key
+        $ bnycdn key del mykey -t storages
+         ⓘ Successfully deleted key : mykey
+
+        Version < 0.3.0 style
+
+        Add default API Key:
+        $ bnycdn key -s default -v my_api_key_from_panel
+        ⓘ Successfully deleted key : default
+
+        Add aliased API Key (If you have multiple accounts):
+        $ bnycdn key -s myKeyName -v my_api_key_from_panel
+        ⓘ Successfully deleted key : myKeyName
+
+        Add a storage Key:
+        $ bnycdn key -s mynewkey -t storages -v my_storage_ftp_password
+        ⓘ Key successfully set: mynewkey
+
+        Add a default storage Key:
+        $ bnycdn key -s default -t storages -v my_storage_ftp_password
+        ⓘ Key successfully set: mynewkey
+
+        Delete a key
+        $ bnycdn key -d mynewkey -t storages                         
+        ⓘ Successfully deleted key : mynewkey
   `;
 
 export const CP_COMMAND_EXAMPLE =
@@ -110,5 +164,52 @@ export const CP_COMMAND_EXAMPLE =
      ✔[OK] [ ∞ 0| ⇈ 2]    /dkfn/nightly/deb/Release => 1.96 KB
      ✔[OK] [ ∞ 0| ⇈ 1]    /dkfn/nightly/deb/bnycdn_0.0.2-1_armel.deb => 7.65 MB
      ✔[OK]                /dkfn/nightly/deb/bnycdn_0.0.2-1_amd64.deb => 8.78 MB
+    `;
+
+export const LS_COMMAND_EXAMPLE = `
+    $ bnycdn ls /teststorage/sample/ -s mystoragename
+    type       lastChanged              size       path                                         
+    ---------  -----------------------  ---------  ---------------------------------------------
+    [ DIR  ]   2019-04-13T13:20:45.874  0 B        /testcdn/sample/finalUpTest/node_modules  
+    [ DIR  ]   2019-04-13T13:21:03.133  0 B        /testcdn/sample/finalUpTest/.idea         
+    [ DIR  ]   2019-04-13T13:21:03.329  0 B        /testcdn/sample/finalUpTest/.git          
+    [ FILE ]   2019-04-13T13:20:52.59   1.89 MB    /testcdn/sample/finalUpTest/samplesml.mkv 
+    [ FILE ]   2019-04-13T13:21:50.066  18.82 MB   /testcdn/sample/finalUpTest/samplemid1.mkv
+    [ FILE ]   2019-04-13T13:23:57.191  56.45 MB   /testcdn/sample/finalUpTest/samplebig.mkv 
+    [ FILE ]   2019-04-13T13:20:45.876  173.59 KB  /testcdn/sample/finalUpTest/paris.jpg     
+    [ FILE ]   2019-04-13T13:21:04.011  171 B      /testcdn/sample/finalUpTest/.editorconfig 
+
+    You can also still use 0.2.x style
+    $ bnycdn ls -d /teststorage/mydirectory/ -s mystoragename
+    `;
+
+export const PZ_COMMAND_EXAMPLE = `
+     COMMANDS
+     list
+     purge
+     add
+     del
+     ban
+     grace
      
+    $ bnycdn pz list
+    id     cacheQuality  name             hostnames                                                   
+    -----  ------------  ---------------  ------------------------------------------------------------
+    58516  75            citybuilderscdn  [82062] citybuilderscdn.b-cdn.net ;                         
+    59831  75            tetelincdn       [84195] tetelincdn.b-cdn.net ; [84196] cdn.infra.tetel.in ; 
+     
+    $ bnycdn pz -l
+    id     cacheQuality  name             hostnames                                                   
+    -----  ------------  ---------------  ------------------------------------------------------------
+    58516  75            citybuilderscdn  [82062] citybuilderscdn.b-cdn.net ;                         
+    59831  75            tetelincdn       [84195] tetelincdn.b-cdn.net ; [84196] cdn.infra.tetel.in ; 
+    
+    $ bnycdn pz add example.com -t tetelincdn
+    ✔ Successfully added hostname 
+
+    $ bnycdn pz ban 8.8.8.8 -t tetelincdn
+    ✔ Successfully added blockedIp 8.8.8.8
+    
+    $ bnycdn pz grace 8.8.8.8 -t tetelincdn
+    ✔ Successfully removed blocked ip : 8.8.8.8
     `;

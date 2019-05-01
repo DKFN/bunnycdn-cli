@@ -149,7 +149,6 @@ class _Client {
       }
       console.log( " ✔ [OK] " + qString(counterRef) + "    " + pathToDownload + " => " + size);
     } catch (e) {
-      console.log(e);
       if (counterRef) {
         counterRef.working = counterRef.working - 1;
         // counterRef.pending = counterRef.pending - 1;
@@ -199,8 +198,7 @@ class _Client {
       if (counterRef) {
         counterRef.working = counterRef.working - 1;
       }
-      // console.debug(e.statusCode);
-      // console.debug(e);
+      _Client.throwHttpError(e);
     }
   }
 

@@ -2,43 +2,14 @@ import {Command, flags} from '@oclif/command'
 import {Config, IStoredKey} from "../Config";
 const ctable = require("console.table");
 import * as process from "process";
+import {KEY_COMMAND_EXAMPLE} from "../examples";
+const cTable = require("console.table");
 
 export default class Key extends Command {
 
   static description = 'To add / delete / set a key for account pullzones or a storage';
 
-  static examples = [
-    `
-        ➜  bunnycdn-cli git:(master) ✗ bnycdn key -l  
-        ==== PullZones : 
-        Key Name        : Key Value
-        default   | .....
-        ==== Storages: 
-        Key Name        : Key Value
-        default | .....
-        name | .....
-
-        Add default API Key:
-        ➜  bunnycdn-cli git:(master) ✗ bnycdn key -s default -v my_api_key_from_panel
-        ⓘ Successfully deleted key : default
-
-        Add aliased API Key (If you have multiple accounts):
-        ➜  bunnycdn-cli git:(master) ✗ bnycdn key -s myKeyName -v my_api_key_from_panel
-        ⓘ Successfully deleted key : myKeyName
-
-        Add a storage Key:
-        ➜  bunnycdn-cli git:(master) ✗ bnycdn key -s mynewkey -t storages -v my_storage_ftp_password
-        ⓘ Key successfully set: mynewkey
-
-        Add a default storage Key:
-        ➜  bunnycdn-cli git:(master) ✗ bnycdn key -s default -t storages -v my_storage_ftp_password
-        ⓘ Key successfully set: mynewkey
-
-        Delete a key
-        ➜  bunnycdn-cli git:(master) ✗ bnycdn key -d mynewkey -t storages                         
-        ⓘ Successfully deleted key : mynewkey
-    `,
-  ];
+  static examples = [ KEY_COMMAND_EXAMPLE ];
 
   static flags = {
     help: flags.help({char: 'h'}),
@@ -50,33 +21,35 @@ export default class Key extends Command {
     list: flags.boolean({char: 'l', description: 'lists all keys stored and their names'}),
   };
 
-  static args = [{name: "", add: "name", set: "string", value: "value"}];
+  static args = [{name: "Command"}, {name: "key_name"}, {name: "key_value"}];
 
   async run() {
     Config.loadConfig();
     const {flags, argv} = this.parse(Key);
 
     const command = argv[0];
+    const maybeName = argv[1] || flags.set || flags.del;
+    const maybeValue = argv[2] || flags.value;
 
-    if (flags.list) {
+    if (flags.list || command === "list") {
       this.listKeys();
       return;
     }
 
     if (flags.set || command === "set") {
       // TODO : Allow edition in prompt mode if no params is specified
-      if (flags.value) {
-        this.addKey(flags.value, flags.set, flags.type);
+      if (maybeValue) {
+        this.addKey(maybeValue, flags.set || maybeName, flags.type || "apikey");
         return ;
       } else {
-        this.error(" 1 You must specify a value and a type for the set operation and must be correctly set",
+        this.error("You must specify a value and a type for the set operation and must be correctly set",
           {code: "NOVALUE", exit: 1}
         );
       }
     }
 
-    if (flags.del) {
-        Config.deleteKey(flags.del, flags.type);
+    if ((flags.del || command === "del") && maybeName) {
+        Config.deleteKey(maybeName, flags.type);
     }
   }
 
