@@ -4,44 +4,40 @@ Via the `key` command you can add, edit and delete API keys and storage password
 
 ## Usage
 ```console
-bnycdn [-t <key_type>] [set|list|del] [<key_name>] [<key_value>] 
+bnycdn [-l] [-s <key_name>] [-d <key_name>] [-v <key_value>] [-t <key_type>]   
 ```
-
-Possible key_type values:
-- apikey (default) : Account API Key
-- storages : Storages FTP password
 
 ### Examples
 #### Add default API Key:
 ```console
-$ bnycdn key set default my_api_key_from_panel
+$ bnycdn key -s default -v my_api_key_from_panel
 ⓘ Successfully deleted key : default
 ```
 
 ### Add aliased API Key (If you have multiple accounts):
 
 ```console
-$ bnycdn key set myKeyName my_api_key_from_panel
+$ bnycdn key -s myKeyName -v my_api_key_from_panel
 ⓘ Successfully deleted key : myKeyName
 ```
 
 #### Add a storage Key:
 
 ```console
-$ bnycdn key -t storages set mynewkey my_storage_ftp_password
+$ bnycdn key -s mynewkey -t storages -v my_storage_ftp_password
 ⓘ Key successfully set: mynewkey
 ```
 
 #### Add a default storage Key:
 
 ```console
-$ bnycdn key -t storages set default my_storage_ftp_password
+$ bnycdn key -s default -t storages -v my_storage_ftp_password
 ⓘ Key successfully set: mynewkey
 ```
 
 #### Delete a key
 
 ```console
-$ bnycdn key -t storages del mynewkey                        
+$ bnycdn key -d mynewkey -t storages                         
 ⓘ Successfully deleted key : mynewkey
 ```

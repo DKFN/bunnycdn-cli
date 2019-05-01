@@ -7,7 +7,7 @@ Make sure you have a pullzone api key stored and then use `pz -p` (PullZone purg
 ## Usage
 
 ```console
-bnycdn pz purge <name>
+bnycdn pz -p <name>
 ```
 
 If you are unsure about your pullzone name, use `pz -l` to list all accessible pullzoneswith your current API Key and search for the name column
@@ -15,5 +15,5 @@ If you are unsure about your pullzone name, use `pz -l` to list all accessible p
 You can also use anorther API key than default:
 
 ```console
-bnycdn pz purge <name> -k <key_name>
+bnycdn pz -p <name> -k <key_name>
 ```

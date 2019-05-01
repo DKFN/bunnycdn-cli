@@ -10,5 +10,5 @@ Please note that raising this value to much (> 20) may result in dropped connect
 
 ## Examples
 ```console
-$ export BNYCDN_PARALLEL=1; bnycdn cp -R -s testcdn /testcdn/bunnycdnclitest2/ ./testfiles2/ 
+$ export BNYCDN_PARALLEL=1; bnycdn cp -R -s testcdn --to /testcdn/bunnycdnclitest2/ --from ./testfiles2/ 
 ```

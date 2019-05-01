@@ -9,7 +9,7 @@ export default class Billing extends Command {
 
   static flags = {
     help: flags.help({char: 'h'}),
-    key: flags.string({char: 'k', description: "Key to use to get the statistics"}),
+    key: flags.string({char: 'k', description: "Key to use to get the billing informations"}),
   };
 
   async run() {

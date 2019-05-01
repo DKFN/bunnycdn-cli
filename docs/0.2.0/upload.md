@@ -8,7 +8,7 @@ Make sure you have a storage password stored and then use `cp`
 
 ## Usage
 ```console
-bnycdn cp -s <name_of_storage_key> [-R|-r] <path_from_machine> <path_to_storage>
+bnycdn cp -s <name_of_storage_key> [-R] --from <path_from_machine> --to <path_to_storage>
 ```
 
 Please note that the path *must* start with the storage name from bunnycdn.
@@ -19,7 +19,7 @@ For example, my storage name is testcdn.
 
 Single file upload
 ```console
-$ bnycdn cp -s testcdn ./dist/deb/bnycdn_0.0.3-1_amd64.deb ./testcdn/bunnycdncli/nightly/testup.deb 
+$ bnycdn cp -s testcdn --from ./dist/deb/bnycdn_0.0.3-1_amd64.deb --to ./testcdn/bunnycdncli/nightly/testup.deb 
  ⌛ [UP]                 ./testcdn/bunnycdncli/nightly/testup.deb => 8.92 MB
  ✔ [OK]                 ./testcdn/bunnycdncli/nightly/testup.deb => 8.92 MB
  
@@ -27,7 +27,7 @@ $ bnycdn cp -s testcdn ./dist/deb/bnycdn_0.0.3-1_amd64.deb ./testcdn/bunnycdncli
 
 Directory upload
 ```console
-$ bnycdn cp -s testcdn -R ./dist/deb/ ./testcdn/bunnycdncli/nightly/           
+$ bnycdn cp -s testcdn -R --from ./dist/deb/ --to ./testcdn/bunnycdncli/nightly/           
  ⌛ [UP] [ ∞ 0| ⇅ 1 | o 0]    ./testcdn/bunnycdncli/nightly/Packages => 1.04 KB
  ⌛ [UP] [ ∞ 0| ⇅ 2 | o 0]    ./testcdn/bunnycdncli/nightly/Packages.bz2 => 661 B
  ⌛ [UP] [ ∞ 0| ⇅ 3 | o 0]    ./testcdn/bunnycdncli/nightly/Packages.gz => 596 B

@@ -51,7 +51,7 @@ USAGE
 
 OPTIONS
   -h, --help     show CLI help
-  -k, --key=key  Key to use to get the statistics
+  -k, --key=key  Key to use to get the billing informations
 ```
 
 _See code: [src/commands/billing.ts](https://github.com/DKFN/bnycdn/blob/v0.3.0/src/commands/billing.ts)_
@@ -68,6 +68,7 @@ OPTIONS
   -R, --R
   -f, --from=from
   -h, --help             show CLI help
+  -r, --R2
   -s, --storage=storage
   -t, --to=to
 

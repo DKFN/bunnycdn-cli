@@ -3,22 +3,22 @@
 Adding or removing hostnames into a pullzone is done via the pz command:
 
 
-Make sure you have a pullzone api key stored and then use `pz -a` (Adds an hostname) or `pz -d` (Deletes an hostname)
+Make sure you have a pullzone api key stored and then use `pz add` (Adds an hostname) or `pz del` (Deletes an hostname)
 
 ## Usage
 ### Add
 ```console
-bnycdn pz -a <pullzone_name> -v <hostname>
+bnycdn pz add <hostname> -t <pullzone_name> [-k <key_to_use>]
 ```
 
 ### Remove
 ```console
-bnycdn pz -d <pullzone_name> -v <hostname>
+bnycdn pz del <hostname> -t <pullzone_name> [-k <key_to_use>]
 ```
 
 ## Examples:
 ```console
-$ bnycdn pz -a testpz -v cdn.example.com
+$ bnycdn pz add cdn.example.com -t testpz
 
-$ bnycdn pz -d testpz -v cdn.example.com
+$ bnycdn pz del cdn.example.com -t testpz
 ```

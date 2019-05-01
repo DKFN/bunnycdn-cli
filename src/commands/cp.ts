@@ -19,6 +19,7 @@ export default class Cp extends Command {
     from: flags.string({char: 'f'}),
     to: flags.string({char: 't'}),
     R: flags.boolean({char: 'R'}),
+    R2: flags.boolean({char: 'r'}),
   };
 
   static filesPooled = 0;
@@ -34,20 +35,15 @@ export default class Cp extends Command {
     const from = argv[0] || flags.from;
     const to = argv[1] || flags.to;
 
-    if (!flags.storage) {
-      this.error("You must specify a storage zone with -s");
-      this.exit(127);
-    }
-
     const makePath = (userPath: string) => userPath.endsWith("/") ? userPath : userPath + "/";
 
     if (to && from) {
       if (fs.existsSync(from)) {
-          if (flags.R) {
+          if (flags.R || flags.R2) {
             uploadScanDir(
               makePath(from),
               makePath(to),
-              flags.storage!,
+              flags.storage || "default",
               Cp.status,
               Client.uploadFile
             );
@@ -55,9 +51,9 @@ export default class Cp extends Command {
               Client.uploadFile(flags.storage, from, to);
             }
       } else {
-          if (flags.R) {
+          if (flags.R || flags.R2) {
             downloadScanDir(
-              flags.storage!,
+              flags.storage || "default",
               makePath(from),
               makePath(to),
               Cp.status,

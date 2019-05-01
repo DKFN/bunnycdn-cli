@@ -19,14 +19,14 @@ This is the only native release method for now. More operating systems will be s
 
 ### AMD64
 ```console
-wget http://cdn.infra.tetel.in/bunnycdn-cli/nightly/deb/bnycdn_0.3.0-1_amd64.deb
-sudo dpkg -i bnycdn_0.3.0-1_amd64.deb 
+wget http://cdn.infra.tetel.in/bunnycdn-cli/nightly/deb/bnycdn_0.2.1-1_amd64.deb
+sudo dpkg -i bnycdn_0.2.0-1_amd64.deb 
 ```
 
 ### ARM
 ```console
-wget http://cdn.infra.tetel.in/bunnycdn-cli/nightly/deb/bnycdn_0.3.0-1_armel.deb
-sudo dpkg -i bnycdn_0.3.0-1_armel.deb 
+wget http://cdn.infra.tetel.in/bunnycdn-cli/nightly/deb/bnycdn_0.2.1-1_armel.deb
+sudo dpkg -i bnycdn_0.2.0-1_armel.deb 
 ```
 
 
