@@ -11,7 +11,7 @@
     "@oclif/command": "^1.5.12",
     "@oclif/config": "^1.12.12",
     "@oclif/plugin-help": "^2.1.6",
-    "axios": "^0.18.0",
+    "axios": "^0.21.1",
     "cli-ux": "^5.2.1",
     "console.table": "^0.10.0",
     "filesize": "^4.1.2",
