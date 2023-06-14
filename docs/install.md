@@ -19,16 +19,15 @@ This is the only native release method for now. More operating systems will be s
 
 ### AMD64
 ```console
-wget http://cdn.infra.tetel.in/bunnycdn-cli/nightly/deb/bnycdn_0.3.0-1_amd64.deb
-sudo dpkg -i bnycdn_0.3.0-1_amd64.deb 
+wget https://cdn.deadlykungfu.ninja/bnycdn-cli/deb/bnycdn_0.3.0_amd64.deb
+sudo dpkg -i bnycdn_0.3.0_amd64.deb
 ```
 
 ### ARM
 ```console
-wget http://cdn.infra.tetel.in/bunnycdn-cli/nightly/deb/bnycdn_0.3.0-1_armel.deb
-sudo dpkg -i bnycdn_0.3.0-1_armel.deb 
+wget https://cdn.deadlykungfu.ninja/bnycdn-cli/deb/bnycdn_0.3.0_armel.deb
+sudo dpkg -i bnycdn_0.3.0_armel.deb
 ```
-
 
 ## NPM
 This is great if you already have NodeJS installed (>= 8.0.0) and you can update the cli with a simple command.
